@@ -1,0 +1,96 @@
+exercise_name,base_movement,muscle_group,equipment,tracking_type
+Back Extension (Machine),Back Extension,Lower Back,Machine,weight_reps
+Back Extension (Weighted Hyperextension),Back Extension,Lower Back,Weighted,weight_reps
+Bench Press (Barbell),Bench Press,Chest,Barbell,weight_reps
+Bench Press (Dumbbell),Bench Press,Chest,Dumbbell,weight_reps
+Bent Over Row (Barbell),Bent Over Row,Back,Barbell,weight_reps
+Bicep Curl (Barbell),Bicep Curl,Biceps,Barbell,weight_reps
+Bicep Curl (Cable),Bicep Curl,Biceps,Cable,weight_reps
+Bicep Curl (Dumbbell),Bicep Curl,Biceps,Dumbbell,weight_reps
+Bicep Curl (Machine),Bicep Curl,Biceps,Machine,weight_reps
+Bird Dog,Bird Dog,Core,Bodyweight,weight_reps
+Box Squat (Barbell),Box Squat,Legs,Barbell,weight_reps
+Bulgarian Split Squat,Bulgarian Split Squat,Legs,Bodyweight,weight_reps
+Butterfly (Pec Deck),Butterfly,Chest,Pec Deck,weight_reps
+Cable Crunch,Cable Crunch,Core,Bodyweight,weight_reps
+Cable Fly Crossovers,Cable Fly Crossovers,Chest,Bodyweight,weight_reps
+Cable Pull Through,Cable Pull Through,Glutes,Bodyweight,weight_reps
+Cable Twist (Down to up),Cable Twist,Core,Cable,weight_reps
+Cable Twist (Up to down),Cable Twist,Core,Cable,weight_reps
+Chest Fly (Machine),Chest Fly,Chest,Machine,weight_reps
+Chest Press (Machine),Chest Press,Chest,Machine,weight_reps
+Chin Up,Chin Up,Back,Bodyweight,weight_reps
+Chin Up (Assisted),Chin Up,Back,Assisted,weight_reps
+Clean and Jerk,Clean and Jerk,Full Body,Bodyweight,weight_reps
+Clean and Press,Clean and Press,Full Body,Bodyweight,weight_reps
+Concentration Curl,Concentration Curl,Biceps,Bodyweight,weight_reps
+Crunch,Crunch,Core,Bodyweight,weight_reps
+Crunch (Machine),Crunch,Core,Machine,weight_reps
+Deadlift (Barbell),Deadlift,Back,Barbell,weight_reps
+Deadlift (Trap Bar),Deadlift,Back,Trap Bar,weight_reps
+Decline Crunch,Decline Crunch,Core,Bodyweight,weight_reps
+Dumbbell Row,Dumbbell Row,Back,Bodyweight,weight_reps
+Face Pull,Face Pull,Shoulders,Bodyweight,weight_reps
+Front Raise (Cable),Front Raise,Shoulders,Cable,weight_reps
+Front Squat,Front Squat,Legs,Bodyweight,weight_reps
+Good Morning (Barbell),Good Morning,Lower Back,Barbell,weight_reps
+Hack Squat (Machine),Hack Squat,Legs,Machine,weight_reps
+Hammer Curl (Cable),Hammer Curl,Biceps,Cable,weight_reps
+Hammer Curl (Dumbbell),Hammer Curl,Biceps,Dumbbell,weight_reps
+Hanging Leg Raise,Hanging Leg Raise,Core,Bodyweight,weight_reps
+Incline Bench Press (Barbell),Incline Bench Press,Chest,Barbell,weight_reps
+Incline Bench Press (Dumbbell),Incline Bench Press,Chest,Dumbbell,weight_reps
+Iso-Lateral Row (Machine),Iso-Lateral Row,Back,Machine,weight_reps
+Kettlebell Clean,Kettlebell Clean,Full Body,Kettlebell,weight_reps
+Kettlebell Goblet Squat,Kettlebell Goblet Squat,Legs,Kettlebell,weight_reps
+Kettlebell Snatch,Kettlebell Snatch,Full Body,Kettlebell,weight_reps
+Lat Pulldown (Cable),Lat Pulldown,Back,Cable,weight_reps
+Lat Pulldown (Machine),Lat Pulldown,Back,Machine,weight_reps
+Lat Pulldown - Close Grip (Cable),Lat Pulldown - Close Grip,Back,Cable,weight_reps
+Lateral Raise (Cable),Lateral Raise,Shoulders,Cable,weight_reps
+Leg Extension (Machine),Leg Extension,Legs,Machine,weight_reps
+Leg Press (Machine),Leg Press,Legs,Machine,weight_reps
+Leg Press Horizontal (Machine),Leg Press Horizontal,Legs,Machine,weight_reps
+Leg Raise Parallel Bars,Leg Raise Parallel Bars,Core,Bodyweight,weight_reps
+Lunge (Barbell),Lunge,Legs,Barbell,weight_reps
+Overhead Press (Barbell),Overhead Press,Shoulders,Barbell,weight_reps
+Overhead Press (Dumbbell),Overhead Press,Shoulders,Dumbbell,weight_reps
+Overhead Squat,Overhead Squat,Legs,Bodyweight,weight_reps
+Plank,Plank,Core,Bodyweight,duration
+Power Snatch,Power Snatch,Full Body,Bodyweight,weight_reps
+Preacher Curl (Machine),Preacher Curl,Biceps,Machine,weight_reps
+Pull Up,Pull Up,Back,Bodyweight,weight_reps
+Pull Up (Assisted),Pull Up,Back,Assisted,weight_reps
+Push Press,Push Press,Shoulders,Bodyweight,weight_reps
+Push Up (Weighted),Push Up,Chest,Weighted,weight_reps
+Rear Delt Reverse Fly (Cable),Rear Delt Reverse Fly,Shoulders,Cable,weight_reps
+Rear Delt Reverse Fly (Machine),Rear Delt Reverse Fly,Shoulders,Machine,weight_reps
+Reverse Crunch,Reverse Crunch,Core,Bodyweight,weight_reps
+Romanian Deadlift (Barbell),Romanian Deadlift,Hamstrings,Barbell,weight_reps
+Romanian Deadlift (Dumbbell),Romanian Deadlift,Hamstrings,Dumbbell,weight_reps
+Rope Cable Curl,Rope Cable Curl,Biceps,Bodyweight,weight_reps
+Seated Cable Row - Bar Wide Grip,Seated Cable Row - Bar Wide Grip,Back,Barbell,weight_reps
+Seated Cable Row - V Grip (Cable),Seated Cable Row - V Grip,Back,Cable,weight_reps
+Seated Row (Machine),Seated Row,Back,Machine,weight_reps
+Shoulder Press (Dumbbell),Shoulder Press,Shoulders,Dumbbell,weight_reps
+Side Bend (Cable),Side Bend,Core,Cable,weight_reps
+Side Bend (Dumbbell),Side Bend,Core,Dumbbell,weight_reps
+Side Plank,Side Plank,Core,Bodyweight,duration
+Single Leg Romanian Deadlift (Dumbbell),Single Leg Romanian Deadlift,Hamstrings,Dumbbell,weight_reps
+Sit Up,Sit Up,Core,Bodyweight,weight_reps
+Smith Machine Split Squat,Smith Machine Split Squat,Legs,Bodyweight,weight_reps
+Split Squat (Dumbbell),Split Squat,Legs,Dumbbell,weight_reps
+Squat (Barbell),Squat,Legs,Barbell,weight_reps
+Straight Arm Lat Pulldown (Cable),Straight Arm Lat Pulldown,Back,Cable,weight_reps
+Sumo Deadlift,Sumo Deadlift,Legs,Bodyweight,weight_reps
+T Bar Row,T Bar Row,Back,Bodyweight,weight_reps
+TRX Rotation,TRX Rotation,Core,TRX,weight_reps
+Tricep Pushdown V Grip,Tricep Pushdown V Grip,Triceps,Bodyweight,weight_reps
+Triceps Dip (Assisted),Triceps Dip,Triceps,Assisted,weight_reps
+Triceps Extension (Barbell),Triceps Extension,Triceps,Barbell,weight_reps
+Triceps Extension (Cable),Triceps Extension,Triceps,Cable,weight_reps
+Triceps Extension (Dumbbell),Triceps Extension,Triceps,Dumbbell,weight_reps
+Triceps Extension (Machine),Triceps Extension,Triceps,Machine,weight_reps
+Triceps Pushdown,Triceps Pushdown,Triceps,Bodyweight,weight_reps
+Triceps Rope Pushdown,Triceps Rope Pushdown,Triceps,Bodyweight,weight_reps
+Weighted Crunch,Weighted Crunch,Core,Bodyweight,weight_reps

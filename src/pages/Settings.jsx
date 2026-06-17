@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from '../store/AuthContext'
 import { useData } from '../store/DataContext'
+import { SCALES, getScale, setScale } from '../lib/textScale'
 
 export default function Settings() {
   const { profile, household, user, logout, setRestDefault } = useAuth()
@@ -9,6 +10,7 @@ export default function Settings() {
   const nav = useNavigate()
   const [copied, setCopied] = useState(false)
   const [rest, setRest] = useState(profile?.restDefaultSec ?? 120)
+  const [scale, setScaleState] = useState(getScale())
 
   function copyCode() {
     if (!household?.inviteCode) return
@@ -38,6 +40,23 @@ export default function Settings() {
             {household?.inviteCode || '------'}
           </button>
           <div className="text-xs text-center mt-1 h-4 text-good">{copied ? 'Copied!' : ''}</div>
+        </div>
+      </Section>
+
+      <Section title="Display">
+        <div className="py-1">
+          <span className="text-sm text-gray-400 block mb-2">Text size</span>
+          <div className="grid grid-cols-4 gap-1.5">
+            {SCALES.map(s => (
+              <button key={s.id}
+                onClick={() => { setScale(s.id); setScaleState(s.id) }}
+                className={`btn py-2 px-1 ${scale === s.id ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ fontSize: `${s.factor}rem` }}>A</button>
+            ))}
+          </div>
+          <p className="text-[11px] text-gray-600 mt-1.5">
+            {SCALES.find(s => s.id === scale)?.label} · applies to this device. You can also pinch-to-zoom anywhere.
+          </p>
         </div>
       </Section>
 

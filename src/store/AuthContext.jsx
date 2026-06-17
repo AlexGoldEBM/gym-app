@@ -78,21 +78,15 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async () => {
     setAuthError(null)
-    // Popups are unreliable on mobile (and in installed PWAs) — go straight to
-    // redirect there. Desktop keeps the smoother popup flow.
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
-      || window.matchMedia('(display-mode: standalone)').matches
-    if (isMobile) {
-      try { await signInWithRedirect(auth, googleProvider) }
-      catch (e) { setAuthError(friendlyAuthError(e)) }
-      return
-    }
+    // Popup first on every device. signInWithRedirect requires third-party storage
+    // on the Firebase auth domain (a different origin from the app), which Brave /
+    // Safari ITP partition or block — that produced a redirect loop between the app
+    // domain and firebaseapp.com. Popup keeps the OAuth window same-context and
+    // avoids it. Only fall back to redirect if the popup genuinely can't open.
     try {
       await signInWithPopup(auth, googleProvider)
     } catch (e) {
-      // popup blocked / unsupported -> redirect fallback. Also retry on a network
-      // failure (some browsers fail the popup's cross-origin call but allow redirect).
-      if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment', 'auth/network-request-failed'].includes(e?.code)) {
+      if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment'].includes(e?.code)) {
         try { await signInWithRedirect(auth, googleProvider) }
         catch (e2) { setAuthError(friendlyAuthError(e2)) }
       } else if (e?.code !== 'auth/cancelled-popup-request' && e?.code !== 'auth/popup-closed-by-user') {

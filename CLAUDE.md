@@ -26,13 +26,18 @@ The Firebase project (`gym-app`) and Vercel project already exist. Firebase Auth
 1. Create `.env.local` in the project root (and ensure it's in `.gitignore`) with the Firebase web config below
 2. Use these as `VITE_FIREBASE_*` env vars (adjust prefix if using a framework other than Vite) and initialise the Firebase SDK from them — never hardcode these values directly in source files
 
+> Actual values live in `.env.local` (local dev, gitignored) and the Vercel
+> project's Environment Variables (production). Redacted here so the repo doc
+> isn't flagged by secret scanners — these are Firebase *web* config values
+> (public by design, shipped in the client bundle), not true secrets.
+
 ```
-VITE_FIREBASE_API_KEY=AIzaSyAU2CYm2OWQbKJ0J0ltPYLxSlpXQH2PCdk
+VITE_FIREBASE_API_KEY=<redacted — see .env.local / Vercel>
 VITE_FIREBASE_AUTH_DOMAIN=gym-app-2f214.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=gym-app-2f214
 VITE_FIREBASE_STORAGE_BUCKET=gym-app-2f214.firebasestorage.app
 VITE_FIREBASE_MESSAGING_SENDER_ID=675430649020
-VITE_FIREBASE_APP_ID=1:675430649020:web:c7feb90c34e6f2a6f694b9
+VITE_FIREBASE_APP_ID=<redacted — see .env.local / Vercel>
 ```
 
 ### Vercel deployment

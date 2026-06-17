@@ -1,0 +1,857 @@
+[
+  {
+    "id": "back-extension-machine",
+    "name": "Back Extension (Machine)",
+    "base_movement": "Back Extension",
+    "muscle_group": "Lower Back",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "back-extension-weighted-hyperextension",
+    "name": "Back Extension (Weighted Hyperextension)",
+    "base_movement": "Back Extension",
+    "muscle_group": "Lower Back",
+    "equipment": "Weighted",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bench-press-barbell",
+    "name": "Bench Press (Barbell)",
+    "base_movement": "Bench Press",
+    "muscle_group": "Chest",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bench-press-dumbbell",
+    "name": "Bench Press (Dumbbell)",
+    "base_movement": "Bench Press",
+    "muscle_group": "Chest",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bent-over-row-barbell",
+    "name": "Bent Over Row (Barbell)",
+    "base_movement": "Bent Over Row",
+    "muscle_group": "Back",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bicep-curl-barbell",
+    "name": "Bicep Curl (Barbell)",
+    "base_movement": "Bicep Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bicep-curl-cable",
+    "name": "Bicep Curl (Cable)",
+    "base_movement": "Bicep Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bicep-curl-dumbbell",
+    "name": "Bicep Curl (Dumbbell)",
+    "base_movement": "Bicep Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bicep-curl-machine",
+    "name": "Bicep Curl (Machine)",
+    "base_movement": "Bicep Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bird-dog",
+    "name": "Bird Dog",
+    "base_movement": "Bird Dog",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "box-squat-barbell",
+    "name": "Box Squat (Barbell)",
+    "base_movement": "Box Squat",
+    "muscle_group": "Legs",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "bulgarian-split-squat",
+    "name": "Bulgarian Split Squat",
+    "base_movement": "Bulgarian Split Squat",
+    "muscle_group": "Legs",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "butterfly-pec-deck",
+    "name": "Butterfly (Pec Deck)",
+    "base_movement": "Butterfly",
+    "muscle_group": "Chest",
+    "equipment": "Pec Deck",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "cable-crunch",
+    "name": "Cable Crunch",
+    "base_movement": "Cable Crunch",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "cable-fly-crossovers",
+    "name": "Cable Fly Crossovers",
+    "base_movement": "Cable Fly Crossovers",
+    "muscle_group": "Chest",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "cable-pull-through",
+    "name": "Cable Pull Through",
+    "base_movement": "Cable Pull Through",
+    "muscle_group": "Glutes",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "cable-twist-down-to-up",
+    "name": "Cable Twist (Down to up)",
+    "base_movement": "Cable Twist",
+    "muscle_group": "Core",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "cable-twist-up-to-down",
+    "name": "Cable Twist (Up to down)",
+    "base_movement": "Cable Twist",
+    "muscle_group": "Core",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "chest-fly-machine",
+    "name": "Chest Fly (Machine)",
+    "base_movement": "Chest Fly",
+    "muscle_group": "Chest",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "chest-press-machine",
+    "name": "Chest Press (Machine)",
+    "base_movement": "Chest Press",
+    "muscle_group": "Chest",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "chin-up",
+    "name": "Chin Up",
+    "base_movement": "Chin Up",
+    "muscle_group": "Back",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "chin-up-assisted",
+    "name": "Chin Up (Assisted)",
+    "base_movement": "Chin Up",
+    "muscle_group": "Back",
+    "equipment": "Assisted",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "clean-and-jerk",
+    "name": "Clean and Jerk",
+    "base_movement": "Clean and Jerk",
+    "muscle_group": "Full Body",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "clean-and-press",
+    "name": "Clean and Press",
+    "base_movement": "Clean and Press",
+    "muscle_group": "Full Body",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "concentration-curl",
+    "name": "Concentration Curl",
+    "base_movement": "Concentration Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "crunch",
+    "name": "Crunch",
+    "base_movement": "Crunch",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "crunch-machine",
+    "name": "Crunch (Machine)",
+    "base_movement": "Crunch",
+    "muscle_group": "Core",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "deadlift-barbell",
+    "name": "Deadlift (Barbell)",
+    "base_movement": "Deadlift",
+    "muscle_group": "Back",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "deadlift-trap-bar",
+    "name": "Deadlift (Trap Bar)",
+    "base_movement": "Deadlift",
+    "muscle_group": "Back",
+    "equipment": "Trap Bar",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "decline-crunch",
+    "name": "Decline Crunch",
+    "base_movement": "Decline Crunch",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "dumbbell-row",
+    "name": "Dumbbell Row",
+    "base_movement": "Dumbbell Row",
+    "muscle_group": "Back",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "face-pull",
+    "name": "Face Pull",
+    "base_movement": "Face Pull",
+    "muscle_group": "Shoulders",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "front-raise-cable",
+    "name": "Front Raise (Cable)",
+    "base_movement": "Front Raise",
+    "muscle_group": "Shoulders",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "front-squat",
+    "name": "Front Squat",
+    "base_movement": "Front Squat",
+    "muscle_group": "Legs",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "good-morning-barbell",
+    "name": "Good Morning (Barbell)",
+    "base_movement": "Good Morning",
+    "muscle_group": "Lower Back",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "hack-squat-machine",
+    "name": "Hack Squat (Machine)",
+    "base_movement": "Hack Squat",
+    "muscle_group": "Legs",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "hammer-curl-cable",
+    "name": "Hammer Curl (Cable)",
+    "base_movement": "Hammer Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "hammer-curl-dumbbell",
+    "name": "Hammer Curl (Dumbbell)",
+    "base_movement": "Hammer Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "hanging-leg-raise",
+    "name": "Hanging Leg Raise",
+    "base_movement": "Hanging Leg Raise",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "incline-bench-press-barbell",
+    "name": "Incline Bench Press (Barbell)",
+    "base_movement": "Incline Bench Press",
+    "muscle_group": "Chest",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "incline-bench-press-dumbbell",
+    "name": "Incline Bench Press (Dumbbell)",
+    "base_movement": "Incline Bench Press",
+    "muscle_group": "Chest",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "iso-lateral-row-machine",
+    "name": "Iso-Lateral Row (Machine)",
+    "base_movement": "Iso-Lateral Row",
+    "muscle_group": "Back",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "kettlebell-clean",
+    "name": "Kettlebell Clean",
+    "base_movement": "Kettlebell Clean",
+    "muscle_group": "Full Body",
+    "equipment": "Kettlebell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "kettlebell-goblet-squat",
+    "name": "Kettlebell Goblet Squat",
+    "base_movement": "Kettlebell Goblet Squat",
+    "muscle_group": "Legs",
+    "equipment": "Kettlebell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "kettlebell-snatch",
+    "name": "Kettlebell Snatch",
+    "base_movement": "Kettlebell Snatch",
+    "muscle_group": "Full Body",
+    "equipment": "Kettlebell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "lat-pulldown-cable",
+    "name": "Lat Pulldown (Cable)",
+    "base_movement": "Lat Pulldown",
+    "muscle_group": "Back",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "lat-pulldown-machine",
+    "name": "Lat Pulldown (Machine)",
+    "base_movement": "Lat Pulldown",
+    "muscle_group": "Back",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "lat-pulldown-close-grip-cable",
+    "name": "Lat Pulldown - Close Grip (Cable)",
+    "base_movement": "Lat Pulldown - Close Grip",
+    "muscle_group": "Back",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "lateral-raise-cable",
+    "name": "Lateral Raise (Cable)",
+    "base_movement": "Lateral Raise",
+    "muscle_group": "Shoulders",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "leg-extension-machine",
+    "name": "Leg Extension (Machine)",
+    "base_movement": "Leg Extension",
+    "muscle_group": "Legs",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "leg-press-machine",
+    "name": "Leg Press (Machine)",
+    "base_movement": "Leg Press",
+    "muscle_group": "Legs",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "leg-press-horizontal-machine",
+    "name": "Leg Press Horizontal (Machine)",
+    "base_movement": "Leg Press Horizontal",
+    "muscle_group": "Legs",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "leg-raise-parallel-bars",
+    "name": "Leg Raise Parallel Bars",
+    "base_movement": "Leg Raise Parallel Bars",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "lunge-barbell",
+    "name": "Lunge (Barbell)",
+    "base_movement": "Lunge",
+    "muscle_group": "Legs",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "overhead-press-barbell",
+    "name": "Overhead Press (Barbell)",
+    "base_movement": "Overhead Press",
+    "muscle_group": "Shoulders",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "overhead-press-dumbbell",
+    "name": "Overhead Press (Dumbbell)",
+    "base_movement": "Overhead Press",
+    "muscle_group": "Shoulders",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "overhead-squat",
+    "name": "Overhead Squat",
+    "base_movement": "Overhead Squat",
+    "muscle_group": "Legs",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "plank",
+    "name": "Plank",
+    "base_movement": "Plank",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "duration",
+    "is_custom": false
+  },
+  {
+    "id": "power-snatch",
+    "name": "Power Snatch",
+    "base_movement": "Power Snatch",
+    "muscle_group": "Full Body",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "preacher-curl-machine",
+    "name": "Preacher Curl (Machine)",
+    "base_movement": "Preacher Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "pull-up",
+    "name": "Pull Up",
+    "base_movement": "Pull Up",
+    "muscle_group": "Back",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "pull-up-assisted",
+    "name": "Pull Up (Assisted)",
+    "base_movement": "Pull Up",
+    "muscle_group": "Back",
+    "equipment": "Assisted",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "push-press",
+    "name": "Push Press",
+    "base_movement": "Push Press",
+    "muscle_group": "Shoulders",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "push-up-weighted",
+    "name": "Push Up (Weighted)",
+    "base_movement": "Push Up",
+    "muscle_group": "Chest",
+    "equipment": "Weighted",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "rear-delt-reverse-fly-cable",
+    "name": "Rear Delt Reverse Fly (Cable)",
+    "base_movement": "Rear Delt Reverse Fly",
+    "muscle_group": "Shoulders",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "rear-delt-reverse-fly-machine",
+    "name": "Rear Delt Reverse Fly (Machine)",
+    "base_movement": "Rear Delt Reverse Fly",
+    "muscle_group": "Shoulders",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "reverse-crunch",
+    "name": "Reverse Crunch",
+    "base_movement": "Reverse Crunch",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "romanian-deadlift-barbell",
+    "name": "Romanian Deadlift (Barbell)",
+    "base_movement": "Romanian Deadlift",
+    "muscle_group": "Hamstrings",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "romanian-deadlift-dumbbell",
+    "name": "Romanian Deadlift (Dumbbell)",
+    "base_movement": "Romanian Deadlift",
+    "muscle_group": "Hamstrings",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "rope-cable-curl",
+    "name": "Rope Cable Curl",
+    "base_movement": "Rope Cable Curl",
+    "muscle_group": "Biceps",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "seated-cable-row-bar-wide-grip",
+    "name": "Seated Cable Row - Bar Wide Grip",
+    "base_movement": "Seated Cable Row - Bar Wide Grip",
+    "muscle_group": "Back",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "seated-cable-row-v-grip-cable",
+    "name": "Seated Cable Row - V Grip (Cable)",
+    "base_movement": "Seated Cable Row - V Grip",
+    "muscle_group": "Back",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "seated-row-machine",
+    "name": "Seated Row (Machine)",
+    "base_movement": "Seated Row",
+    "muscle_group": "Back",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "shoulder-press-dumbbell",
+    "name": "Shoulder Press (Dumbbell)",
+    "base_movement": "Shoulder Press",
+    "muscle_group": "Shoulders",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "side-bend-cable",
+    "name": "Side Bend (Cable)",
+    "base_movement": "Side Bend",
+    "muscle_group": "Core",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "side-bend-dumbbell",
+    "name": "Side Bend (Dumbbell)",
+    "base_movement": "Side Bend",
+    "muscle_group": "Core",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "side-plank",
+    "name": "Side Plank",
+    "base_movement": "Side Plank",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "duration",
+    "is_custom": false
+  },
+  {
+    "id": "single-leg-romanian-deadlift-dumbbell",
+    "name": "Single Leg Romanian Deadlift (Dumbbell)",
+    "base_movement": "Single Leg Romanian Deadlift",
+    "muscle_group": "Hamstrings",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "sit-up",
+    "name": "Sit Up",
+    "base_movement": "Sit Up",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "smith-machine-split-squat",
+    "name": "Smith Machine Split Squat",
+    "base_movement": "Smith Machine Split Squat",
+    "muscle_group": "Legs",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "split-squat-dumbbell",
+    "name": "Split Squat (Dumbbell)",
+    "base_movement": "Split Squat",
+    "muscle_group": "Legs",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "squat-barbell",
+    "name": "Squat (Barbell)",
+    "base_movement": "Squat",
+    "muscle_group": "Legs",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "straight-arm-lat-pulldown-cable",
+    "name": "Straight Arm Lat Pulldown (Cable)",
+    "base_movement": "Straight Arm Lat Pulldown",
+    "muscle_group": "Back",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "sumo-deadlift",
+    "name": "Sumo Deadlift",
+    "base_movement": "Sumo Deadlift",
+    "muscle_group": "Legs",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "t-bar-row",
+    "name": "T Bar Row",
+    "base_movement": "T Bar Row",
+    "muscle_group": "Back",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "trx-rotation",
+    "name": "TRX Rotation",
+    "base_movement": "TRX Rotation",
+    "muscle_group": "Core",
+    "equipment": "TRX",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "tricep-pushdown-v-grip",
+    "name": "Tricep Pushdown V Grip",
+    "base_movement": "Tricep Pushdown V Grip",
+    "muscle_group": "Triceps",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-dip-assisted",
+    "name": "Triceps Dip (Assisted)",
+    "base_movement": "Triceps Dip",
+    "muscle_group": "Triceps",
+    "equipment": "Assisted",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-extension-barbell",
+    "name": "Triceps Extension (Barbell)",
+    "base_movement": "Triceps Extension",
+    "muscle_group": "Triceps",
+    "equipment": "Barbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-extension-cable",
+    "name": "Triceps Extension (Cable)",
+    "base_movement": "Triceps Extension",
+    "muscle_group": "Triceps",
+    "equipment": "Cable",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-extension-dumbbell",
+    "name": "Triceps Extension (Dumbbell)",
+    "base_movement": "Triceps Extension",
+    "muscle_group": "Triceps",
+    "equipment": "Dumbbell",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-extension-machine",
+    "name": "Triceps Extension (Machine)",
+    "base_movement": "Triceps Extension",
+    "muscle_group": "Triceps",
+    "equipment": "Machine",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-pushdown",
+    "name": "Triceps Pushdown",
+    "base_movement": "Triceps Pushdown",
+    "muscle_group": "Triceps",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "triceps-rope-pushdown",
+    "name": "Triceps Rope Pushdown",
+    "base_movement": "Triceps Rope Pushdown",
+    "muscle_group": "Triceps",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "weighted-crunch",
+    "name": "Weighted Crunch",
+    "base_movement": "Weighted Crunch",
+    "muscle_group": "Core",
+    "equipment": "Bodyweight",
+    "tracking_type": "weight_reps",
+    "is_custom": false
+  }
+]

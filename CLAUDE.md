@@ -19,6 +19,33 @@ This document is the complete spec. Build as much of this as possible in one pas
 
 ---
 
+## Environment setup (already provisioned — use directly, do not ask)
+
+The Firebase project (`gym-app`) and Vercel project already exist. Firebase Authentication (Google provider) and Firestore (production mode) are enabled. Do the following as one of your first actions, without pausing to ask:
+
+1. Create `.env.local` in the project root (and ensure it's in `.gitignore`) with the Firebase web config below
+2. Use these as `VITE_FIREBASE_*` env vars (adjust prefix if using a framework other than Vite) and initialise the Firebase SDK from them — never hardcode these values directly in source files
+
+```
+VITE_FIREBASE_API_KEY=AIzaSyAU2CYm2OWQbKJ0J0ltPYLxSlpXQH2PCdk
+VITE_FIREBASE_AUTH_DOMAIN=gym-app-2f214.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=gym-app-2f214
+VITE_FIREBASE_STORAGE_BUCKET=gym-app-2f214.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=675430649020
+VITE_FIREBASE_APP_ID=1:675430649020:web:c7feb90c34e6f2a6f694b9
+```
+
+### Vercel deployment
+
+The project is already created in Vercel and linked for deploys. For this to work end-to-end:
+
+- Add the same six `VITE_FIREBASE_*` variables above to the Vercel project under **Settings → Environment Variables** (apply to Production, Preview, and Development) — this must be done once in the Vercel dashboard itself; it cannot be done from within the repo/code
+- If a `vercel.json` is needed for SPA routing (e.g. rewriting all routes to `index.html` for client-side routing) or PWA-specific headers (e.g. correct `Content-Type`/caching for the service worker and manifest), create it as part of the build
+- Confirm the build command and output directory match what Vercel expects for the chosen framework (Vite defaults: build command `vite build`, output directory `dist`) — set these explicitly in `vercel.json` or note them in `DECISIONS.md` if Vercel's auto-detection might not pick them up correctly
+- Firebase Authentication requires authorized domains for Google Sign-In to work. Once the Vercel deployment URL is known, note in `DECISIONS.md` that the user needs to add that domain (and any custom domain) to **Firebase Console → Authentication → Settings → Authorized domains** — this is a manual step in the Firebase console that cannot be done from code
+
+---
+
 ## UI style
 
 Dense, data-rich layout — closer to Hevy's information density than a minimal/spacious design. Users should see a lot of relevant data at a glance (e.g. last time they did this exercise, current set list, PRs) without excessive scrolling or empty whitespace. Dark theme throughout. Prioritise fast data entry during a workout — this is used mid-set, often one-handed, so big tap targets for number entry and minimal taps to log a set.

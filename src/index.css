@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-bg text-gray-100 antialiased;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    overscroll-behavior-y: none;
+    /* respect device notches */
+    padding: env(safe-area-inset-top) 0 0 0;
+  }
+  /* number inputs: hide spinners, big tap targets handled per-field */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-border rounded-xl;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold px-4 py-2.5 transition-colors active:scale-[0.98] select-none;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-white hover:bg-accent2;
+  }
+  .btn-ghost {
+    @apply btn bg-surface2 text-gray-200 hover:bg-border;
+  }
+  .btn-danger {
+    @apply btn bg-danger/20 text-danger hover:bg-danger/30;
+  }
+  .input {
+    @apply bg-surface2 border border-border rounded-lg px-3 py-2.5 text-gray-100 focus:outline-none focus:border-accent placeholder:text-gray-500;
+  }
+  .chip {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-surface2 border border-border text-gray-300;
+  }
+}
+
+/* hide scrollbars on horizontal chip rows */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

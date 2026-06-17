@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Membership is read from the household doc itself.
+    function isMember(hid) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/households/$(hid))
+        && request.auth.uid in get(/databases/$(database)/documents/households/$(hid)).data.members;
+    }
+
+    // ---- User profiles ----
+    // A user may only read/write their own profile doc.
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid;
+      allow update, delete: if signedIn() && request.auth.uid == uid;
+
+      // ---- Private training logs (sessions, sets embedded) ----
+      match /sessions/{sessionId} {
+        allow read, write: if signedIn() && request.auth.uid == uid;
+      }
+    }
+
+    // ---- Households (shared workspace) ----
+    match /households/{hid} {
+      // Anyone signed in can read to support joining via invite code lookup,
+      // and members can read their household.
+      allow read: if signedIn();
+
+      // Create: caller must include themselves as the sole member.
+      allow create: if signedIn()
+        && request.resource.data.members.hasOnly([request.auth.uid])
+        && request.resource.data.createdBy == request.auth.uid;
+
+      // Update: must already be a member, OR be joining (adding only yourself).
+      allow update: if signedIn() && (
+        isMember(hid) ||
+        (
+          request.resource.data.members.hasAll(resource.data.members) &&
+          request.resource.data.members.removeAll(resource.data.members) == [request.auth.uid]
+        )
+      );
+
+      allow delete: if false; // households are not deletable from the client
+
+      // ---- Shared exercise library ----
+      match /exercises/{exId} {
+        allow read, write: if isMember(hid);
+      }
+
+      // ---- Shared routine templates ----
+      match /routines/{routineId} {
+        allow read, write: if isMember(hid);
+      }
+    }
+  }
+}

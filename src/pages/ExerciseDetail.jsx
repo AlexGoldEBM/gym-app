@@ -105,16 +105,18 @@ export default function ExerciseDetail() {
 
       {/* manage */}
       <div className="mt-6 flex gap-2">
-        {ex.is_custom ? (
-          <button className="btn-ghost flex-1" onClick={() => setEdit(true)}>Edit</button>
-        ) : (
-          <span className="text-xs text-gray-600 flex-1 self-center">Seeded exercise — core fields locked</span>
-        )}
+        <button className="btn-ghost flex-1" onClick={() => setEdit(true)}>Edit</button>
         <button className="btn-ghost" onClick={() => archiveExercise(id, !ex.archived)}>
           {ex.archived ? 'Unarchive' : 'Archive'}
         </button>
         {ex.is_custom && <button className="btn-danger" onClick={() => setConfirmDel(true)}>Delete</button>}
       </div>
+      {!ex.is_custom && (
+        <p className="text-[11px] text-gray-600 mt-2">
+          Seeded exercise — you can rename/recategorise it, but it can't be deleted (only archived) since past
+          workouts reference it.
+        </p>
+      )}
 
       <ExerciseFormModal open={edit} onClose={() => setEdit(false)} editing={ex} />
       <Confirm open={confirmDel} title="Delete exercise?" body="Removes this custom exercise from the household library."

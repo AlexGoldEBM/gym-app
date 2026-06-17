@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import {
-  onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut,
+  onAuthStateChanged, signInWithPopup, signInWithRedirect, signOut, getRedirectResult,
 } from 'firebase/auth'
 import {
   doc, getDoc, setDoc, onSnapshot, collection, query, where,
@@ -13,6 +13,21 @@ import seedExercises from '../data/exerciseSeed.json'
 const AuthCtx = createContext(null)
 export const useAuth = () => useContext(AuthCtx)
 
+// Map raw Firebase auth errors to something actionable for the user.
+function friendlyAuthError(e) {
+  switch (e?.code) {
+    case 'auth/network-request-failed':
+      return 'Network blocked. If using Brave/strict privacy mode, lower Shields for this site (or use Chrome/Safari) and try again.'
+    case 'auth/unauthorized-domain':
+      return 'This domain is not authorized in Firebase Authentication settings.'
+    case 'auth/popup-closed-by-user':
+    case 'auth/cancelled-popup-request':
+      return null
+    default:
+      return e?.message || 'Sign-in failed. Please try again.'
+  }
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(undefined) // undefined = loading, null = signed out
   const [profile, setProfile] = useState(undefined) // user doc (has householdId)
@@ -21,6 +36,11 @@ export function AuthProvider({ children }) {
 
   // auth state
   useEffect(() => {
+    // surface any error from a completed redirect sign-in
+    getRedirectResult(auth).catch((e) => {
+      const msg = friendlyAuthError(e)
+      if (msg) setAuthError(msg)
+    })
     return onAuthStateChanged(auth, (u) => {
       setUser(u || null)
       if (!u) { setProfile(null); setHousehold(null) }
@@ -58,14 +78,25 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async () => {
     setAuthError(null)
+    // Popups are unreliable on mobile (and in installed PWAs) — go straight to
+    // redirect there. Desktop keeps the smoother popup flow.
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+      || window.matchMedia('(display-mode: standalone)').matches
+    if (isMobile) {
+      try { await signInWithRedirect(auth, googleProvider) }
+      catch (e) { setAuthError(friendlyAuthError(e)) }
+      return
+    }
     try {
       await signInWithPopup(auth, googleProvider)
     } catch (e) {
-      // popups blocked (common on iOS standalone PWA) -> redirect fallback
-      if (e?.code === 'auth/popup-blocked' || e?.code === 'auth/operation-not-supported-in-this-environment') {
-        await signInWithRedirect(auth, googleProvider)
+      // popup blocked / unsupported -> redirect fallback. Also retry on a network
+      // failure (some browsers fail the popup's cross-origin call but allow redirect).
+      if (['auth/popup-blocked', 'auth/operation-not-supported-in-this-environment', 'auth/network-request-failed'].includes(e?.code)) {
+        try { await signInWithRedirect(auth, googleProvider) }
+        catch (e2) { setAuthError(friendlyAuthError(e2)) }
       } else if (e?.code !== 'auth/cancelled-popup-request' && e?.code !== 'auth/popup-closed-by-user') {
-        setAuthError(e.message)
+        setAuthError(friendlyAuthError(e))
       }
     }
   }, [])

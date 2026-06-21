@@ -69,7 +69,7 @@ export default function ExerciseDetail() {
           <div className="flex gap-1.5 mb-2">
             {METRICS.map(m => (
               <button key={m.key} onClick={() => setMetric(m.key)}
-                className={`chip ${metric === m.key ? 'bg-accent text-white border-accent' : ''}`}>{m.label}</button>
+                className={`chip ${metric === m.key ? 'bg-accent text-bg border-accent' : ''}`}>{m.label}</button>
             ))}
           </div>
           <MiniLine data={series} dataKey={activeMetric.key} color={activeMetric.color} unit={activeMetric.unit} />

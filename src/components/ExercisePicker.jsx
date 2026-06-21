@@ -34,10 +34,10 @@ export function ExercisePicker({ open, onClose, onPick, multi = true, title = 'A
             value={q} onChange={e => setQ(e.target.value)} />
           <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-2 -mx-1 px-1">
             <button onClick={() => setMg(null)}
-              className={`chip shrink-0 ${!mg ? 'bg-accent text-white border-accent' : ''}`}>All</button>
+              className={`chip shrink-0 ${!mg ? 'bg-accent text-bg border-accent' : ''}`}>All</button>
             {MUSCLE_GROUPS.map(g => (
               <button key={g} onClick={() => setMg(mg === g ? null : g)}
-                className={`chip shrink-0 ${mg === g ? 'bg-accent text-white border-accent' : ''}`}>{g}</button>
+                className={`chip shrink-0 ${mg === g ? 'bg-accent text-bg border-accent' : ''}`}>{g}</button>
             ))}
           </div>
 
@@ -63,7 +63,7 @@ export function ExercisePicker({ open, onClose, onPick, multi = true, title = 'A
                   </div>
                   {multi && (
                     <span className={`h-5 w-5 rounded-full border-2 shrink-0 grid place-items-center text-xs ${
-                      sel ? 'bg-accent border-accent text-white' : 'border-gray-600'}`}>{sel ? '✓' : ''}</span>
+                      sel ? 'bg-accent border-accent text-bg' : 'border-gray-600'}`}>{sel ? '✓' : ''}</span>
                   )}
                 </button>
               )

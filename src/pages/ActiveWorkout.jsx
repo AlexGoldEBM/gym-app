@@ -217,7 +217,7 @@ function DurationField({ value, placeholder, locked, onChange }) {
         disabled={locked}
         onClick={() => setRunning(r => !r)}
         className={`h-10 w-9 shrink-0 grid place-items-center rounded-lg text-base ${
-          running ? 'bg-warn/20 text-warn' : 'bg-surface2 text-accent'} disabled:opacity-40`}
+          running ? 'bg-good/25 text-good' : 'bg-surface2 text-accent'} disabled:opacity-40`}
         aria-label={running ? 'Pause timer' : 'Start timer'}>
         {running ? '⏸' : '▶'}
       </button>

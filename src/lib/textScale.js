@@ -2,7 +2,7 @@
 // font-size scales all text and spacing proportionally. Stored in localStorage
 // (device preference, not synced to Firestore).
 const LS_KEY = 'gym.textScale.v1'
-const BASE_PX = 16
+const BASE_PX = 18
 
 export const SCALES = [
   { id: 'sm', label: 'Small', factor: 0.9 },

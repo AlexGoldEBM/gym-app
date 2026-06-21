@@ -73,7 +73,7 @@ export default function Progress() {
             <div className="flex gap-1.5 mb-2 overflow-x-auto no-scrollbar">
               {METRICS.map(m => (
                 <button key={m.key} onClick={() => setMetric(m.key)}
-                  className={`chip shrink-0 ${metric === m.key ? 'bg-accent text-bg border-accent' : ''}`}>{m.label}</button>
+                  className={`chip shrink-0 ${metric === m.key ? 'bg-good text-bg border-good' : ''}`}>{m.label}</button>
               ))}
             </div>
           )}
@@ -86,7 +86,7 @@ export default function Progress() {
           <div className="flex gap-1.5 justify-center">
             {RANGES.map(r => (
               <button key={r.label} onClick={() => setRange(r.days)}
-                className={`chip ${range === r.days ? 'bg-accent text-bg border-accent' : ''}`}>{r.label}</button>
+                className={`chip ${range === r.days ? 'bg-royal text-white border-royal' : ''}`}>{r.label}</button>
             ))}
           </div>
         </>

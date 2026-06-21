@@ -8,8 +8,10 @@ export default {
         surface: '#1a1a1a',
         surface2: '#262626',
         border: '#3a3a3a',
-        accent: '#facc15',   // vibrant yellow (pair with dark text on fills)
+        accent: '#facc15',   // vibrant yellow — text links, highlights, play (dark text on fills)
         accent2: '#eab308',
+        royal: '#2563eb',    // royal blue — primary buttons, nav, selection
+        royal2: '#1d4ed8',
         good: '#2ee65f',     // vibrant green
         warn: '#fbbf24',
         danger: '#ff4d4d',   // vibrant red

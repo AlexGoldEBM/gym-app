@@ -36,7 +36,7 @@
     @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold px-4 py-2.5 transition-colors active:scale-[0.98] select-none;
   }
   .btn-primary {
-    @apply btn bg-accent text-bg hover:bg-accent2;
+    @apply btn bg-royal text-white hover:bg-royal2;
   }
   .btn-ghost {
     @apply btn bg-surface2 text-gray-200 hover:bg-border;

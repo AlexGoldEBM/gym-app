@@ -17,7 +17,7 @@ export function BottomNav() {
           <NavLink key={it.to} to={it.to} end={it.end}
             className={({ isActive }) =>
               `flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium ${
-                isActive ? 'text-accent' : 'text-gray-500'}`}>
+                isActive ? 'text-royal' : 'text-gray-500'}`}>
             <span className="text-lg leading-none">{it.icon}</span>
             {it.label}
           </NavLink>

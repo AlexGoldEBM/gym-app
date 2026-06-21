@@ -13,7 +13,7 @@ export function ActiveWorkoutPill() {
     <button onClick={() => nav('/workout')}
       className="fixed inset-x-0 bottom-[58px] z-30 px-2"
       style={{ marginBottom: 'env(safe-area-inset-bottom)' }}>
-      <div className="max-w-lg mx-auto bg-accent text-bg rounded-lg px-4 py-2 flex items-center gap-3 shadow-lg">
+      <div className="max-w-lg mx-auto bg-royal text-white rounded-lg px-4 py-2 flex items-center gap-3 shadow-lg">
         <span className="h-2 w-2 rounded-full bg-white animate-pulse" />
         <span className="font-semibold truncate">{active.title}</span>
         <span className="text-white/80 text-sm font-mono ml-auto">{fmtClock(elapsed)}</span>

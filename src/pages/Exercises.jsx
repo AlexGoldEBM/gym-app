@@ -31,10 +31,10 @@ export default function Exercises() {
 
       <input className="input w-full mb-2" placeholder="Search exercises…" value={q} onChange={e => setQ(e.target.value)} />
       <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-2">
-        <button onClick={() => setMg(null)} className={`chip shrink-0 ${!mg ? 'bg-accent text-bg border-accent' : ''}`}>All</button>
+        <button onClick={() => setMg(null)} className={`chip shrink-0 ${!mg ? 'bg-royal text-white border-royal' : ''}`}>All</button>
         {MUSCLE_GROUPS.map(g => (
           <button key={g} onClick={() => setMg(mg === g ? null : g)}
-            className={`chip shrink-0 ${mg === g ? 'bg-accent text-bg border-accent' : ''}`}>{g}</button>
+            className={`chip shrink-0 ${mg === g ? 'bg-royal text-white border-royal' : ''}`}>{g}</button>
         ))}
       </div>
 

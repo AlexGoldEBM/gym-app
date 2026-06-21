@@ -5,8 +5,9 @@ import { useData } from '../store/DataContext'
 import { ExercisePicker } from '../components/ExercisePicker'
 import { Confirm, Modal, NumberField } from '../components/ui'
 import { RestTimerBar } from '../components/RestTimerBar'
-import { lastPerformance, exercisePRs } from '../lib/stats'
-import { fmtClock, fmtWeight, fmtDuration, SET_TYPES, uid } from '../lib/util'
+import { lastPerformance, exercisePRs, repMaxTable, recentSessions, livePRSetKeys } from '../lib/stats'
+import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid } from '../lib/util'
+import { burst } from '../lib/confetti'
 
 export default function ActiveWorkout() {
   const w = useWorkout()
@@ -116,9 +117,24 @@ export default function ActiveWorkout() {
 
 function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirst, isLast }) {
   const [menu, setMenu] = useState(false)
+  const [insights, setInsights] = useState(false)
   const isDuration = exercise?.tracking_type === 'duration'
   const last = useMemo(() => lastPerformance(sessions, ex.exercise_id), [sessions, ex.exercise_id])
   const prs = useMemo(() => exercisePRs(sessions, ex.exercise_id, exercise?.tracking_type), [sessions, ex.exercise_id, exercise])
+
+  // Rep-PRs among the live sets (heavier than ever logged at that rep count).
+  const prKeys = useMemo(
+    () => isDuration ? new Set() : livePRSetKeys(ex.sets, prs.perRep),
+    [ex.sets, prs.perRep, isDuration])
+
+  // Fire confetti when a set first becomes a PR (transition), not on every render.
+  const seenPR = useRef(new Set())
+  useEffect(() => {
+    let fresh = false
+    for (const k of prKeys) if (!seenPR.current.has(k)) { fresh = true; break }
+    seenPR.current = new Set(prKeys)
+    if (fresh) burst()
+  }, [prKeys])
 
   const ssColor = ex.superset_id ? 'border-l-4 border-l-warn' : ''
 
@@ -127,7 +143,11 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
       <div className="flex items-start gap-2 px-3 pt-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-bold truncate">{exercise?.name || 'Unknown exercise'}</h3>
+            <button className="font-bold truncate text-left flex items-center gap-1 min-w-0"
+              onClick={() => setInsights(true)} disabled={!exercise}>
+              <span className="truncate">{exercise?.name || 'Unknown exercise'}</span>
+              {exercise && <span className="text-accent text-xs shrink-0">›</span>}
+            </button>
             {ex.superset_id && <span className="chip bg-warn/20 text-warn border-warn/30">superset</span>}
           </div>
           <div className="text-xs text-gray-500 mt-0.5">
@@ -177,12 +197,94 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
       <div className="px-3 pb-3 pt-1 space-y-1.5">
         {ex.sets.map((s, si) => (
           <SetRow key={s.key} ex={ex} set={s} index={si} w={w} isDuration={isDuration}
-            prev={last?.sets?.[si]} />
+            prev={last?.sets?.[si]} isPR={prKeys.has(s.key)} />
         ))}
         <button className="w-full text-sm text-accent font-medium py-2 mt-1 bg-surface2 rounded-lg"
           onClick={() => w.addSet(ex.key)}>+ Add set</button>
       </div>
+
+      {insights && (
+        <ExerciseInsights ex={exercise} sessions={sessions} isDuration={isDuration}
+          onClose={() => setInsights(false)} />
+      )}
     </div>
+  )
+}
+
+function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
+  const recent = useMemo(() => recentSessions(sessions, ex.id, 4), [sessions, ex.id])
+  const repTable = useMemo(() => isDuration ? [] : repMaxTable(sessions, ex.id, 12), [sessions, ex.id, isDuration])
+  const prs = useMemo(() => exercisePRs(sessions, ex.id, ex.tracking_type), [sessions, ex])
+  const bestRM = Math.max(0, ...repTable.map(r => r.est1RM))
+
+  return (
+    <Modal open onClose={onClose} title={ex.name}>
+      <div className="space-y-4 max-h-[70vh] overflow-y-auto -mx-1 px-1">
+        {/* recent sessions */}
+        <div>
+          <div className="text-[11px] uppercase tracking-wide text-gray-500 font-medium mb-1.5">Recent workouts</div>
+          {recent.length === 0 ? (
+            <p className="text-sm text-gray-500">No history yet.</p>
+          ) : (
+            <div className="space-y-1.5">
+              {recent.map(r => (
+                <div key={r.id} className="flex gap-2 text-sm">
+                  <span className="text-gray-500 shrink-0 w-16 text-xs pt-0.5">{fmtDate(r.time)}</span>
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5">
+                    {r.sets.map((s, i) => (
+                      <span key={i} className={s.set_type === 'warmup' ? 'text-gray-600' : ''}>
+                        {isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* rep-max targets */}
+        {!isDuration && (
+          <div>
+            <div className="text-[11px] uppercase tracking-wide text-gray-500 font-medium mb-1.5">
+              Top weight by reps — beatable targets
+            </div>
+            <div className="grid grid-cols-[2rem_1fr_1fr] gap-x-2 text-[10px] uppercase tracking-wide text-gray-600 mb-1">
+              <span>Reps</span><span className="text-right">Best</span><span className="text-right">Est 1RM</span>
+            </div>
+            <div className="space-y-0.5">
+              {repTable.map(r => {
+                const isTopRM = r.est1RM > 0 && r.est1RM === bestRM
+                return (
+                  <div key={r.reps}
+                    className={`grid grid-cols-[2rem_1fr_1fr] gap-x-2 items-center py-1 rounded ${
+                      isTopRM ? 'bg-good/10' : ''} ${r.weight === 0 ? 'opacity-40' : ''}`}>
+                    <span className="font-bold text-gray-400">{r.reps}</span>
+                    <span className="text-right font-semibold">
+                      {r.weight ? `${fmtWeight(r.weight)} kg` : '—'}
+                    </span>
+                    <span className="text-right text-gray-400">
+                      {r.est1RM ? `${Math.round(r.est1RM)} kg` : '—'}
+                      {isTopRM && <span className="text-good ml-1">★</span>}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-[11px] text-gray-600 mt-2">
+              ★ = best estimated 1RM. Empty rep counts are open targets — hit any weight there to set a PR.
+            </p>
+          </div>
+        )}
+
+        {isDuration && (
+          <div className="text-sm">
+            <span className="text-gray-500">Best hold: </span>
+            <span className="font-semibold">{prs.bestDuration ? fmtDuration(prs.bestDuration) : '—'}</span>
+          </div>
+        )}
+      </div>
+    </Modal>
   )
 }
 
@@ -237,7 +339,7 @@ function RestPicker({ ex, w }) {
   )
 }
 
-function SetRow({ ex, set, index, w, isDuration, prev }) {
+function SetRow({ ex, set, index, w, isDuration, prev, isPR }) {
   const [showType, setShowType] = useState(false)
   const typeInfo = SET_TYPES.find(t => t.id === set.set_type)
   const label = typeInfo?.short || (index + 1)
@@ -245,8 +347,10 @@ function SetRow({ ex, set, index, w, isDuration, prev }) {
     : set.set_type === 'drop_set' ? 'text-accent' : 'text-gray-400'
 
   return (
-    <div className={`grid grid-cols-[2.2rem_1fr_1fr_3rem] gap-2 items-center rounded-lg ${set.done ? 'bg-good/10' : ''}`}>
-      <button className={`h-10 font-bold ${labelColor}`} onClick={() => setShowType(true)}>{label}</button>
+    <div className={`grid grid-cols-[2.2rem_1fr_1fr_3rem] gap-2 items-center rounded-lg ${set.done ? 'bg-good/10' : ''} ${set.done && isPR ? 'ring-1 ring-amber-400/50' : ''}`}>
+      <button className={`h-10 font-bold relative ${labelColor}`} onClick={() => setShowType(true)}>
+        {set.done && isPR ? <span title="Best ever at these reps">🏆</span> : label}
+      </button>
 
       {isDuration ? (
         <DurationField

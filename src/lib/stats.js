@@ -41,6 +41,54 @@ export function exercisePRs(sessions, exerciseId, trackingType = 'weight_reps') 
   return { bestWeight, best1RM, bestVolume, bestReps, perRep, count: sets.length }
 }
 
+// Rep-max table: for each rep count 1..maxReps, the heaviest weight ever lifted at exactly
+// that rep count (working sets only), plus its est 1RM and when. Used as "beatable targets".
+export function repMaxTable(sessions, exerciseId, maxReps = 12) {
+  const sets = workingSets(setsForExercise(sessions, exerciseId))
+  const best = {} // reps -> { weight, time }
+  for (const s of sets) {
+    const w = s.weight_kg || 0, r = s.reps || 0
+    if (r < 1 || r > maxReps || w <= 0) continue
+    if (w > (best[r]?.weight || 0)) best[r] = { weight: w, time: s._time }
+  }
+  const rows = []
+  for (let r = 1; r <= maxReps; r++) {
+    const b = best[r]
+    rows.push({ reps: r, weight: b?.weight || 0, est1RM: b ? epley1RM(b.weight, r) : 0, time: b?.time || null })
+  }
+  return rows
+}
+
+// Last N sessions that included this exercise, newest first, each with its sets.
+export function recentSessions(sessions, exerciseId, n = 3) {
+  const map = new Map()
+  for (const s of setsForExercise(sessions, exerciseId)) {
+    let e = map.get(s._session)
+    if (!e) { e = { id: s._session, time: s._time, sets: [] }; map.set(s._session, e) }
+    e.sets.push(s)
+  }
+  return [...map.values()]
+    .sort((a, b) => b.time - a.time)
+    .slice(0, n)
+    .map(e => ({ ...e, sets: e.sets.sort((a, b) => a.set_index - b.set_index) }))
+}
+
+// Given live workout sets for one exercise + the historical best weight per rep count,
+// return a Set of set keys that are a new rep-PR (heavier than ever logged at that rep count).
+// Ties within the live workout resolve to the earliest set so only one cup shows per rep count.
+export function livePRSetKeys(liveSets, histPerRep = {}) {
+  const bestByReps = {} // reps -> { key, weight }
+  for (const s of liveSets) {
+    if (!s.done || s.set_type === 'warmup') continue
+    const w = s.weight_kg || 0, r = s.reps || 0
+    if (r < 1 || w <= 0) continue
+    if (w <= (histPerRep[r] || 0)) continue // not above history
+    const cur = bestByReps[r]
+    if (!cur || w > cur.weight) bestByReps[r] = { key: s.key, weight: w }
+  }
+  return new Set(Object.values(bestByReps).map(v => v.key))
+}
+
 // Most recent session that included this exercise -> its sets (for "last time" display).
 export function lastPerformance(sessions, exerciseId, excludeSessionId = null) {
   let best = null

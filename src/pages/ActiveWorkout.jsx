@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useWorkout } from '../store/WorkoutContext'
 import { useData } from '../store/DataContext'
@@ -186,6 +186,45 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
   )
 }
 
+function DurationField({ value, placeholder, locked, onChange }) {
+  const [running, setRunning] = useState(false)
+  const valueRef = useRef(value)
+  valueRef.current = value
+
+  // Stop ticking if the set gets locked in.
+  useEffect(() => { if (locked) setRunning(false) }, [locked])
+
+  useEffect(() => {
+    if (!running) return
+    const id = setInterval(() => {
+      onChange(Math.round((valueRef.current ?? 0) + 1))
+    }, 1000)
+    return () => clearInterval(id)
+  }, [running]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <div className="flex items-center gap-1">
+      <input
+        type="number"
+        inputMode="numeric"
+        value={value ?? ''}
+        placeholder={placeholder}
+        readOnly={running || locked}
+        onChange={e => { const v = e.target.value; onChange(v === '' ? null : parseInt(v)) }}
+        className="input w-full text-center text-lg font-semibold py-3" />
+      <button
+        type="button"
+        disabled={locked}
+        onClick={() => setRunning(r => !r)}
+        className={`h-10 w-9 shrink-0 grid place-items-center rounded-lg text-base ${
+          running ? 'bg-warn/20 text-warn' : 'bg-surface2 text-accent'} disabled:opacity-40`}
+        aria-label={running ? 'Pause timer' : 'Start timer'}>
+        {running ? '⏸' : '▶'}
+      </button>
+    </div>
+  )
+}
+
 function RestPicker({ ex, w }) {
   return (
     <div className="flex items-center gap-2 py-1.5">
@@ -209,9 +248,16 @@ function SetRow({ ex, set, index, w, isDuration, prev }) {
     <div className={`grid grid-cols-[2.2rem_1fr_1fr_3rem] gap-2 items-center rounded-lg ${set.done ? 'bg-good/10' : ''}`}>
       <button className={`h-10 font-bold ${labelColor}`} onClick={() => setShowType(true)}>{label}</button>
 
-      <NumberField value={isDuration ? set.duration_seconds : set.weight_kg}
-        placeholder={isDuration ? (prev?.duration_seconds ?? '0') : (prev?.weight_kg ?? '0')}
-        onChange={v => w.updateSet(ex.key, set.key, isDuration ? { duration_seconds: v } : { weight_kg: v })} />
+      {isDuration ? (
+        <DurationField
+          value={set.duration_seconds}
+          placeholder={prev?.duration_seconds ?? '0'}
+          locked={set.done}
+          onChange={v => w.updateSet(ex.key, set.key, { duration_seconds: v })} />
+      ) : (
+        <NumberField value={set.weight_kg} placeholder={prev?.weight_kg ?? '0'}
+          onChange={v => w.updateSet(ex.key, set.key, { weight_kg: v })} />
+      )}
 
       {isDuration ? <div /> : (
         <NumberField value={set.reps} placeholder={prev?.reps ?? '0'}

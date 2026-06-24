@@ -213,7 +213,7 @@ export function WorkoutProvider({ children }) {
       return w
     })
     if (restSec) startRest(restSec)
-  }, [update, active, startRest])
+  }, [update, active])
 
   // ---------- Rest timer controls ----------
   const startRest = useCallback((seconds) => {

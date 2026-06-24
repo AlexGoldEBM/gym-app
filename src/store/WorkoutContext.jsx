@@ -196,18 +196,24 @@ export function WorkoutProvider({ children }) {
 
   // Mark a set done -> auto-start its rest timer.
   const completeSet = useCallback((exKey, setKey) => {
-    let restSec = null
+    // Compute restSec synchronously from current state before queuing the update,
+    // because the setActive updater runs async (batched) so restSec would always
+    // be null by the time startRest is called if set inside the updater.
+    const ex = active?.exercises.find(e => e.key === exKey)
+    const st = ex?.sets.find(s => s.key === setKey)
+    const willBeDone = st ? !st.done : false
+    const restSec = (willBeDone && st?.set_type !== 'warmup')
+      ? (ex?.restSec ?? active?.restDefaultSec)
+      : null
+
     update(w => {
-      const ex = w.exercises.find(e => e.key === exKey)
-      const st = ex?.sets.find(s => s.key === setKey)
-      if (st) {
-        st.done = !st.done
-        if (st.done && st.set_type !== 'warmup') restSec = ex.restSec ?? w.restDefaultSec
-      }
+      const ex2 = w.exercises.find(e => e.key === exKey)
+      const st2 = ex2?.sets.find(s => s.key === setKey)
+      if (st2) st2.done = !st2.done
       return w
     })
     if (restSec) startRest(restSec)
-  }, [update])
+  }, [update, active, startRest])
 
   // ---------- Rest timer controls ----------
   const startRest = useCallback((seconds) => {

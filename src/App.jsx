@@ -52,7 +52,7 @@ export default function App() {
         </Routes>
       </div>
 
-      {!onWorkoutScreen && <RestTimerBar />}
+      <RestTimerBar />
       {active && !onWorkoutScreen && <ActiveWorkoutPill />}
       <BottomNav />
     </div>

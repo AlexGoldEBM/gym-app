@@ -4,7 +4,6 @@ import { useWorkout } from '../store/WorkoutContext'
 import { useData } from '../store/DataContext'
 import { ExercisePicker } from '../components/ExercisePicker'
 import { Confirm, Modal, NumberField } from '../components/ui'
-import { RestTimerBar } from '../components/RestTimerBar'
 import { lastPerformance, exercisePRs, repMaxTable, recentSessions, livePRSetKeys } from '../lib/stats'
 import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid } from '../lib/util'
 import { burst } from '../lib/confetti'
@@ -368,9 +367,16 @@ function SetRow({ ex, set, index, w, isDuration, prev, isPR }) {
           onChange={v => w.updateSet(ex.key, set.key, { reps: v })} />
       )}
 
-      <button onClick={() => w.completeSet(ex.key, set.key)}
-        className={`h-10 w-full rounded-lg grid place-items-center text-lg font-bold ${
-          set.done ? 'bg-good text-white' : 'bg-surface2 text-gray-500'}`}>✓</button>
+      {(() => {
+        const canComplete = set.done || (isDuration
+          ? set.duration_seconds != null
+          : set.weight_kg != null && set.reps != null)
+        return (
+          <button onClick={() => canComplete && w.completeSet(ex.key, set.key)}
+            className={`h-10 w-full rounded-lg grid place-items-center text-lg font-bold transition-opacity ${
+              set.done ? 'bg-good text-white' : canComplete ? 'bg-surface2 text-gray-500' : 'bg-surface2 text-gray-700 opacity-40'}`}>✓</button>
+        )
+      })()}
 
       <Modal open={showType} onClose={() => setShowType(false)} title="Set type">
         <div className="space-y-2">

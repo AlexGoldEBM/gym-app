@@ -5,6 +5,7 @@ import { useData } from '../store/DataContext'
 import { ExercisePicker } from '../components/ExercisePicker'
 import { Confirm, Modal, NumberField } from '../components/ui'
 import { lastPerformance, exercisePRs, repMaxTable, recentSessions, livePRSetKeys } from '../lib/stats'
+import { seedGhostSets } from '../lib/ghostSets'
 import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid } from '../lib/util'
 import { burst } from '../lib/confetti'
 
@@ -34,12 +35,17 @@ export default function ActiveWorkout() {
   function onPick(ids) {
     const list = Array.isArray(ids) ? ids : [ids]
     if (supersetFor) {
-      list.forEach(id => w.addExerciseAsSuperset(supersetFor, id))
+      list.forEach(id => w.addExerciseAsSuperset(supersetFor, id, seedFor(id)))
       setSupersetFor(null)
     } else {
-      list.forEach(id => w.addExerciseToWorkout(id))
+      list.forEach(id => w.addExerciseToWorkout(id, null, seedFor(id)))
     }
     setPicker(false)
+  }
+
+  function seedFor(exercise_id) {
+    const ex = exerciseMap[exercise_id]
+    return seedGhostSets(sessions, exercise_id, { isDuration: ex?.tracking_type === 'duration' })
   }
 
   function finish() {
@@ -117,6 +123,8 @@ export default function ActiveWorkout() {
 function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirst, isLast }) {
   const [menu, setMenu] = useState(false)
   const [insights, setInsights] = useState(false)
+  const [confirmRemove, setConfirmRemove] = useState(false)
+  const [openSwipeKey, setOpenSwipeKey] = useState(null)
   const isDuration = exercise?.tracking_type === 'duration'
   const last = useMemo(() => lastPerformance(sessions, ex.exercise_id), [sessions, ex.exercise_id])
   const prs = useMemo(() => exercisePRs(sessions, ex.exercise_id, exercise?.tracking_type), [sessions, ex.exercise_id, exercise])
@@ -165,9 +173,15 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
           <RestPicker ex={ex} w={w} />
           {!isFirst && <button className="block w-full text-left py-1.5" onClick={() => { w.reorderExercise(index, index - 1); setMenu(false) }}>↑ Move up</button>}
           {!isLast && <button className="block w-full text-left py-1.5" onClick={() => { w.reorderExercise(index, index + 1); setMenu(false) }}>↓ Move down</button>}
-          <button className="block w-full text-left py-1.5 text-danger" onClick={() => { w.removeExerciseFromWorkout(ex.key); setMenu(false) }}>🗑 Remove exercise</button>
+          <button className="block w-full text-left py-1.5 text-danger" onClick={() => { setConfirmRemove(true); setMenu(false) }}>🗑 Remove exercise</button>
         </div>
       )}
+
+      <Confirm open={confirmRemove} onCancel={() => setConfirmRemove(false)}
+        onConfirm={() => { w.removeExerciseFromWorkout(ex.key); setConfirmRemove(false) }}
+        title="Remove exercise?"
+        body={`${exercise?.name || 'This exercise'} and its logged sets will be removed from this workout.`}
+        confirmLabel="Remove" danger />
 
       {/* notes */}
       <input className="bg-transparent text-sm text-gray-300 px-3 py-1.5 w-full placeholder:text-gray-600 focus:outline-none"
@@ -196,7 +210,10 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
       <div className="px-3 pb-3 pt-1 space-y-1.5">
         {ex.sets.map((s, si) => (
           <SetRow key={s.key} ex={ex} set={s} index={si} w={w} isDuration={isDuration}
-            prev={last?.sets?.[si]} isPR={prKeys.has(s.key)} />
+            isPR={prKeys.has(s.key)}
+            swipeOpen={openSwipeKey === s.key}
+            onSwipeOpen={() => setOpenSwipeKey(s.key)}
+            onSwipeClose={() => setOpenSwipeKey(k => k === s.key ? null : k)} />
         ))}
         <button className="w-full text-sm text-accent font-medium py-2 mt-1 bg-surface2 rounded-lg"
           onClick={() => w.addSet(ex.key)}>+ Add set</button>
@@ -338,15 +355,75 @@ function RestPicker({ ex, w }) {
   )
 }
 
-function SetRow({ ex, set, index, w, isDuration, prev, isPR }) {
+const SWIPE_OPEN = 88
+
+function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, onSwipeClose }) {
   const [showType, setShowType] = useState(false)
+  const dragRef = useRef({ active: false, startX: 0, startY: 0, dx: 0 })
+  const [dragX, setDragX] = useState(0)
   const typeInfo = SET_TYPES.find(t => t.id === set.set_type)
   const label = typeInfo?.short || (index + 1)
   const labelColor = set.set_type === 'warmup' ? 'text-warn' : set.set_type === 'failure' ? 'text-danger'
     : set.set_type === 'drop_set' ? 'text-accent' : 'text-gray-400'
 
+  // Snap to whatever the shared open/closed state says (e.g. another row's swipe closes this one).
+  useEffect(() => { setDragX(swipeOpen ? -SWIPE_OPEN : 0) }, [swipeOpen])
+
+  function onPointerDown(e) {
+    dragRef.current = { active: false, startX: e.clientX, startY: e.clientY, dx: 0 }
+  }
+  function onPointerMove(e) {
+    const d = dragRef.current
+    const dx = e.clientX - d.startX
+    const dy = e.clientY - d.startY
+    if (!d.active) {
+      if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy)) return
+      d.active = true
+      e.currentTarget.setPointerCapture?.(e.pointerId)
+    }
+    const base = swipeOpen ? -SWIPE_OPEN : 0
+    d.dx = dx
+    setDragX(Math.min(0, Math.max(-SWIPE_OPEN, base + dx)))
+  }
+  function onPointerUp() {
+    const d = dragRef.current
+    if (d.active) {
+      if (dragX < -SWIPE_OPEN / 2) onSwipeOpen()
+      else { setDragX(0); onSwipeClose() }
+    }
+    dragRef.current = { active: false, startX: 0, startY: 0, dx: 0 }
+  }
+
+  // Fill any untouched field from the ghost, then commit — one tap = "same as last time".
+  function handleComplete() {
+    if (!set.done) {
+      const patch = {}
+      if (isDuration) {
+        if (set.duration_seconds == null && set.ghost?.duration_seconds != null) patch.duration_seconds = set.ghost.duration_seconds
+      } else {
+        if (set.weight_kg == null && set.ghost?.weight_kg != null) patch.weight_kg = set.ghost.weight_kg
+        if (set.reps == null && set.ghost?.reps != null) patch.reps = set.ghost.reps
+      }
+      if (Object.keys(patch).length) w.updateSet(ex.key, set.key, patch)
+    }
+    w.completeSet(ex.key, set.key)
+  }
+
+  const canComplete = set.done || (isDuration
+    ? (set.duration_seconds ?? set.ghost?.duration_seconds) != null
+    : (set.weight_kg ?? set.ghost?.weight_kg) != null && (set.reps ?? set.ghost?.reps) != null)
+
   return (
-    <div className={`grid grid-cols-[2.2rem_1fr_1fr_3rem] gap-2 items-center rounded-lg ${set.done ? 'bg-good/10' : ''} ${set.done && isPR ? 'ring-1 ring-amber-400/50' : ''}`}>
+    <div className="relative overflow-hidden rounded-lg" style={{ touchAction: 'pan-y' }}>
+      <button className="absolute inset-y-0 right-0 w-[88px] bg-danger text-white font-medium text-sm"
+        onClick={() => { w.removeSet(ex.key, set.key); onSwipeClose() }}>
+        Delete
+      </button>
+      <div
+        className={`relative grid grid-cols-[2.2rem_1fr_1fr_3rem] gap-2 items-center rounded-lg bg-bg ${set.done ? 'bg-good/10' : ''} ${set.done && isPR ? 'ring-1 ring-amber-400/50' : ''}`}
+        style={{ transform: `translateX(${dragX}px)`, transition: dragRef.current.active ? 'none' : 'transform 150ms ease-out', userSelect: dragRef.current.active ? 'none' : 'auto' }}
+        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
+      >
       <button className={`h-10 font-bold relative ${labelColor}`} onClick={() => setShowType(true)}>
         {set.done && isPR ? <span title="Best ever at these reps">🏆</span> : label}
       </button>
@@ -354,29 +431,23 @@ function SetRow({ ex, set, index, w, isDuration, prev, isPR }) {
       {isDuration ? (
         <DurationField
           value={set.duration_seconds}
-          placeholder={prev?.duration_seconds ?? '0'}
+          placeholder={set.ghost?.duration_seconds ?? '0'}
           locked={set.done}
           onChange={v => w.updateSet(ex.key, set.key, { duration_seconds: v })} />
       ) : (
-        <NumberField value={set.weight_kg} placeholder={prev?.weight_kg ?? '0'}
+        <NumberField value={set.weight_kg} placeholder={set.ghost?.weight_kg ?? '0'}
           onChange={v => w.updateSet(ex.key, set.key, { weight_kg: v })} />
       )}
 
       {isDuration ? <div /> : (
-        <NumberField value={set.reps} placeholder={prev?.reps ?? '0'}
+        <NumberField value={set.reps} placeholder={set.ghost?.reps ?? '0'}
           onChange={v => w.updateSet(ex.key, set.key, { reps: v })} />
       )}
 
-      {(() => {
-        const canComplete = set.done || (isDuration
-          ? set.duration_seconds != null
-          : set.weight_kg != null && set.reps != null)
-        return (
-          <button onClick={() => canComplete && w.completeSet(ex.key, set.key)}
-            className={`h-10 w-full rounded-lg grid place-items-center text-lg font-bold transition-opacity ${
-              set.done ? 'bg-good text-white' : canComplete ? 'bg-surface2 text-gray-500' : 'bg-surface2 text-gray-700 opacity-40'}`}>✓</button>
-        )
-      })()}
+      <button onClick={() => canComplete && handleComplete()}
+        className={`h-10 w-full rounded-lg grid place-items-center text-lg font-bold transition-opacity ${
+          set.done ? 'bg-good text-white' : canComplete ? 'bg-surface2 text-gray-500' : 'bg-surface2 text-gray-700 opacity-40'}`}>✓</button>
+      </div>
 
       <Modal open={showType} onClose={() => setShowType(false)} title="Set type">
         <div className="space-y-2">

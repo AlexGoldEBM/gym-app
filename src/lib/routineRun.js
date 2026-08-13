@@ -1,26 +1,16 @@
 import { uid } from './util'
-import { lastPerformance } from '../lib/stats'
+import { seedGhostSets } from './ghostSets'
 
-// Turn a routine into startWorkout() opts, pre-populating target sets and last-used weights.
+// Turn a routine into startWorkout() opts, pre-populating target sets and last-used weights
+// as ghost (grey, non-committing) hints — nothing is written as a real value until logged.
 export function startFromRoutine(routine, sessions, exerciseMap) {
   const exercises = (routine.exercises || []).map(re => {
     const ex = exerciseMap[re.exercise_id]
     const isDuration = ex?.tracking_type === 'duration'
-    const last = lastPerformance(sessions, re.exercise_id)
     const targetSets = Math.max(1, re.target_sets || 1)
-    const sets = []
-    for (let i = 0; i < targetSets; i++) {
-      const prev = last?.sets?.[i]
-      sets.push({
-        key: uid(),
-        set_type: 'normal',
-        weight_kg: re.target_weight ?? prev?.weight_kg ?? null,
-        reps: isDuration ? null : (prev?.reps ?? null),
-        duration_seconds: isDuration ? (prev?.duration_seconds ?? null) : null,
-        rpe: null,
-        done: false,
-      })
-    }
+    const sets = seedGhostSets(sessions, re.exercise_id, {
+      isDuration, targetSets, targetWeight: re.target_weight ?? null,
+    })
     return {
       key: uid(),
       exercise_id: re.exercise_id,

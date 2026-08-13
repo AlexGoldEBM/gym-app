@@ -110,7 +110,7 @@ export function WorkoutProvider({ children }) {
     setActive(prev => (prev ? fn(structuredClone(prev)) : prev))
   }, [])
 
-  const addExerciseToWorkout = useCallback((exercise_id, superset_id = null) => {
+  const addExerciseToWorkout = useCallback((exercise_id, superset_id = null, sets = null) => {
     update(w => {
       w.exercises.push({
         key: uid(),
@@ -119,7 +119,7 @@ export function WorkoutProvider({ children }) {
         notes: '',
         target_reps: null,
         restSec: w.restDefaultSec,
-        sets: [{ key: uid(), set_type: 'normal', weight_kg: null, reps: null, duration_seconds: null, rpe: null, done: false }],
+        sets: sets || [{ key: uid(), set_type: 'normal', weight_kg: null, reps: null, duration_seconds: null, rpe: null, done: false, ghost: null }],
       })
       return w
     })
@@ -130,7 +130,7 @@ export function WorkoutProvider({ children }) {
   }, [update])
 
   // Add a new exercise grouped into a superset with the anchor exercise.
-  const addExerciseAsSuperset = useCallback((anchorKey, exercise_id) => {
+  const addExerciseAsSuperset = useCallback((anchorKey, exercise_id, sets = null) => {
     update(w => {
       const anchor = w.exercises.find(e => e.key === anchorKey)
       if (!anchor) return w
@@ -146,7 +146,7 @@ export function WorkoutProvider({ children }) {
         notes: '',
         target_reps: null,
         restSec: w.restDefaultSec,
-        sets: [{ key: uid(), set_type: 'normal', weight_kg: null, reps: null, duration_seconds: null, rpe: null, done: false }],
+        sets: sets || [{ key: uid(), set_type: 'normal', weight_kg: null, reps: null, duration_seconds: null, rpe: null, done: false, ghost: null }],
       })
       return w
     })
@@ -157,12 +157,17 @@ export function WorkoutProvider({ children }) {
       const ex = w.exercises.find(e => e.key === exKey)
       if (ex) {
         const last = ex.sets[ex.sets.length - 1]
+        // Ghost-only reminder of the row above: prefer what was actually entered
+        // (fresher signal than a seeded ghost), else carry its own ghost forward.
+        const ghost = last
+          ? (last.weight_kg != null || last.reps != null || last.duration_seconds != null
+              ? { weight_kg: last.weight_kg, reps: last.reps, duration_seconds: last.duration_seconds }
+              : last.ghost ?? null)
+          : null
         ex.sets.push({
           key: uid(), set_type: 'normal',
-          weight_kg: last?.weight_kg ?? null,
-          reps: last?.reps ?? null,
-          duration_seconds: last?.duration_seconds ?? null,
-          rpe: null, done: false,
+          weight_kg: null, reps: null, duration_seconds: null,
+          rpe: null, done: false, ghost,
         })
       }
       return w

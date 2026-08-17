@@ -407,6 +407,7 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
       if (Object.keys(patch).length) w.updateSet(ex.key, set.key, patch)
     }
     w.completeSet(ex.key, set.key)
+    if (swipeOpen) onSwipeClose()
   }
 
   const canComplete = set.done || (isDuration

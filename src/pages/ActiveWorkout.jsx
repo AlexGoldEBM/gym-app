@@ -416,10 +416,12 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
 
   return (
     <div className="relative overflow-hidden rounded-lg" style={{ touchAction: 'pan-y' }}>
-      <button className="absolute inset-y-0 right-0 w-[88px] bg-danger text-white font-medium text-sm"
-        onClick={() => { w.removeSet(ex.key, set.key); onSwipeClose() }}>
-        Delete
-      </button>
+      {swipeOpen && (
+        <button className="absolute inset-y-0 right-0 w-[88px] bg-danger text-white font-medium text-sm"
+          onClick={() => { w.removeSet(ex.key, set.key); onSwipeClose() }}>
+          Delete
+        </button>
+      )}
       <div
         className={`relative grid grid-cols-[2.2rem_1fr_1fr_3rem] gap-2 items-center rounded-lg bg-bg ${set.done ? 'bg-good/10' : ''} ${set.done && isPR ? 'ring-1 ring-amber-400/50' : ''}`}
         style={{ transform: `translateX(${dragX}px)`, transition: dragRef.current.active ? 'none' : 'transform 150ms ease-out', userSelect: dragRef.current.active ? 'none' : 'auto' }}

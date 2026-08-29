@@ -229,7 +229,7 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
 
 function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
   const recent = useMemo(() => recentSessions(sessions, ex.id, 4), [sessions, ex.id])
-  const repTable = useMemo(() => isDuration ? [] : repMaxTable(sessions, ex.id, 12), [sessions, ex.id, isDuration])
+  const repTable = useMemo(() => isDuration ? [] : repMaxTable(sessions, ex.id, 12, isAssistedExercise(ex)), [sessions, ex.id, isDuration])
   const prs = useMemo(() => exercisePRs(sessions, ex.id, ex.tracking_type, isAssistedExercise(ex)), [sessions, ex])
   const bestRM = Math.max(0, ...repTable.map(r => r.est1RM))
 

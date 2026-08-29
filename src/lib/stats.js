@@ -44,13 +44,13 @@ export function exercisePRs(sessions, exerciseId, trackingType = 'weight_reps', 
 
 // Rep-max table: for each rep count 1..maxReps, the heaviest weight ever lifted at exactly
 // that rep count (working sets only), plus its est 1RM and when. Used as "beatable targets".
-export function repMaxTable(sessions, exerciseId, maxReps = 12) {
+export function repMaxTable(sessions, exerciseId, maxReps = 12, isAssisted = false) {
   const sets = workingSets(setsForExercise(sessions, exerciseId))
   const best = {} // reps -> { weight, time }
   for (const s of sets) {
     const w = s.weight_kg || 0, r = s.reps || 0
     if (r < 1 || r > maxReps || w <= 0) continue
-    if (w > (best[r]?.weight || 0)) best[r] = { weight: w, time: s._time }
+    if (best[r] == null || (isAssisted ? w < best[r].weight : w > best[r].weight)) best[r] = { weight: w, time: s._time }
   }
   const rows = []
   for (let r = 1; r <= maxReps; r++) {

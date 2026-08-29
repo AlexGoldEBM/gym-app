@@ -3,7 +3,7 @@ import { useData } from '../store/DataContext'
 import { MiniLine } from '../components/Chart'
 import { ExercisePicker } from '../components/ExercisePicker'
 import { exerciseSeries, exercisePRs, setsForExercise } from '../lib/stats'
-import { fmtWeight, fmtDuration } from '../lib/util'
+import { fmtWeight, fmtDuration, isAssistedExercise } from '../lib/util'
 
 const RANGES = [
   { label: '1M', days: 30 }, { label: '3M', days: 90 },
@@ -34,11 +34,11 @@ export default function Progress() {
   const ex = activeId ? exerciseMap[activeId] : null
   const isDuration = ex?.tracking_type === 'duration'
   const series = useMemo(() => {
-    let s = exerciseSeries(sessions, activeId, ex?.tracking_type)
+    let s = exerciseSeries(sessions, activeId, ex?.tracking_type, isAssistedExercise(ex))
     if (range) { const cut = Date.now() - range * 86400000; s = s.filter(p => p.time >= cut) }
     return s
   }, [sessions, activeId, ex, range])
-  const prs = useMemo(() => activeId ? exercisePRs(sessions, activeId, ex?.tracking_type) : null, [sessions, activeId, ex])
+  const prs = useMemo(() => activeId ? exercisePRs(sessions, activeId, ex?.tracking_type, isAssistedExercise(ex)) : null, [sessions, activeId, ex])
   const activeMetric = METRICS.find(m => m.key === metric)
 
   return (

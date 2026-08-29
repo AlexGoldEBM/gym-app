@@ -5,7 +5,7 @@ import { ExerciseFormModal } from '../components/ExerciseForm'
 import { Confirm } from '../components/ui'
 import { MiniLine } from '../components/Chart'
 import { exercisePRs, exerciseSeries, setsForExercise } from '../lib/stats'
-import { fmtWeight, fmtDuration, fmtDate, ms } from '../lib/util'
+import { fmtWeight, fmtDuration, fmtDate, ms, isAssistedExercise } from '../lib/util'
 
 const METRICS = [
   { key: 'est1RM', label: 'Est. 1RM', unit: 'kg', color: '#3b82f6' },
@@ -23,8 +23,8 @@ export default function ExerciseDetail() {
 
   const ex = exercises.find(e => e.id === id)
   const isDuration = ex?.tracking_type === 'duration'
-  const prs = useMemo(() => ex ? exercisePRs(sessions, id, ex.tracking_type) : null, [sessions, id, ex])
-  const series = useMemo(() => exerciseSeries(sessions, id, ex?.tracking_type), [sessions, id, ex])
+  const prs = useMemo(() => ex ? exercisePRs(sessions, id, ex.tracking_type, isAssistedExercise(ex)) : null, [sessions, id, ex])
+  const series = useMemo(() => exerciseSeries(sessions, id, ex?.tracking_type, isAssistedExercise(ex)), [sessions, id, ex])
   const history = useMemo(() => {
     // group sets by session, latest first
     const map = new Map()

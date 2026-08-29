@@ -7,13 +7,13 @@ import { fmtDateTime, fmtWeight, fmtDuration, ms, uid, SET_TYPES } from '../lib/
 
 export default function SessionDetail() {
   const { id } = useParams()
-  const { sessions, exerciseMap, deleteSession, saveRoutine, saveSession } = useData()
+  const { sessions, exercises, exerciseMap, deleteSession, saveRoutine, saveSession } = useData()
   const nav = useNavigate()
   const [confirmDel, setConfirmDel] = useState(false)
   const [draft, setDraft] = useState(null) // non-null while editing
 
   const session = sessions.find(s => s.id === id)
-  const prSets = useMemo(() => session ? newPRsInSession(sessions, session) : [], [sessions, session])
+  const prSets = useMemo(() => session ? newPRsInSession(sessions, session, exercises) : [], [sessions, session, exercises])
   const prKeys = new Set(prSets.map(s => s.id))
 
   if (!session) {

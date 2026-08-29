@@ -6,7 +6,7 @@ import { ExercisePicker } from '../components/ExercisePicker'
 import { Confirm, Modal, NumberField } from '../components/ui'
 import { lastPerformance, exercisePRs, repMaxTable, recentSessions, livePRSetKeys } from '../lib/stats'
 import { seedGhostSets } from '../lib/ghostSets'
-import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid } from '../lib/util'
+import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid, isAssistedExercise } from '../lib/util'
 import { burst } from '../lib/confetti'
 
 export default function ActiveWorkout() {
@@ -127,11 +127,11 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
   const [openSwipeKey, setOpenSwipeKey] = useState(null)
   const isDuration = exercise?.tracking_type === 'duration'
   const last = useMemo(() => lastPerformance(sessions, ex.exercise_id), [sessions, ex.exercise_id])
-  const prs = useMemo(() => exercisePRs(sessions, ex.exercise_id, exercise?.tracking_type), [sessions, ex.exercise_id, exercise])
+  const prs = useMemo(() => exercisePRs(sessions, ex.exercise_id, exercise?.tracking_type, isAssistedExercise(exercise)), [sessions, ex.exercise_id, exercise])
 
   // Rep-PRs among the live sets (heavier than ever logged at that rep count).
   const prKeys = useMemo(
-    () => isDuration ? new Set() : livePRSetKeys(ex.sets, prs.perRep),
+    () => isDuration ? new Set() : livePRSetKeys(ex.sets, prs.perRep, isAssistedExercise(exercise)),
     [ex.sets, prs.perRep, isDuration])
 
   // Fire confetti when a set first becomes a PR (transition), not on every render.
@@ -230,7 +230,7 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
 function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
   const recent = useMemo(() => recentSessions(sessions, ex.id, 4), [sessions, ex.id])
   const repTable = useMemo(() => isDuration ? [] : repMaxTable(sessions, ex.id, 12), [sessions, ex.id, isDuration])
-  const prs = useMemo(() => exercisePRs(sessions, ex.id, ex.tracking_type), [sessions, ex])
+  const prs = useMemo(() => exercisePRs(sessions, ex.id, ex.tracking_type, isAssistedExercise(ex)), [sessions, ex])
   const bestRM = Math.max(0, ...repTable.map(r => r.est1RM))
 
   return (

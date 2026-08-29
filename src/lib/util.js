@@ -83,6 +83,10 @@ export const EQUIPMENT = [
   'Kettlebell', 'Assisted', 'TRX', 'Weighted',
 ]
 
+export function isAssistedExercise(exercise) {
+  return exercise?.name?.toLowerCase().includes('(assisted)') || exercise?.equipment === 'Assisted'
+}
+
 export const SET_TYPES = [
   { id: 'normal', label: 'Normal', short: '' },
   { id: 'warmup', label: 'Warmup', short: 'W' },

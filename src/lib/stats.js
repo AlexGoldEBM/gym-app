@@ -1,6 +1,6 @@
 // Derived stats: PRs, per-exercise history, volume. All computed in-memory from the
 // sessions snapshot (sets are embedded in each session doc) — no extra reads.
-import { epley1RM, ms } from './util'
+import { epley1RM, ms, isAssistedExercise } from './util'
 
 // Flatten all sets of an exercise across sessions, each annotated with its session time.
 export function setsForExercise(sessions, exerciseId) {
@@ -19,7 +19,7 @@ function workingSets(sets) {
   return sets.filter(s => s.set_type !== 'warmup' && (s.weight_kg != null || s.duration_seconds != null))
 }
 
-export function exercisePRs(sessions, exerciseId, trackingType = 'weight_reps') {
+export function exercisePRs(sessions, exerciseId, trackingType = 'weight_reps', isAssisted = false) {
   const sets = workingSets(setsForExercise(sessions, exerciseId))
   if (trackingType === 'duration') {
     let bestDuration = 0
@@ -30,13 +30,14 @@ export function exercisePRs(sessions, exerciseId, trackingType = 'weight_reps') 
   const perRep = {} // reps -> heaviest weight at that rep count
   for (const s of sets) {
     const w = s.weight_kg || 0, r = s.reps || 0
-    if (w > bestWeight) bestWeight = w
+    const wBetter = isAssisted ? w < bestWeight : w > bestWeight
+    if (bestWeight === 0 || wBetter) bestWeight = w
     if (r > bestReps) bestReps = r
     const e = epley1RM(w, r)
-    if (e > best1RM) best1RM = e
+    if (best1RM === 0 || (isAssisted ? e < best1RM : e > best1RM)) best1RM = e
     const vol = w * r
-    if (vol > bestVolume) bestVolume = vol
-    if (r > 0 && w > (perRep[r] || 0)) perRep[r] = w
+    if (bestVolume === 0 || (isAssisted ? vol < bestVolume : vol > bestVolume)) bestVolume = vol
+    if (r > 0 && (perRep[r] == null || (isAssisted ? w < perRep[r] : w > perRep[r]))) perRep[r] = w
   }
   return { bestWeight, best1RM, bestVolume, bestReps, perRep, count: sets.length }
 }
@@ -76,15 +77,15 @@ export function recentSessions(sessions, exerciseId, n = 3) {
 // Given live workout sets for one exercise + the historical best weight per rep count,
 // return a Set of set keys that are a new rep-PR (heavier than ever logged at that rep count).
 // Ties within the live workout resolve to the earliest set so only one cup shows per rep count.
-export function livePRSetKeys(liveSets, histPerRep = {}) {
+export function livePRSetKeys(liveSets, histPerRep = {}, isAssisted = false) {
   const bestByReps = {} // reps -> { key, weight }
   for (const s of liveSets) {
     if (!s.done || s.set_type === 'warmup') continue
     const w = s.weight_kg || 0, r = s.reps || 0
     if (r < 1 || w <= 0) continue
-    if (w <= (histPerRep[r] || 0)) continue // not above history
+    if (isAssisted ? w >= (histPerRep[r] ?? Infinity) : w <= (histPerRep[r] || 0)) continue
     const cur = bestByReps[r]
-    if (!cur || w > cur.weight) bestByReps[r] = { key: s.key, weight: w }
+    if (!cur || (isAssisted ? w < cur.weight : w > cur.weight)) bestByReps[r] = { key: s.key, weight: w }
   }
   return new Set(Object.values(bestByReps).map(v => v.key))
 }
@@ -106,7 +107,7 @@ export function lastPerformance(sessions, exerciseId, excludeSessionId = null) {
 }
 
 // Per-session aggregates for charting one exercise over time.
-export function exerciseSeries(sessions, exerciseId, trackingType = 'weight_reps') {
+export function exerciseSeries(sessions, exerciseId, trackingType = 'weight_reps', isAssisted = false) {
   const bySession = new Map()
   for (const s of sessions) {
     const sets = (s.sets || []).filter(set => set.exercise_id === exerciseId && set.set_type !== 'warmup')
@@ -114,10 +115,10 @@ export function exerciseSeries(sessions, exerciseId, trackingType = 'weight_reps
     let topWeight = 0, volume = 0, best1RM = 0, bestDuration = 0
     for (const set of sets) {
       const w = set.weight_kg || 0, r = set.reps || 0
-      if (w > topWeight) topWeight = w
+      if (topWeight === 0 || (isAssisted ? w < topWeight : w > topWeight)) topWeight = w
       volume += w * r
       const e = epley1RM(w, r)
-      if (e > best1RM) best1RM = e
+      if (best1RM === 0 || (isAssisted ? e < best1RM : e > best1RM)) best1RM = e
       if ((set.duration_seconds || 0) > bestDuration) bestDuration = set.duration_seconds
     }
     bySession.set(s.id, {
@@ -148,14 +149,18 @@ export function sessionDurationMin(session) {
 }
 
 // Detect which sets in a session are PRs *at the time they were logged* — used to badge them.
-export function newPRsInSession(allSessions, session) {
+export function newPRsInSession(allSessions, session, exercises = []) {
   const prs = []
   for (const set of session.sets || []) {
     if (set.set_type === 'warmup' || !set.weight_kg || !set.reps) continue
+    const exercise = exercises.find(e => e.id === set.exercise_id)
+    const assisted = isAssistedExercise(exercise)
     // best 1RM from all OTHER sessions before this one
     const priorSessions = allSessions.filter(s => s.id !== session.id && ms(s.start_time) <= ms(session.start_time))
-    const prior = exercisePRs(priorSessions, set.exercise_id)
-    if (epley1RM(set.weight_kg, set.reps) > (prior.best1RM || 0)) prs.push(set)
+    const prior = exercisePRs(priorSessions, set.exercise_id, 'weight_reps', assisted)
+    const e = epley1RM(set.weight_kg, set.reps)
+    const isPR = assisted ? e < (prior.best1RM || Infinity) : e > (prior.best1RM || 0)
+    if (isPR) prs.push(set)
   }
   return prs
 }

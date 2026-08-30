@@ -39,6 +39,10 @@ done outside the codebase to get the app working end-to-end.
 - PRs tracked per exercise: heaviest weight, best estimated 1RM, best volume (w×reps), best reps, and per-rep best
   weight. Warm-up sets are excluded from PRs. Duration exercises track best hold time.
 - Sessions badge sets that were a 1RM PR *at the time they were logged*.
+- **Assisted exercises** (name contains "(Assisted)" or equipment is "Assisted"): lower weight = better, because
+  less assistance means more of your own bodyweight. All PR comparisons (`exercisePRs`, `livePRSetKeys`,
+  `newPRsInSession`, `exerciseSeries`, `repMaxTable`) are inverted so "PR 18kg" means you used *less* assistance
+  than before. Detected via `isAssistedExercise()` in `src/lib/util.js`.
 
 ## Rest timer
 - Auto-starts when a working set is marked done (warm-ups don't trigger it). Default is per-exercise, falling back

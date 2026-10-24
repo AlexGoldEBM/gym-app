@@ -82,6 +82,8 @@ No test suite or linter is configured — don't invent commands for them.
 
 ## Working rules
 
-- **Before any commit/push, `inbox/` must be empty** (`rm -f inbox/*.png`) — it's the local screenshot
-  drop, gitignored; keep the folder itself. The `ship` skill (`.claude/skills/ship/SKILL.md`) enforces this too.
+- **Never push while `inbox/` holds anything besides `README.md`** — any file type, not just `.png`.
+  Before commit/push, delete the contents (`find inbox -mindepth 1 ! -name README.md -delete`) or pause
+  and ask the user; never push and just mention leftovers afterwards. It's the local screenshot drop,
+  gitignored; keep the folder and its `README.md`. The `ship` skill (`.claude/skills/ship/SKILL.md`) enforces this too.
 - Committing = use the `ship` skill: stage all, conventional-commit message from the diff, always push after committing.

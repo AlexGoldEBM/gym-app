@@ -1,6 +1,6 @@
 // Derived stats: PRs, per-exercise history, volume. All computed in-memory from the
 // sessions snapshot (sets are embedded in each session doc) — no extra reads.
-import { epley1RM, ms, isAssistedExercise } from './util'
+import { epley1RM, ms, isAssistedExercise, isPairedDumbbell } from './util'
 
 // Flatten all sets of an exercise across sessions, each annotated with its session time.
 export function setsForExercise(sessions, exerciseId) {
@@ -133,11 +133,12 @@ export function exerciseSeries(sessions, exerciseId, trackingType = 'weight_reps
   return [...bySession.values()].sort((a, b) => a.time - b.time)
 }
 
-export function sessionVolume(session) {
+export function sessionVolume(session, exerciseMap = {}) {
   let v = 0
   for (const set of session.sets || []) {
     if (set.set_type === 'warmup') continue
-    v += (set.weight_kg || 0) * (set.reps || 0)
+    const mult = isPairedDumbbell(exerciseMap[set.exercise_id]) ? 2 : 1
+    v += (set.weight_kg || 0) * (set.reps || 0) * mult
   }
   return v
 }

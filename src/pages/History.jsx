@@ -6,7 +6,7 @@ import { sessionVolume, sessionDurationMin } from '../lib/stats'
 import { relativeDay, fmtDate, ms } from '../lib/util'
 
 export default function History() {
-  const { sessions } = useData()
+  const { sessions, exerciseMap } = useData()
 
   const stats = useMemo(() => {
     const monthAgo = Date.now() - 30 * 86400000
@@ -14,9 +14,9 @@ export default function History() {
     return {
       total: sessions.length,
       month: m.length,
-      monthVol: m.reduce((v, s) => v + sessionVolume(s), 0),
+      monthVol: m.reduce((v, s) => v + sessionVolume(s, exerciseMap), 0),
     }
-  }, [sessions])
+  }, [sessions, exerciseMap])
 
   // group by month label
   const groups = useMemo(() => {
@@ -59,7 +59,7 @@ export default function History() {
                       <div className="font-medium truncate">{s.title}</div>
                       <div className="text-xs text-gray-500">{exCount} exercises · {(s.sets || []).length} sets{dur != null ? ` · ${dur} min` : ''}</div>
                     </div>
-                    <div className="text-sm font-semibold shrink-0">{Math.round(sessionVolume(s)).toLocaleString()}<span className="text-gray-500 text-xs"> kg</span></div>
+                    <div className="text-sm font-semibold shrink-0">{Math.round(sessionVolume(s, exerciseMap)).toLocaleString()}<span className="text-gray-500 text-xs"> kg</span></div>
                   </Link>
                 )
               })}

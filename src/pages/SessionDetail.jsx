@@ -228,7 +228,7 @@ export default function SessionDetail() {
 
       <p className="text-sm text-gray-500 mb-1">{fmtDateTime(ms(session.start_time))}</p>
       <div className="flex gap-4 text-sm mb-4">
-        <span><b>{Math.round(sessionVolume(session)).toLocaleString()}</b> <span className="text-gray-500">kg volume</span></span>
+        <span><b>{Math.round(sessionVolume(session, exerciseMap)).toLocaleString()}</b> <span className="text-gray-500">kg volume</span></span>
         {dur != null && <span><b>{dur}</b> <span className="text-gray-500">min</span></span>}
         <span><b>{(session.sets || []).length}</b> <span className="text-gray-500">sets</span></span>
       </div>

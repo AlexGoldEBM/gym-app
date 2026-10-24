@@ -15,7 +15,7 @@ export default function Home() {
 
   const weekAgo = Date.now() - 7 * 86400000
   const weekSessions = sessions.filter(s => ms(s.start_time) >= weekAgo)
-  const weekVol = weekSessions.reduce((v, s) => v + sessionVolume(s), 0)
+  const weekVol = weekSessions.reduce((v, s) => v + sessionVolume(s, exerciseMap), 0)
 
   function startEmpty() {
     if (active) { nav('/workout'); return }
@@ -88,7 +88,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="text-right shrink-0">
-                <div className="text-sm font-semibold">{Math.round(sessionVolume(s)).toLocaleString()}<span className="text-gray-500 text-xs"> kg</span></div>
+                <div className="text-sm font-semibold">{Math.round(sessionVolume(s, exerciseMap)).toLocaleString()}<span className="text-gray-500 text-xs"> kg</span></div>
                 {sessionDurationMin(s) != null && <div className="text-xs text-gray-500">{sessionDurationMin(s)} min</div>}
               </div>
             </Link>

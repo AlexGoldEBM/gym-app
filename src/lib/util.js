@@ -87,6 +87,14 @@ export function isAssistedExercise(exercise) {
   return exercise?.name?.toLowerCase().includes('(assisted)') || exercise?.equipment === 'Assisted'
 }
 
+// Dumbbell lifts are logged per dumbbell, so volume counts the weight twice: either one in each
+// hand, or one limb at a time with the reps done on both sides. Bulgarian split squats are
+// always logged this way too. Matches on name as well since Hevy imports came in as Bodyweight.
+export function isPairedDumbbell(exercise) {
+  if (!exercise) return false
+  return exercise.equipment === 'Dumbbell' || /dumbbell|bulgarian/i.test(exercise.name || '')
+}
+
 export const SET_TYPES = [
   { id: 'normal', label: 'Normal', short: '' },
   { id: 'warmup', label: 'Warmup', short: 'W' },

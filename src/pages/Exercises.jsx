@@ -54,7 +54,7 @@ export default function Exercises() {
             <div className="flex-1 min-w-0">
               <div className="font-medium truncate">{e.name}</div>
               <div className="text-xs text-gray-500">
-                {e.muscle_group} · {e.equipment}{e.tracking_type === 'duration' && ' · timed'}
+                {e.muscle_group} · {e.equipment}{e.tracking_type === 'duration' && ' · timed'}{e.tracking_type === 'cardio' && ' · cardio'}
                 {e.is_custom && <span className="text-accent ml-1">custom</span>}
               </div>
             </div>

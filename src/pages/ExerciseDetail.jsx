@@ -5,7 +5,8 @@ import { useAuth } from '../store/AuthContext'
 import { ExerciseFormModal } from '../components/ExerciseForm'
 import { MiniLine } from '../components/Chart'
 import { exercisePRs, exerciseSeries, setsForExercise } from '../lib/stats'
-import { fmtWeight, fmtDuration, fmtDate, ms, isAssistedExercise, isExerciseOwner } from '../lib/util'
+import { fmtWeight, fmtDuration, fmtDate, ms, isAssistedExercise, isExerciseOwner, trackingOf } from '../lib/util'
+import { fmtCardioSet, cardioPRCells, cardioMetrics } from '../lib/cardio'
 
 const METRICS = [
   { key: 'est1RM', label: 'Est. 1RM', unit: 'kg', color: '#3b82f6' },
@@ -22,9 +23,11 @@ export default function ExerciseDetail() {
   const [metric, setMetric] = useState('est1RM')
 
   const ex = exercises.find(e => e.id === id)
-  const isDuration = ex?.tracking_type === 'duration'
-  const prs = useMemo(() => ex ? exercisePRs(sessions, id, ex.tracking_type, isAssistedExercise(ex)) : null, [sessions, id, ex])
-  const series = useMemo(() => exerciseSeries(sessions, id, ex?.tracking_type, isAssistedExercise(ex)), [sessions, id, ex])
+  const tracking = trackingOf(ex)
+  const isDuration = tracking === 'duration'
+  const isCardio = tracking === 'cardio'
+  const prs = useMemo(() => ex ? exercisePRs(sessions, id, tracking, isAssistedExercise(ex)) : null, [sessions, id, ex, tracking])
+  const series = useMemo(() => exerciseSeries(sessions, id, tracking, isAssistedExercise(ex)), [sessions, id, ex, tracking])
   const history = useMemo(() => {
     // group sets by session, latest first
     const map = new Map()
@@ -40,7 +43,8 @@ export default function ExerciseDetail() {
     return <div className="px-4 pt-16 text-center text-gray-400">Exercise not found.
       <button className="btn-primary block mx-auto mt-4" onClick={() => nav('/exercises')}>Back</button></div>
   }
-  const activeMetric = METRICS.find(m => m.key === metric)
+  const metrics = isCardio ? cardioMetrics(ex) : METRICS
+  const activeMetric = metrics.find(m => m.key === metric) || metrics[0]
 
   return (
     <div className="px-4 pt-3 pb-20">
@@ -48,11 +52,12 @@ export default function ExerciseDetail() {
         <button onClick={() => nav(-1)} className="text-gray-400 px-1 text-xl">‹</button>
         <h1 className="text-xl font-bold flex-1">{ex.name}</h1>
       </div>
-      <p className="text-sm text-gray-500 mb-4 pl-7">{ex.muscle_group}{ex.secondary_muscles?.length > 0 && ` (+ ${ex.secondary_muscles.join(', ')})`} · {ex.equipment}{isDuration && ' · timed'}</p>
+      <p className="text-sm text-gray-500 mb-4 pl-7">{ex.muscle_group}{ex.secondary_muscles?.length > 0 && ` (+ ${ex.secondary_muscles.join(', ')})`} · {ex.equipment}{isDuration && ' · timed'}{isCardio && ' · cardio'}</p>
 
       {/* PRs */}
       <div className="grid grid-cols-3 gap-2 mb-5">
-        {isDuration ? (
+        {isCardio ? cardioPRCells(prs, ex).map(c => <PR key={c.label} label={c.label} value={c.value} />)
+        : isDuration ? (
           <PR label="Best hold" value={prs.bestDuration ? fmtDuration(prs.bestDuration) : '—'} />
         ) : (
           <>
@@ -67,9 +72,9 @@ export default function ExerciseDetail() {
       {!isDuration && (
         <div className="card p-3 mb-5">
           <div className="flex gap-1.5 mb-2">
-            {METRICS.map(m => (
+            {metrics.map(m => (
               <button key={m.key} onClick={() => setMetric(m.key)}
-                className={`chip ${metric === m.key ? 'bg-good text-bg border-good' : ''}`}>{m.label}</button>
+                className={`chip ${activeMetric.key === m.key ? 'bg-good text-bg border-good' : ''}`}>{m.label}</button>
             ))}
           </div>
           <MiniLine data={series} dataKey={activeMetric.key} color={activeMetric.color} unit={activeMetric.unit} />
@@ -94,7 +99,8 @@ export default function ExerciseDetail() {
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
                 {h.sets.sort((a, b) => a.set_index - b.set_index).map((s, j) => (
                   <span key={j} className={s.set_type === 'warmup' ? 'text-gray-500' : ''}>
-                    {isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
+                    {isCardio ? fmtCardioSet(s, ex)
+                      : isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
                   </span>
                 ))}
               </div>

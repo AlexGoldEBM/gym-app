@@ -1,4 +1,4 @@
-import { uid } from './util'
+import { uid, trackingOf } from './util'
 import { seedGhostSets } from './ghostSets'
 
 // Turn a routine into startWorkout() opts, pre-populating target sets and last-used weights
@@ -6,10 +6,9 @@ import { seedGhostSets } from './ghostSets'
 export function startFromRoutine(routine, sessions, exerciseMap) {
   const exercises = (routine.exercises || []).map(re => {
     const ex = exerciseMap[re.exercise_id]
-    const isDuration = ex?.tracking_type === 'duration'
     const targetSets = Math.max(1, re.target_sets || 1)
     const sets = seedGhostSets(sessions, re.exercise_id, {
-      isDuration, targetSets, targetWeight: re.target_weight ?? null,
+      tracking: trackingOf(ex), targetSets, targetWeight: re.target_weight ?? null,
     })
     return {
       key: uid(),

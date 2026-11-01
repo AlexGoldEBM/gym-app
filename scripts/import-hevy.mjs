@@ -143,6 +143,7 @@ async function main() {
       weight_kg: isDuration ? null : num(r[col.weight_kg]),
       reps: isDuration ? null : (num(r[col.reps]) != null ? Math.round(num(r[col.reps])) : null),
       duration_seconds: num(r[col.duration_seconds]),
+      distance_km: num(r[col.distance_km]),
       rpe: num(r[col.rpe]),
       notes: r[col.exercise_notes] || '',
       superset_id: r[col.superset_id] ? `hevy-${r[col.superset_id]}` : null,

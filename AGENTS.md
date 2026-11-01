@@ -26,9 +26,11 @@ library browse/search + free custom exercises + rename/recategorise seeded ones,
 expandable details and edit mode, offline support (Firestore persistence + active workout mirrored to
 localStorage), household create/join via invite code, one-time Hevy CSV import, workout share images
 (muscle-split radar / body map / exercise list, drawn on canvas; opens after Finish and from the
-share icon on a session; "Save picture" downloads the PNG, or uses the share sheet on iOS).
+share icon on a session; "Save picture" downloads the PNG, or uses the share sheet on iOS), cardio logging
+(`tracking_type: 'cardio'` + `cardio_machine` treadmill/bike/rower/cross_trainer; time + distance plus
+per-machine extras — incline, speed, level, calories, avg HR, watts on bike; distance/time/pace charts and PRs).
 
-Not built (deliberately): per-muscle-group volume charts, distance/cardio UI (schema tolerates it),
+Not built (deliberately): per-muscle-group volume charts, GPS/outdoor cardio,
 plate calculator, bodyweight tracking, anything beyond the two-person household. No paywall concepts, ever.
 
 ## Code map
@@ -42,7 +44,10 @@ plate calculator, bodyweight tracking, anything beyond the two-person household.
   `muscleSplit.js` (muscle_group → 6 radar areas / body-map regions; Full Body is spread evenly;
   the old "Legs" group was split into Quads/Hamstrings/Glutes/Calves; exercises also carry optional
   `secondary_muscles` [groups] counted at half a set — DataContext auto-migrates older libraries),
-  `shareCards.js` (canvas drawing for the share images)
+  `shareCards.js` (canvas drawing for the share images), `cardio.js` (per-machine fields + formatting —
+  edit `CARDIO_MACHINES` to change a machine's inputs)
+- `src/components/CardioFields.jsx` — cardio inputs (time typed in minutes, rower distance in metres; stored as
+  `duration_seconds` / `distance_km`)
 - `firestore.rules` — server-side enforcement of the shared/private split
 
 ### Firestore layout
@@ -80,6 +85,10 @@ No test suite or linter is configured — don't invent commands for them.
 - **Exercises can't be deleted from the client** (rules `allow delete: if false`; history references them —
   archive instead). Any member can recategorise; only the creator can rename or archive (`isExerciseOwner` in
   `util.js` mirrors the rule). Seeded exercises are `created_by: <householdId>` = owned by the household creator.
+- **Set values go through `SET_VALUE_KEYS` / `pickSetValues` in `util.js`** — anything that copies or saves a
+  set (finish, history edit, ghost hints) must use it, or new fields get silently dropped.
+- New seed exercises reach existing households via a `getDocsFromServer` check in DataContext (never the live
+  snapshot — a partial cache snapshot could clobber real docs).
 - Reordering uses up/down buttons, not touch drag-and-drop (reliability one-handed beat DnD).
 
 ## Ops notes (manual steps, can't be done from code)

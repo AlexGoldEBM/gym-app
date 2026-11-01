@@ -1,96 +1,100 @@
-exercise_name,base_movement,muscle_group,equipment,tracking_type,secondary_muscles
-Back Extension (Machine),Back Extension,Lower Back,Machine,weight_reps,Glutes;Hamstrings
-Back Extension (Weighted Hyperextension),Back Extension,Lower Back,Weighted,weight_reps,Glutes;Hamstrings
-Bench Press (Barbell),Bench Press,Chest,Barbell,weight_reps,Triceps;Shoulders
-Bench Press (Dumbbell),Bench Press,Chest,Dumbbell,weight_reps,Triceps;Shoulders
-Bent Over Row (Barbell),Bent Over Row,Back,Barbell,weight_reps,Biceps
-Bicep Curl (Barbell),Bicep Curl,Biceps,Barbell,weight_reps,
-Bicep Curl (Cable),Bicep Curl,Biceps,Cable,weight_reps,
-Bicep Curl (Dumbbell),Bicep Curl,Biceps,Dumbbell,weight_reps,
-Bicep Curl (Machine),Bicep Curl,Biceps,Machine,weight_reps,
-Bird Dog,Bird Dog,Core,Bodyweight,weight_reps,
-Box Squat (Barbell),Box Squat,Quads,Barbell,weight_reps,Glutes
-Bulgarian Split Squat,Bulgarian Split Squat,Quads,Bodyweight,weight_reps,Glutes
-Butterfly (Pec Deck),Butterfly,Chest,Pec Deck,weight_reps,
-Cable Crunch,Cable Crunch,Core,Bodyweight,weight_reps,
-Cable Fly Crossovers,Cable Fly Crossovers,Chest,Bodyweight,weight_reps,
-Cable Pull Through,Cable Pull Through,Glutes,Bodyweight,weight_reps,Hamstrings
-Cable Twist (Down to up),Cable Twist,Core,Cable,weight_reps,
-Cable Twist (Up to down),Cable Twist,Core,Cable,weight_reps,
-Chest Fly (Machine),Chest Fly,Chest,Machine,weight_reps,
-Chest Press (Machine),Chest Press,Chest,Machine,weight_reps,Triceps;Shoulders
-Chin Up,Chin Up,Back,Bodyweight,weight_reps,Biceps
-Chin Up (Assisted),Chin Up,Back,Assisted,weight_reps,Biceps
-Clean and Jerk,Clean and Jerk,Full Body,Bodyweight,weight_reps,
-Clean and Press,Clean and Press,Full Body,Bodyweight,weight_reps,
-Concentration Curl,Concentration Curl,Biceps,Bodyweight,weight_reps,
-Crunch,Crunch,Core,Bodyweight,weight_reps,
-Crunch (Machine),Crunch,Core,Machine,weight_reps,
-Deadlift (Barbell),Deadlift,Back,Barbell,weight_reps,Glutes;Hamstrings
-Deadlift (Trap Bar),Deadlift,Back,Trap Bar,weight_reps,Glutes;Hamstrings
-Decline Crunch,Decline Crunch,Core,Bodyweight,weight_reps,
-Dumbbell Row,Dumbbell Row,Back,Bodyweight,weight_reps,Biceps
-Face Pull,Face Pull,Shoulders,Bodyweight,weight_reps,Back
-Front Raise (Cable),Front Raise,Shoulders,Cable,weight_reps,
-Front Squat,Front Squat,Quads,Bodyweight,weight_reps,Glutes
-Good Morning (Barbell),Good Morning,Lower Back,Barbell,weight_reps,Hamstrings;Glutes
-Hack Squat (Machine),Hack Squat,Quads,Machine,weight_reps,Glutes
-Hammer Curl (Cable),Hammer Curl,Biceps,Cable,weight_reps,
-Hammer Curl (Dumbbell),Hammer Curl,Biceps,Dumbbell,weight_reps,
-Hanging Leg Raise,Hanging Leg Raise,Core,Bodyweight,weight_reps,
-Incline Bench Press (Barbell),Incline Bench Press,Chest,Barbell,weight_reps,Triceps;Shoulders
-Incline Bench Press (Dumbbell),Incline Bench Press,Chest,Dumbbell,weight_reps,Triceps;Shoulders
-Iso-Lateral Row (Machine),Iso-Lateral Row,Back,Machine,weight_reps,Biceps
-Kettlebell Clean,Kettlebell Clean,Full Body,Kettlebell,weight_reps,
-Kettlebell Goblet Squat,Kettlebell Goblet Squat,Quads,Kettlebell,weight_reps,Glutes
-Kettlebell Snatch,Kettlebell Snatch,Full Body,Kettlebell,weight_reps,
-Lat Pulldown (Cable),Lat Pulldown,Back,Cable,weight_reps,Biceps
-Lat Pulldown (Machine),Lat Pulldown,Back,Machine,weight_reps,Biceps
-Lat Pulldown - Close Grip (Cable),Lat Pulldown - Close Grip,Back,Cable,weight_reps,Biceps
-Lateral Raise (Cable),Lateral Raise,Shoulders,Cable,weight_reps,
-Leg Extension (Machine),Leg Extension,Quads,Machine,weight_reps,
-Leg Press (Machine),Leg Press,Quads,Machine,weight_reps,Glutes
-Leg Press Horizontal (Machine),Leg Press Horizontal,Quads,Machine,weight_reps,Glutes
-Leg Raise Parallel Bars,Leg Raise Parallel Bars,Core,Bodyweight,weight_reps,
-Lunge (Barbell),Lunge,Quads,Barbell,weight_reps,Glutes
-Overhead Press (Barbell),Overhead Press,Shoulders,Barbell,weight_reps,Triceps
-Overhead Press (Dumbbell),Overhead Press,Shoulders,Dumbbell,weight_reps,Triceps
-Overhead Squat,Overhead Squat,Quads,Bodyweight,weight_reps,Glutes;Shoulders;Core
-Plank,Plank,Core,Bodyweight,duration,
-Power Snatch,Power Snatch,Full Body,Bodyweight,weight_reps,
-Preacher Curl (Machine),Preacher Curl,Biceps,Machine,weight_reps,
-Pull Up,Pull Up,Back,Bodyweight,weight_reps,Biceps
-Pull Up (Assisted),Pull Up,Back,Assisted,weight_reps,Biceps
-Push Press,Push Press,Shoulders,Bodyweight,weight_reps,Triceps
-Push Up (Weighted),Push Up,Chest,Weighted,weight_reps,Triceps;Shoulders
-Rear Delt Reverse Fly (Cable),Rear Delt Reverse Fly,Shoulders,Cable,weight_reps,Back
-Rear Delt Reverse Fly (Machine),Rear Delt Reverse Fly,Shoulders,Machine,weight_reps,Back
-Reverse Crunch,Reverse Crunch,Core,Bodyweight,weight_reps,
-Romanian Deadlift (Barbell),Romanian Deadlift,Hamstrings,Barbell,weight_reps,Glutes;Lower Back
-Romanian Deadlift (Dumbbell),Romanian Deadlift,Hamstrings,Dumbbell,weight_reps,Glutes;Lower Back
-Rope Cable Curl,Rope Cable Curl,Biceps,Bodyweight,weight_reps,
-Seated Cable Row - Bar Wide Grip,Seated Cable Row - Bar Wide Grip,Back,Barbell,weight_reps,Biceps
-Seated Cable Row - V Grip (Cable),Seated Cable Row - V Grip,Back,Cable,weight_reps,Biceps
-Seated Row (Machine),Seated Row,Back,Machine,weight_reps,Biceps
-Shoulder Press (Dumbbell),Shoulder Press,Shoulders,Dumbbell,weight_reps,Triceps
-Side Bend (Cable),Side Bend,Core,Cable,weight_reps,
-Side Bend (Dumbbell),Side Bend,Core,Dumbbell,weight_reps,
-Side Plank,Side Plank,Core,Bodyweight,duration,
-Single Leg Romanian Deadlift (Dumbbell),Single Leg Romanian Deadlift,Hamstrings,Dumbbell,weight_reps,Glutes
-Sit Up,Sit Up,Core,Bodyweight,weight_reps,
-Smith Machine Split Squat,Smith Machine Split Squat,Quads,Bodyweight,weight_reps,Glutes
-Split Squat (Dumbbell),Split Squat,Quads,Dumbbell,weight_reps,Glutes
-Squat (Barbell),Squat,Quads,Barbell,weight_reps,Glutes
-Straight Arm Lat Pulldown (Cable),Straight Arm Lat Pulldown,Back,Cable,weight_reps,
-Sumo Deadlift,Sumo Deadlift,Glutes,Bodyweight,weight_reps,Hamstrings
-T Bar Row,T Bar Row,Back,Bodyweight,weight_reps,Biceps
-TRX Rotation,TRX Rotation,Core,TRX,weight_reps,
-Tricep Pushdown V Grip,Tricep Pushdown V Grip,Triceps,Bodyweight,weight_reps,
-Triceps Dip (Assisted),Triceps Dip,Triceps,Assisted,weight_reps,Chest;Shoulders
-Triceps Extension (Barbell),Triceps Extension,Triceps,Barbell,weight_reps,
-Triceps Extension (Cable),Triceps Extension,Triceps,Cable,weight_reps,
-Triceps Extension (Dumbbell),Triceps Extension,Triceps,Dumbbell,weight_reps,
-Triceps Extension (Machine),Triceps Extension,Triceps,Machine,weight_reps,
-Triceps Pushdown,Triceps Pushdown,Triceps,Bodyweight,weight_reps,
-Triceps Rope Pushdown,Triceps Rope Pushdown,Triceps,Bodyweight,weight_reps,
-Weighted Crunch,Weighted Crunch,Core,Bodyweight,weight_reps,
+exercise_name,base_movement,muscle_group,equipment,tracking_type,secondary_muscles,cardio_machine
+Back Extension (Machine),Back Extension,Lower Back,Machine,weight_reps,Glutes;Hamstrings,
+Back Extension (Weighted Hyperextension),Back Extension,Lower Back,Weighted,weight_reps,Glutes;Hamstrings,
+Bench Press (Barbell),Bench Press,Chest,Barbell,weight_reps,Triceps;Shoulders,
+Bench Press (Dumbbell),Bench Press,Chest,Dumbbell,weight_reps,Triceps;Shoulders,
+Bent Over Row (Barbell),Bent Over Row,Back,Barbell,weight_reps,Biceps,
+Bicep Curl (Barbell),Bicep Curl,Biceps,Barbell,weight_reps,,
+Bicep Curl (Cable),Bicep Curl,Biceps,Cable,weight_reps,,
+Bicep Curl (Dumbbell),Bicep Curl,Biceps,Dumbbell,weight_reps,,
+Bicep Curl (Machine),Bicep Curl,Biceps,Machine,weight_reps,,
+Bike,Bike,Cardio,Machine,cardio,,bike
+Bird Dog,Bird Dog,Core,Bodyweight,weight_reps,,
+Box Squat (Barbell),Box Squat,Quads,Barbell,weight_reps,Glutes,
+Bulgarian Split Squat,Bulgarian Split Squat,Quads,Bodyweight,weight_reps,Glutes,
+Butterfly (Pec Deck),Butterfly,Chest,Pec Deck,weight_reps,,
+Cable Crunch,Cable Crunch,Core,Bodyweight,weight_reps,,
+Cable Fly Crossovers,Cable Fly Crossovers,Chest,Bodyweight,weight_reps,,
+Cable Pull Through,Cable Pull Through,Glutes,Bodyweight,weight_reps,Hamstrings,
+Cable Twist (Down to up),Cable Twist,Core,Cable,weight_reps,,
+Cable Twist (Up to down),Cable Twist,Core,Cable,weight_reps,,
+Chest Fly (Machine),Chest Fly,Chest,Machine,weight_reps,,
+Chest Press (Machine),Chest Press,Chest,Machine,weight_reps,Triceps;Shoulders,
+Chin Up,Chin Up,Back,Bodyweight,weight_reps,Biceps,
+Chin Up (Assisted),Chin Up,Back,Assisted,weight_reps,Biceps,
+Clean and Jerk,Clean and Jerk,Full Body,Bodyweight,weight_reps,,
+Clean and Press,Clean and Press,Full Body,Bodyweight,weight_reps,,
+Concentration Curl,Concentration Curl,Biceps,Bodyweight,weight_reps,,
+Cross Trainer,Cross Trainer,Cardio,Machine,cardio,,cross_trainer
+Crunch,Crunch,Core,Bodyweight,weight_reps,,
+Crunch (Machine),Crunch,Core,Machine,weight_reps,,
+Deadlift (Barbell),Deadlift,Back,Barbell,weight_reps,Glutes;Hamstrings,
+Deadlift (Trap Bar),Deadlift,Back,Trap Bar,weight_reps,Glutes;Hamstrings,
+Decline Crunch,Decline Crunch,Core,Bodyweight,weight_reps,,
+Dumbbell Row,Dumbbell Row,Back,Bodyweight,weight_reps,Biceps,
+Face Pull,Face Pull,Shoulders,Bodyweight,weight_reps,Back,
+Front Raise (Cable),Front Raise,Shoulders,Cable,weight_reps,,
+Front Squat,Front Squat,Quads,Bodyweight,weight_reps,Glutes,
+Good Morning (Barbell),Good Morning,Lower Back,Barbell,weight_reps,Hamstrings;Glutes,
+Hack Squat (Machine),Hack Squat,Quads,Machine,weight_reps,Glutes,
+Hammer Curl (Cable),Hammer Curl,Biceps,Cable,weight_reps,,
+Hammer Curl (Dumbbell),Hammer Curl,Biceps,Dumbbell,weight_reps,,
+Hanging Leg Raise,Hanging Leg Raise,Core,Bodyweight,weight_reps,,
+Incline Bench Press (Barbell),Incline Bench Press,Chest,Barbell,weight_reps,Triceps;Shoulders,
+Incline Bench Press (Dumbbell),Incline Bench Press,Chest,Dumbbell,weight_reps,Triceps;Shoulders,
+Iso-Lateral Row (Machine),Iso-Lateral Row,Back,Machine,weight_reps,Biceps,
+Kettlebell Clean,Kettlebell Clean,Full Body,Kettlebell,weight_reps,,
+Kettlebell Goblet Squat,Kettlebell Goblet Squat,Quads,Kettlebell,weight_reps,Glutes,
+Kettlebell Snatch,Kettlebell Snatch,Full Body,Kettlebell,weight_reps,,
+Lat Pulldown (Cable),Lat Pulldown,Back,Cable,weight_reps,Biceps,
+Lat Pulldown (Machine),Lat Pulldown,Back,Machine,weight_reps,Biceps,
+Lat Pulldown - Close Grip (Cable),Lat Pulldown - Close Grip,Back,Cable,weight_reps,Biceps,
+Lateral Raise (Cable),Lateral Raise,Shoulders,Cable,weight_reps,,
+Leg Extension (Machine),Leg Extension,Quads,Machine,weight_reps,,
+Leg Press (Machine),Leg Press,Quads,Machine,weight_reps,Glutes,
+Leg Press Horizontal (Machine),Leg Press Horizontal,Quads,Machine,weight_reps,Glutes,
+Leg Raise Parallel Bars,Leg Raise Parallel Bars,Core,Bodyweight,weight_reps,,
+Lunge (Barbell),Lunge,Quads,Barbell,weight_reps,Glutes,
+Overhead Press (Barbell),Overhead Press,Shoulders,Barbell,weight_reps,Triceps,
+Overhead Press (Dumbbell),Overhead Press,Shoulders,Dumbbell,weight_reps,Triceps,
+Overhead Squat,Overhead Squat,Quads,Bodyweight,weight_reps,Glutes;Shoulders;Core,
+Plank,Plank,Core,Bodyweight,duration,,
+Power Snatch,Power Snatch,Full Body,Bodyweight,weight_reps,,
+Preacher Curl (Machine),Preacher Curl,Biceps,Machine,weight_reps,,
+Pull Up,Pull Up,Back,Bodyweight,weight_reps,Biceps,
+Pull Up (Assisted),Pull Up,Back,Assisted,weight_reps,Biceps,
+Push Press,Push Press,Shoulders,Bodyweight,weight_reps,Triceps,
+Push Up (Weighted),Push Up,Chest,Weighted,weight_reps,Triceps;Shoulders,
+Rear Delt Reverse Fly (Cable),Rear Delt Reverse Fly,Shoulders,Cable,weight_reps,Back,
+Rear Delt Reverse Fly (Machine),Rear Delt Reverse Fly,Shoulders,Machine,weight_reps,Back,
+Reverse Crunch,Reverse Crunch,Core,Bodyweight,weight_reps,,
+Romanian Deadlift (Barbell),Romanian Deadlift,Hamstrings,Barbell,weight_reps,Glutes;Lower Back,
+Romanian Deadlift (Dumbbell),Romanian Deadlift,Hamstrings,Dumbbell,weight_reps,Glutes;Lower Back,
+Rope Cable Curl,Rope Cable Curl,Biceps,Bodyweight,weight_reps,,
+Rower,Rower,Cardio,Machine,cardio,,rower
+Seated Cable Row - Bar Wide Grip,Seated Cable Row - Bar Wide Grip,Back,Barbell,weight_reps,Biceps,
+Seated Cable Row - V Grip (Cable),Seated Cable Row - V Grip,Back,Cable,weight_reps,Biceps,
+Seated Row (Machine),Seated Row,Back,Machine,weight_reps,Biceps,
+Shoulder Press (Dumbbell),Shoulder Press,Shoulders,Dumbbell,weight_reps,Triceps,
+Side Bend (Cable),Side Bend,Core,Cable,weight_reps,,
+Side Bend (Dumbbell),Side Bend,Core,Dumbbell,weight_reps,,
+Side Plank,Side Plank,Core,Bodyweight,duration,,
+Single Leg Romanian Deadlift (Dumbbell),Single Leg Romanian Deadlift,Hamstrings,Dumbbell,weight_reps,Glutes,
+Sit Up,Sit Up,Core,Bodyweight,weight_reps,,
+Smith Machine Split Squat,Smith Machine Split Squat,Quads,Bodyweight,weight_reps,Glutes,
+Split Squat (Dumbbell),Split Squat,Quads,Dumbbell,weight_reps,Glutes,
+Squat (Barbell),Squat,Quads,Barbell,weight_reps,Glutes,
+Straight Arm Lat Pulldown (Cable),Straight Arm Lat Pulldown,Back,Cable,weight_reps,,
+Sumo Deadlift,Sumo Deadlift,Glutes,Bodyweight,weight_reps,Hamstrings,
+T Bar Row,T Bar Row,Back,Bodyweight,weight_reps,Biceps,
+Treadmill,Treadmill,Cardio,Machine,cardio,,treadmill
+TRX Rotation,TRX Rotation,Core,TRX,weight_reps,,
+Tricep Pushdown V Grip,Tricep Pushdown V Grip,Triceps,Bodyweight,weight_reps,,
+Triceps Dip (Assisted),Triceps Dip,Triceps,Assisted,weight_reps,Chest;Shoulders,
+Triceps Extension (Barbell),Triceps Extension,Triceps,Barbell,weight_reps,,
+Triceps Extension (Cable),Triceps Extension,Triceps,Cable,weight_reps,,
+Triceps Extension (Dumbbell),Triceps Extension,Triceps,Dumbbell,weight_reps,,
+Triceps Extension (Machine),Triceps Extension,Triceps,Machine,weight_reps,,
+Triceps Pushdown,Triceps Pushdown,Triceps,Bodyweight,weight_reps,,
+Triceps Rope Pushdown,Triceps Rope Pushdown,Triceps,Bodyweight,weight_reps,,
+Weighted Crunch,Weighted Crunch,Core,Bodyweight,weight_reps,,

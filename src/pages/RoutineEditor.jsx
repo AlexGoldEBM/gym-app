@@ -41,7 +41,8 @@ export default function RoutineEditor() {
         if (anchor) { ssId = anchor.superset_id || uid('ss_'); anchor.superset_id = ssId }
       }
       for (const exId of list) {
-        next.push({ key: uid(), exercise_id: exId, superset_id: ssId, target_sets: 3, target_reps: '8-12', target_weight: null, notes: '' })
+        const cardio = exerciseMap[exId]?.tracking_type === 'cardio'
+        next.push({ key: uid(), exercise_id: exId, superset_id: ssId, target_sets: cardio ? 1 : 3, target_reps: cardio ? null : '8-12', target_weight: null, notes: '' })
       }
       return next
     })
@@ -97,6 +98,7 @@ export default function RoutineEditor() {
         {items.map((it, idx) => {
           const ex = exerciseMap[it.exercise_id]
           const isDuration = ex?.tracking_type === 'duration'
+          const isCardio = ex?.tracking_type === 'cardio'
           return (
             <div key={it.key} className={`card p-3 ${it.superset_id ? 'border-l-4 border-l-warn' : ''}`}>
               <div className="flex items-center gap-2 mb-2">
@@ -112,14 +114,14 @@ export default function RoutineEditor() {
                   <input type="number" inputMode="numeric" className="input w-full mt-0.5 py-1.5 text-center"
                     value={it.target_sets} onChange={e => update(it.key, { target_sets: e.target.value })} />
                 </label>
-                <label className="text-xs text-gray-500">{isDuration ? 'Seconds' : 'Reps'}
-                  <input className="input w-full mt-0.5 py-1.5 text-center" placeholder={isDuration ? '60' : '8-12'}
+                <label className="text-xs text-gray-500">{isCardio ? 'Minutes' : isDuration ? 'Seconds' : 'Reps'}
+                  <input className="input w-full mt-0.5 py-1.5 text-center" placeholder={isCardio ? '30' : isDuration ? '60' : '8-12'}
                     value={it.target_reps || ''} onChange={e => update(it.key, { target_reps: e.target.value })} />
                 </label>
-                <label className="text-xs text-gray-500">Weight kg
+                {isCardio ? <div /> : <label className="text-xs text-gray-500">Weight kg
                   <input type="number" inputMode="decimal" className="input w-full mt-0.5 py-1.5 text-center" placeholder="last"
                     value={it.target_weight ?? ''} onChange={e => update(it.key, { target_weight: e.target.value === '' ? null : parseFloat(e.target.value) })} />
-                </label>
+                </label>}
               </div>
               <input className="input w-full mt-2 py-1.5 text-sm" placeholder="Notes…"
                 value={it.notes || ''} onChange={e => update(it.key, { notes: e.target.value })} />

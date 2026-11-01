@@ -35,7 +35,7 @@ const rows = parseCSV(csv).filter(r => r.length >= 5 && r[0].trim())
 const header = rows.shift()
 
 const exercises = rows.map(r => {
-  const [name, base_movement, muscle_group, equipment, tracking_type, secondary = ''] = r.map(c => c.trim())
+  const [name, base_movement, muscle_group, equipment, tracking_type, secondary = '', cardio_machine = ''] = r.map(c => c.trim())
   return {
     id: slugId(name),
     name,
@@ -43,7 +43,8 @@ const exercises = rows.map(r => {
     muscle_group,
     secondary_muscles: secondary.split(';').map(s => s.trim()).filter(Boolean),
     equipment,
-    tracking_type: tracking_type === 'duration' ? 'duration' : 'weight_reps',
+    tracking_type: ['duration', 'cardio'].includes(tracking_type) ? tracking_type : 'weight_reps',
+    ...(tracking_type === 'cardio' && { cardio_machine: cardio_machine || 'treadmill' }),
     is_custom: false,
   }
 })

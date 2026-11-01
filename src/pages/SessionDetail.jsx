@@ -3,7 +3,9 @@ import { useMemo, useState } from 'react'
 import { useData } from '../store/DataContext'
 import { Confirm, NumberField } from '../components/ui'
 import { sessionVolume, sessionDurationMin, newPRsInSession } from '../lib/stats'
-import { fmtDateTime, fmtWeight, fmtDuration, ms, uid, SET_TYPES } from '../lib/util'
+import { fmtDateTime, fmtWeight, fmtDuration, ms, uid, SET_TYPES, trackingOf, pickSetValues } from '../lib/util'
+import { fmtCardioSet } from '../lib/cardio'
+import { CardioField, CardioExtras, cardioFieldLabel } from '../components/CardioFields'
 
 export default function SessionDetail() {
   const { id } = useParams()
@@ -68,8 +70,7 @@ export default function SessionDetail() {
       const last = g.sets[g.sets.length - 1]
       g.sets.push({
         key: uid(), id: uid('set_'), set_type: 'normal',
-        weight_kg: last?.weight_kg ?? null, reps: last?.reps ?? null,
-        duration_seconds: last?.duration_seconds ?? null, rpe: null,
+        ...pickSetValues(last), rpe: null,
         superset_id: last?.superset_id ?? null,
       })
       return next
@@ -95,9 +96,7 @@ export default function SessionDetail() {
           exercise_id: g.exercise_id,
           set_index: idx++,
           set_type: s.set_type || 'normal',
-          weight_kg: s.weight_kg ?? null,
-          reps: s.reps ?? null,
-          duration_seconds: s.duration_seconds ?? null,
+          ...pickSetValues(s),
           rpe: s.rpe ?? null,
           notes: g.note || '', // notes are per-exercise; write to every set consistently
           superset_id: s.superset_id || null,
@@ -121,7 +120,7 @@ export default function SessionDetail() {
   function createRoutineFromSession() {
     const exercises = groups.map(g => {
       const ex = exerciseMap[g.exercise_id]
-      const isDur = ex?.tracking_type === 'duration'
+      const isDur = trackingOf(ex) !== 'weight_reps'
       const working = g.sets.filter(s => s.set_type !== 'warmup')
       const used = working.length ? working : g.sets
       const reps = used.map(s => s.reps).filter(r => r != null)
@@ -163,6 +162,7 @@ export default function SessionDetail() {
           {draft.groups.map((g, gi) => {
             const ex = exerciseMap[g.exercise_id]
             const isDuration = ex?.tracking_type === 'duration'
+            const isCardio = trackingOf(ex) === 'cardio'
             return (
               <div key={g.exercise_id} className="card p-3">
                 <div className="font-semibold mb-1">{ex?.name || 'Unknown exercise'}</div>
@@ -172,8 +172,8 @@ export default function SessionDetail() {
 
                 <div className="grid grid-cols-[2.2rem_1fr_1fr_2rem] gap-2 text-[10px] uppercase tracking-wide text-gray-600 mb-1">
                   <span>Set</span>
-                  <span className="text-center">{isDuration ? 'Time (s)' : 'Kg'}</span>
-                  <span className="text-center">{isDuration ? '' : 'Reps'}</span>
+                  <span className="text-center">{isCardio ? cardioFieldLabel('duration_seconds', ex) : isDuration ? 'Time (s)' : 'Kg'}</span>
+                  <span className="text-center">{isCardio ? cardioFieldLabel('distance_km', ex) : isDuration ? '' : 'Reps'}</span>
                   <span />
                 </div>
 
@@ -182,6 +182,23 @@ export default function SessionDetail() {
                     const t = SET_TYPES.find(x => x.id === s.set_type)
                     const labelColor = s.set_type === 'warmup' ? 'text-warn' : s.set_type === 'failure' ? 'text-danger'
                       : s.set_type === 'drop_set' ? 'text-accent' : 'text-gray-400'
+                    if (isCardio) return (
+                      <div key={s.key} className="space-y-1.5">
+                        <div className="grid grid-cols-[2.2rem_1fr_1fr_2rem] gap-2 items-center">
+                          <button className={`h-10 font-bold ${labelColor}`} onClick={() => cycleType(gi, si)}
+                            title="Tap to change set type">{t?.short || (si + 1)}</button>
+                          <CardioField field="duration_seconds" exercise={ex} value={s.duration_seconds}
+                            onChange={v => patchSet(gi, si, { duration_seconds: v })} />
+                          <CardioField field="distance_km" exercise={ex} value={s.distance_km}
+                            onChange={v => patchSet(gi, si, { distance_km: v })} />
+                          <button className="h-10 text-danger text-lg" onClick={() => removeSet(gi, si)}
+                            title="Remove set">×</button>
+                        </div>
+                        <div className="pl-[2.7rem]">
+                          <CardioExtras exercise={ex} set={s} onChange={patch => patchSet(gi, si, patch)} />
+                        </div>
+                      </div>
+                    )
                     return (
                       <div key={s.key} className="grid grid-cols-[2.2rem_1fr_1fr_2rem] gap-2 items-center">
                         <button className={`h-10 font-bold ${labelColor}`} onClick={() => cycleType(gi, si)}
@@ -246,6 +263,7 @@ export default function SessionDetail() {
         {groups.map(g => {
           const ex = exerciseMap[g.exercise_id]
           const isDuration = ex?.tracking_type === 'duration'
+          const isCardio = trackingOf(ex) === 'cardio'
           const note = g.sets.find(s => s.notes)?.notes
           return (
             <div key={g.exercise_id} className="card p-3">
@@ -260,7 +278,8 @@ export default function SessionDetail() {
                         {t?.short || (i + 1)}
                       </span>
                       <span className="flex-1">
-                        {isDuration
+                        {isCardio ? fmtCardioSet(s, ex)
+                          : isDuration
                           ? fmtDuration(s.duration_seconds)
                           : <>{fmtWeight(s.weight_kg)} kg × {s.reps}</>}
                       </span>

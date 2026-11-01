@@ -89,7 +89,7 @@ done outside the codebase to get the app working end-to-end.
 - `npm run import` — the Hevy import (see step 4 above for required env vars).
 
 ## Known scope cuts / future
-- Distance/cardio: schema tolerates `distance_km` but no UI (out of scope per brief).
+- Cardio: built later (Nov 2026) — machine-based logging, see AGENTS.md. No GPS/outdoor tracking.
 - Charts cover per-exercise weight / 1RM / volume with date ranges. Per-muscle-group volume was the optional
   bonus and is not built.
 - Drag-to-reorder uses up/down buttons rather than touch DnD (simpler, reliable one-handed).

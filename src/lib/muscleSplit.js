@@ -51,6 +51,7 @@ export function muscleSplit(session, exerciseMap = {}) {
   for (const [exId, n] of Object.entries(workingSetCounts(session))) {
     const ex = exerciseMap[exId]
     const group = ex?.muscle_group
+    if (group === 'Cardio') continue // not a muscle-split contributor
     const exAreas = {}, exRegions = {}
     const hit = (g, w) => {
       exAreas[AREA_OF[g]] = Math.max(exAreas[AREA_OF[g]] || 0, w)

@@ -1,6 +1,7 @@
 // Derived stats: PRs, per-exercise history, volume. All computed in-memory from the
 // sessions snapshot (sets are embedded in each session doc) — no extra reads.
-import { epley1RM, ms, isAssistedExercise, isPairedDumbbell } from './util'
+import { epley1RM, ms, isAssistedExercise, isPairedDumbbell, hasSetValue } from './util'
+import { avgSpeed, split500 } from './cardio'
 
 // Flatten all sets of an exercise across sessions, each annotated with its session time.
 export function setsForExercise(sessions, exerciseId) {
@@ -14,13 +15,28 @@ export function setsForExercise(sessions, exerciseId) {
   return out.sort((a, b) => a._time - b._time)
 }
 
-// Working sets only (exclude warmups) with real load.
+// Working sets only (exclude warmups) with something logged.
 function workingSets(sets) {
-  return sets.filter(s => s.set_type !== 'warmup' && (s.weight_kg != null || s.duration_seconds != null))
+  return sets.filter(s => s.set_type !== 'warmup' && hasSetValue(s))
+}
+
+// Cardio bests: longest distance / time in one set, fastest average speed and best rower split.
+function cardioPRs(sets) {
+  let bestDistance = 0, bestDuration = 0, bestSpeed = 0, bestSplit = 0
+  for (const s of sets) {
+    if ((s.distance_km || 0) > bestDistance) bestDistance = s.distance_km
+    if ((s.duration_seconds || 0) > bestDuration) bestDuration = s.duration_seconds
+    const v = avgSpeed(s)
+    if (v && v > bestSpeed) bestSpeed = v
+    const sp = split500(s)
+    if (sp && (!bestSplit || sp < bestSplit)) bestSplit = sp
+  }
+  return { bestDistance, bestDuration, bestSpeed, bestSplit, count: sets.length }
 }
 
 export function exercisePRs(sessions, exerciseId, trackingType = 'weight_reps', isAssisted = false) {
   const sets = workingSets(setsForExercise(sessions, exerciseId))
+  if (trackingType === 'cardio') return cardioPRs(sets)
   if (trackingType === 'duration') {
     let bestDuration = 0
     for (const s of sets) if ((s.duration_seconds || 0) > bestDuration) bestDuration = s.duration_seconds
@@ -112,6 +128,27 @@ export function exerciseSeries(sessions, exerciseId, trackingType = 'weight_reps
   for (const s of sessions) {
     const sets = (s.sets || []).filter(set => set.exercise_id === exerciseId && set.set_type !== 'warmup')
     if (!sets.length) continue
+    if (trackingType === 'cardio') {
+      // per session: totals across blocks; speed/split from those totals
+      const distance = sets.reduce((a, x) => a + (x.distance_km || 0), 0)
+      const secs = sets.reduce((a, x) => a + (x.duration_seconds || 0), 0)
+      // speed/split only from blocks that have both time and distance
+      const both = sets.filter(x => x.distance_km && x.duration_seconds)
+      const total = {
+        distance_km: both.reduce((a, x) => a + x.distance_km, 0),
+        duration_seconds: both.reduce((a, x) => a + x.duration_seconds, 0),
+      }
+      const v = avgSpeed(total), sp = split500(total)
+      bySession.set(s.id, {
+        time: ms(s.start_time),
+        date: new Date(ms(s.start_time)).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }),
+        distance: Math.round(distance * 100) / 100,
+        minutes: Math.round(secs / 6) / 10,
+        speed: v ? Math.round(v * 10) / 10 : null,
+        split: sp ? Math.round(sp) : null,
+      })
+      continue
+    }
     let topWeight = 0, volume = 0, best1RM = 0, bestDuration = 0
     for (const set of sets) {
       const w = set.weight_kg || 0, r = set.reps || 0

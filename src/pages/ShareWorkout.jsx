@@ -7,6 +7,7 @@ import { sessionVolume, sessionDurationMin, newPRsInSession } from '../lib/stats
 import { muscleSplit } from '../lib/muscleSplit'
 import { CARDS, drawCard, canvasToBlob, loadCardFonts } from '../lib/shareCards'
 import { fmtWeight, fmtDuration, ms, isAssistedExercise, slugId } from '../lib/util'
+import { fmtCardioSet } from '../lib/cardio'
 
 const APP_NAME = 'Gym Tracker'
 
@@ -33,7 +34,13 @@ function exerciseRows(session, exerciseMap) {
     const working = sets.filter(s => s.set_type !== 'warmup')
     const used = working.length ? working : sets
     let best = ''
-    if (ex?.tracking_type === 'duration') {
+    if (ex?.tracking_type === 'cardio') {
+      const total = {
+        duration_seconds: used.reduce((a, s) => a + (s.duration_seconds || 0), 0) || null,
+        distance_km: used.reduce((a, s) => a + (s.distance_km || 0), 0) || null,
+      }
+      best = fmtCardioSet(total, ex, { short: true })
+    } else if (ex?.tracking_type === 'duration') {
       const top = Math.max(0, ...used.map(s => s.duration_seconds || 0))
       best = top ? fmtDuration(top) : ''
     } else {
@@ -52,6 +59,15 @@ function exerciseRows(session, exerciseMap) {
     }
     return { name: ex?.name || 'Unknown exercise', sets: used.length, best }
   })
+}
+
+// Lifting volume, or for a cardio-only workout the total distance instead of "0 kg".
+function volumeStat(session, exerciseMap) {
+  const kg = Math.round(sessionVolume(session, exerciseMap))
+  const km = (session.sets || []).reduce((a, s) =>
+    a + (exerciseMap[s.exercise_id]?.tracking_type === 'cardio' ? (s.distance_km || 0) : 0), 0)
+  if (!kg && km) return { volumeTitle: 'Distance', volumeLabel: `${Math.round(km * 100) / 100} km` }
+  return { volumeTitle: 'Volume', volumeLabel: `${kg.toLocaleString()} kg` }
 }
 
 export default function ShareWorkout() {
@@ -79,7 +95,7 @@ export default function ShareWorkout() {
       dateLabel: new Date(ms(session.start_time)).toLocaleDateString(undefined,
         { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }),
       durationLabel: fmtDurationMin(sessionDurationMin(session)),
-      volumeLabel: `${Math.round(sessionVolume(session, exerciseMap)).toLocaleString()} kg`,
+      ...volumeStat(session, exerciseMap),
       records: newPRsInSession(sessions, session, exercises).length,
       userName: profile?.displayName || user?.displayName || '',
       appName: APP_NAME,

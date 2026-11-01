@@ -111,6 +111,7 @@ export function AuthProvider({ children }) {
           secondary_muscles: ex.secondary_muscles,
           equipment: ex.equipment,
           tracking_type: ex.tracking_type,
+          cardio_machine: ex.cardio_machine || null,
           is_custom: false,
           archived: false,
           created_by: householdId,

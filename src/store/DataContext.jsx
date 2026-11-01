@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react'
 import {
   collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc,
-  serverTimestamp, query, orderBy,
+  serverTimestamp, query, orderBy, getDocsFromServer,
 } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useAuth } from './AuthContext'
@@ -69,6 +69,25 @@ export function DataProvider({ children }) {
     }
   }, [hid, exercises])
 
+  // Add seed exercises introduced after this household was created (e.g. the cardio machines).
+  // Decided from a server read, never the live snapshot: the first snapshot can be a partial
+  // cache, and creating "missing" docs from it could clobber real ones. Offline -> try next load.
+  useEffect(() => {
+    if (!hid) return
+    getDocsFromServer(collection(db, 'households', hid, 'exercises')).then(snap => {
+      const have = new Set(snap.docs.map(d => d.id))
+      for (const ex of seedExercises) {
+        if (have.has(ex.id)) continue
+        fire(setDoc(doc(db, 'households', hid, 'exercises', ex.id), {
+          name: ex.name, base_movement: ex.base_movement, muscle_group: ex.muscle_group,
+          secondary_muscles: ex.secondary_muscles, equipment: ex.equipment,
+          tracking_type: ex.tracking_type, cardio_machine: ex.cardio_machine || null,
+          is_custom: false, archived: false, created_by: hid, createdAt: serverTimestamp(),
+        }))
+      }
+    }).catch(() => {})
+  }, [hid])
+
   const exerciseMap = useMemo(() => {
     const m = {}
     for (const e of exercises) m[e.id] = e
@@ -87,6 +106,7 @@ export function DataProvider({ children }) {
       secondary_muscles: data.secondary_muscles || [],
       equipment: data.equipment,
       tracking_type: data.tracking_type || 'weight_reps',
+      cardio_machine: data.tracking_type === 'cardio' ? (data.cardio_machine || 'treadmill') : null,
       is_custom: true,
       archived: false,
       created_by: user.uid,

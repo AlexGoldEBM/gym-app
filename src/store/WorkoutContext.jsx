@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react'
 import { useData } from './DataContext'
 import { useAuth } from './AuthContext'
-import { uid, ms } from '../lib/util'
+import { uid, ms, pickSetValues, hasSetValue, trackingOf } from '../lib/util'
 
 const WorkoutCtx = createContext(null)
 export const useWorkout = () => useContext(WorkoutCtx)
@@ -119,7 +119,7 @@ export function WorkoutProvider({ children }) {
         notes: '',
         target_reps: null,
         restSec: w.restDefaultSec,
-        sets: sets || [{ key: uid(), set_type: 'normal', weight_kg: null, reps: null, duration_seconds: null, rpe: null, done: false, ghost: null }],
+        sets: sets || [{ key: uid(), set_type: 'normal', ...pickSetValues(null), rpe: null, done: false, ghost: null }],
       })
       return w
     })
@@ -146,7 +146,7 @@ export function WorkoutProvider({ children }) {
         notes: '',
         target_reps: null,
         restSec: w.restDefaultSec,
-        sets: sets || [{ key: uid(), set_type: 'normal', weight_kg: null, reps: null, duration_seconds: null, rpe: null, done: false, ghost: null }],
+        sets: sets || [{ key: uid(), set_type: 'normal', ...pickSetValues(null), rpe: null, done: false, ghost: null }],
       })
       return w
     })
@@ -160,13 +160,11 @@ export function WorkoutProvider({ children }) {
         // Ghost-only reminder of the row above: prefer what was actually entered
         // (fresher signal than a seeded ghost), else carry its own ghost forward.
         const ghost = last
-          ? (last.weight_kg != null || last.reps != null || last.duration_seconds != null
-              ? { weight_kg: last.weight_kg, reps: last.reps, duration_seconds: last.duration_seconds }
-              : last.ghost ?? null)
+          ? (hasSetValue(last) ? pickSetValues(last) : last.ghost ?? null)
           : null
         ex.sets.push({
           key: uid(), set_type: 'normal',
-          weight_kg: null, reps: null, duration_seconds: null,
+          ...pickSetValues(null),
           rpe: null, done: false, ghost,
         })
       }
@@ -207,7 +205,8 @@ export function WorkoutProvider({ children }) {
     const ex = active?.exercises.find(e => e.key === exKey)
     const st = ex?.sets.find(s => s.key === setKey)
     const willBeDone = st ? !st.done : false
-    const restSec = (willBeDone && st?.set_type !== 'warmup')
+    const isCardio = trackingOf(exerciseMap[ex?.exercise_id]) === 'cardio'
+    const restSec = (willBeDone && st?.set_type !== 'warmup' && !isCardio)
       ? (ex?.restSec ?? active?.restDefaultSec)
       : null
 
@@ -218,7 +217,7 @@ export function WorkoutProvider({ children }) {
       return w
     })
     if (restSec) startRest(restSec)
-  }, [update, active])
+  }, [update, active, exerciseMap])
 
   // ---------- Rest timer controls ----------
   const startRest = useCallback((seconds) => {
@@ -241,16 +240,13 @@ export function WorkoutProvider({ children }) {
       let idx = 0
       for (const s of ex.sets) {
         // keep a set if it has any logged value
-        const hasVal = s.weight_kg != null || s.reps != null || s.duration_seconds != null
-        if (!hasVal && !s.done) continue
+        if (!hasSetValue(s) && !s.done) continue
         sets.push({
           id: uid(),
           exercise_id: ex.exercise_id,
           set_index: idx++,
           set_type: s.set_type || 'normal',
-          weight_kg: s.weight_kg ?? null,
-          reps: s.reps ?? null,
-          duration_seconds: s.duration_seconds ?? null,
+          ...pickSetValues(s),
           rpe: s.rpe ?? null,
           notes: ex.notes || '',
           superset_id: ex.superset_id || null,

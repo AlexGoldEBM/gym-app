@@ -104,6 +104,17 @@
     "is_custom": false
   },
   {
+    "id": "bike",
+    "name": "Bike",
+    "base_movement": "Bike",
+    "muscle_group": "Cardio",
+    "secondary_muscles": [],
+    "equipment": "Machine",
+    "tracking_type": "cardio",
+    "cardio_machine": "bike",
+    "is_custom": false
+  },
+  {
     "id": "bird-dog",
     "name": "Bird Dog",
     "base_movement": "Bird Dog",
@@ -274,6 +285,17 @@
     "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "cross-trainer",
+    "name": "Cross Trainer",
+    "base_movement": "Cross Trainer",
+    "muscle_group": "Cardio",
+    "secondary_muscles": [],
+    "equipment": "Machine",
+    "tracking_type": "cardio",
+    "cardio_machine": "cross_trainer",
     "is_custom": false
   },
   {
@@ -793,6 +815,17 @@
     "is_custom": false
   },
   {
+    "id": "rower",
+    "name": "Rower",
+    "base_movement": "Rower",
+    "muscle_group": "Cardio",
+    "secondary_muscles": [],
+    "equipment": "Machine",
+    "tracking_type": "cardio",
+    "cardio_machine": "rower",
+    "is_custom": false
+  },
+  {
     "id": "seated-cable-row-bar-wide-grip",
     "name": "Seated Cable Row - Bar Wide Grip",
     "base_movement": "Seated Cable Row - Bar Wide Grip",
@@ -960,6 +993,17 @@
     ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
+    "is_custom": false
+  },
+  {
+    "id": "treadmill",
+    "name": "Treadmill",
+    "base_movement": "Treadmill",
+    "muscle_group": "Cardio",
+    "secondary_muscles": [],
+    "equipment": "Machine",
+    "tracking_type": "cardio",
+    "cardio_machine": "treadmill",
     "is_custom": false
   },
   {

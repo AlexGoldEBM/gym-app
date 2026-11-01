@@ -75,8 +75,23 @@ export function ms(ts) {
 
 export const MUSCLE_GROUPS = [
   'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Core',
-  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Lower Back', 'Full Body',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Lower Back', 'Full Body', 'Cardio',
 ]
+
+// Every numeric value a logged set can carry. Anything that copies, saves or checks a set's
+// values goes through this list so new fields can't be silently dropped.
+export const SET_VALUE_KEYS = [
+  'weight_kg', 'reps', 'duration_seconds',
+  'distance_km', 'level', 'incline_pct', 'speed_kmh', 'calories', 'heart_rate', 'watts',
+]
+export const pickSetValues = (s) => Object.fromEntries(SET_VALUE_KEYS.map(k => [k, s?.[k] ?? null]))
+export const hasSetValue = (s) => SET_VALUE_KEYS.some(k => s?.[k] != null)
+
+// 'weight_reps' | 'duration' | 'cardio'
+export function trackingOf(exercise) {
+  const t = exercise?.tracking_type
+  return t === 'duration' || t === 'cardio' ? t : 'weight_reps'
+}
 
 export const EQUIPMENT = [
   'Barbell', 'Dumbbell', 'Cable', 'Machine', 'Bodyweight',

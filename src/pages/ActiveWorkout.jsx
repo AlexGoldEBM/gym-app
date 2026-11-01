@@ -6,7 +6,9 @@ import { ExercisePicker } from '../components/ExercisePicker'
 import { Confirm, Modal, NumberField } from '../components/ui'
 import { lastPerformance, exercisePRs, repMaxTable, recentSessions, livePRSetKeys } from '../lib/stats'
 import { seedGhostSets } from '../lib/ghostSets'
-import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid, isAssistedExercise } from '../lib/util'
+import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid, isAssistedExercise, trackingOf, SET_VALUE_KEYS } from '../lib/util'
+import { fmtCardioSet, fmtDistance, fmtClockTime, cardioMachine } from '../lib/cardio'
+import { CardioField, CardioExtras, cardioFieldLabel } from '../components/CardioFields'
 import { burst } from '../lib/confetti'
 
 export default function ActiveWorkout() {
@@ -45,7 +47,7 @@ export default function ActiveWorkout() {
 
   function seedFor(exercise_id) {
     const ex = exerciseMap[exercise_id]
-    return seedGhostSets(sessions, exercise_id, { isDuration: ex?.tracking_type === 'duration' })
+    return seedGhostSets(sessions, exercise_id, { tracking: trackingOf(ex) })
   }
 
   function finish() {
@@ -125,14 +127,16 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
   const [insights, setInsights] = useState(false)
   const [confirmRemove, setConfirmRemove] = useState(false)
   const [openSwipeKey, setOpenSwipeKey] = useState(null)
-  const isDuration = exercise?.tracking_type === 'duration'
+  const tracking = trackingOf(exercise)
+  const isDuration = tracking === 'duration'
+  const isCardio = tracking === 'cardio'
   const last = useMemo(() => lastPerformance(sessions, ex.exercise_id), [sessions, ex.exercise_id])
-  const prs = useMemo(() => exercisePRs(sessions, ex.exercise_id, exercise?.tracking_type, isAssistedExercise(exercise)), [sessions, ex.exercise_id, exercise])
+  const prs = useMemo(() => exercisePRs(sessions, ex.exercise_id, tracking, isAssistedExercise(exercise)), [sessions, ex.exercise_id, exercise, tracking])
 
   // Rep-PRs among the live sets (heavier than ever logged at that rep count).
   const prKeys = useMemo(
-    () => isDuration ? new Set() : livePRSetKeys(ex.sets, prs.perRep, isAssistedExercise(exercise)),
-    [ex.sets, prs.perRep, isDuration])
+    () => tracking !== 'weight_reps' ? new Set() : livePRSetKeys(ex.sets, prs.perRep, isAssistedExercise(exercise)),
+    [ex.sets, prs.perRep, tracking])
 
   // Fire confetti when a set first becomes a PR (transition), not on every render.
   const seenPR = useRef(new Set())
@@ -162,6 +166,7 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
             {ex.target_sets && ` · target ${ex.target_sets}×${ex.target_reps || '–'}`}
             {prs.bestWeight > 0 && ` · PR ${fmtWeight(prs.bestWeight)}kg`}
             {isDuration && prs.bestDuration > 0 && ` · PR ${fmtDuration(prs.bestDuration)}`}
+            {isCardio && prs.bestDistance > 0 && ` · best ${fmtDistance(prs.bestDistance, exercise)}`}
           </div>
         </div>
         <button onClick={() => setMenu(m => !m)} className="text-gray-400 px-2 text-xl leading-none">⋯</button>
@@ -193,7 +198,8 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
         <div className="px-3 pb-1 text-[11px] text-gray-500">
           Last: {last.sets.map((s, i) => (
             <span key={i} className="mr-2">
-              {isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
+              {isCardio ? fmtCardioSet(s, exercise, { short: true })
+                : isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
             </span>
           ))}
         </div>
@@ -204,14 +210,14 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
         isDuration ? 'grid-cols-[2.2rem_2fr_1fr_3rem]' : 'grid-cols-[2.2rem_1fr_1fr_3rem]'
       }`}>
         <span>Set</span>
-        <span className="text-center">{isDuration ? 'Time (s)' : 'Kg'}</span>
-        <span className="text-center">{isDuration ? '' : 'Reps'}</span>
+        <span className="text-center">{isCardio ? cardioFieldLabel('duration_seconds', exercise) : isDuration ? 'Time (s)' : 'Kg'}</span>
+        <span className="text-center">{isCardio ? cardioFieldLabel('distance_km', exercise) : isDuration ? '' : 'Reps'}</span>
         <span className="text-center">✓</span>
       </div>
 
       <div className="px-3 pb-3 pt-1 space-y-1.5">
         {ex.sets.map((s, si) => (
-          <SetRow key={s.key} ex={ex} set={s} index={si} w={w} isDuration={isDuration}
+          <SetRow key={s.key} ex={ex} set={s} index={si} w={w} isDuration={isDuration} exercise={exercise} isCardio={isCardio}
             isPR={prKeys.has(s.key)}
             swipeOpen={openSwipeKey === s.key}
             onSwipeOpen={() => setOpenSwipeKey(s.key)}
@@ -222,17 +228,19 @@ function ExerciseBlock({ ex, index, w, exercise, sessions, onAddSuperset, isFirs
       </div>
 
       {insights && (
-        <ExerciseInsights ex={exercise} sessions={sessions} isDuration={isDuration}
+        <ExerciseInsights ex={exercise} sessions={sessions} tracking={tracking}
           onClose={() => setInsights(false)} />
       )}
     </div>
   )
 }
 
-function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
+function ExerciseInsights({ ex, sessions, tracking, onClose }) {
+  const isDuration = tracking === 'duration'
+  const isCardio = tracking === 'cardio'
   const recent = useMemo(() => recentSessions(sessions, ex.id, 4), [sessions, ex.id])
-  const repTable = useMemo(() => isDuration ? [] : repMaxTable(sessions, ex.id, 12, isAssistedExercise(ex)), [sessions, ex.id, isDuration])
-  const prs = useMemo(() => exercisePRs(sessions, ex.id, ex.tracking_type, isAssistedExercise(ex)), [sessions, ex])
+  const repTable = useMemo(() => tracking !== 'weight_reps' ? [] : repMaxTable(sessions, ex.id, 12, isAssistedExercise(ex)), [sessions, ex.id, tracking])
+  const prs = useMemo(() => exercisePRs(sessions, ex.id, tracking, isAssistedExercise(ex)), [sessions, ex, tracking])
   const bestRM = Math.max(0, ...repTable.map(r => r.est1RM))
 
   return (
@@ -251,7 +259,8 @@ function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
                   <div className="flex flex-wrap gap-x-3 gap-y-0.5">
                     {r.sets.map((s, i) => (
                       <span key={i} className={s.set_type === 'warmup' ? 'text-gray-600' : ''}>
-                        {isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
+                        {isCardio ? fmtCardioSet(s, ex)
+                          : isDuration ? fmtDuration(s.duration_seconds) : `${fmtWeight(s.weight_kg)}×${s.reps}`}
                       </span>
                     ))}
                   </div>
@@ -262,7 +271,7 @@ function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
         </div>
 
         {/* rep-max targets */}
-        {!isDuration && (
+        {tracking === 'weight_reps' && (
           <div>
             <div className="text-[11px] uppercase tracking-wide text-gray-500 font-medium mb-1.5">
               Top weight by reps — beatable targets
@@ -292,6 +301,17 @@ function ExerciseInsights({ ex, sessions, isDuration, onClose }) {
             <p className="text-[11px] text-gray-600 mt-2">
               ★ = best estimated 1RM. Empty rep counts are open targets — hit any weight there to set a PR.
             </p>
+          </div>
+        )}
+
+        {isCardio && (
+          <div className="grid grid-cols-3 gap-2 text-center text-sm">
+            <div><div className="font-semibold">{prs.bestDistance ? fmtDistance(prs.bestDistance, ex) : '—'}</div><div className="text-[10px] text-gray-500">Longest distance</div></div>
+            <div><div className="font-semibold">{prs.bestDuration ? fmtClockTime(prs.bestDuration) : '—'}</div><div className="text-[10px] text-gray-500">Longest time</div></div>
+            <div><div className="font-semibold">{cardioMachine(ex).metres
+              ? (prs.bestSplit ? `${fmtClockTime(prs.bestSplit)}` : '—')
+              : (prs.bestSpeed ? `${prs.bestSpeed.toFixed(1)} km/h` : '—')}</div>
+              <div className="text-[10px] text-gray-500">{cardioMachine(ex).metres ? 'Best /500m' : 'Fastest avg'}</div></div>
           </div>
         )}
 
@@ -359,7 +379,7 @@ function RestPicker({ ex, w }) {
 
 const SWIPE_OPEN = 88
 
-function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, onSwipeClose }) {
+function SetRow({ ex, set, index, w, isDuration, isCardio, exercise, isPR, swipeOpen, onSwipeOpen, onSwipeClose }) {
   const [showType, setShowType] = useState(false)
   const dragRef = useRef({ active: false, startX: 0, startY: 0, dx: 0 })
   const [dragX, setDragX] = useState(0)
@@ -400,7 +420,9 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
   function handleComplete() {
     if (!set.done) {
       const patch = {}
-      if (isDuration) {
+      if (isCardio) {
+        for (const k of SET_VALUE_KEYS) if (set[k] == null && set.ghost?.[k] != null) patch[k] = set.ghost[k]
+      } else if (isDuration) {
         if (set.duration_seconds == null && set.ghost?.duration_seconds != null) patch.duration_seconds = set.ghost.duration_seconds
       } else {
         if (set.weight_kg == null && set.ghost?.weight_kg != null) patch.weight_kg = set.ghost.weight_kg
@@ -412,7 +434,9 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
     if (swipeOpen) onSwipeClose()
   }
 
-  const canComplete = set.done || (isDuration
+  const canComplete = set.done || (isCardio
+    ? (set.duration_seconds ?? set.ghost?.duration_seconds ?? set.distance_km ?? set.ghost?.distance_km) != null
+    : isDuration
     ? (set.duration_seconds ?? set.ghost?.duration_seconds) != null
     : (set.weight_kg ?? set.ghost?.weight_kg) != null && (set.reps ?? set.ghost?.reps) != null)
 
@@ -425,17 +449,21 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
         </button>
       )}
       <div
-        className={`relative grid gap-2 items-center rounded-lg bg-bg ${set.done ? 'bg-good/10' : ''} ${set.done && isPR ? 'ring-1 ring-amber-400/50' : ''} ${
-          isDuration ? 'grid-cols-[2.2rem_2fr_1fr_3rem]' : 'grid-cols-[2.2rem_1fr_1fr_3rem]'
-        }`}
+        className={`relative rounded-lg bg-bg ${set.done ? 'bg-good/10' : ''} ${set.done && isPR ? 'ring-1 ring-amber-400/50' : ''}`}
         style={{ transform: `translateX(${dragX}px)`, transition: dragRef.current.active ? 'none' : 'transform 150ms ease-out', userSelect: dragRef.current.active ? 'none' : 'auto' }}
         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}
       >
+      <div className={`grid gap-2 items-center ${
+          isDuration ? 'grid-cols-[2.2rem_2fr_1fr_3rem]' : 'grid-cols-[2.2rem_1fr_1fr_3rem]'
+        }`}>
       <button className={`h-10 font-bold relative ${labelColor}`} onClick={() => setShowType(true)}>
         {set.done && isPR ? <span title="Best ever at these reps">🏆</span> : label}
       </button>
 
-      {isDuration ? (
+      {isCardio ? (
+        <CardioField field="duration_seconds" exercise={exercise} value={set.duration_seconds}
+          ghost={set.ghost?.duration_seconds} onChange={v => w.updateSet(ex.key, set.key, { duration_seconds: v })} />
+      ) : isDuration ? (
         <DurationField
           value={set.duration_seconds}
           placeholder={set.ghost?.duration_seconds ?? '0'}
@@ -446,7 +474,10 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
           onChange={v => w.updateSet(ex.key, set.key, { weight_kg: v })} />
       )}
 
-      {isDuration ? <div /> : (
+      {isCardio ? (
+        <CardioField field="distance_km" exercise={exercise} value={set.distance_km}
+          ghost={set.ghost?.distance_km} onChange={v => w.updateSet(ex.key, set.key, { distance_km: v })} />
+      ) : isDuration ? <div /> : (
         <NumberField value={set.reps} placeholder={set.ghost?.reps ?? '0'}
           onChange={v => w.updateSet(ex.key, set.key, { reps: v })} />
       )}
@@ -454,6 +485,12 @@ function SetRow({ ex, set, index, w, isDuration, isPR, swipeOpen, onSwipeOpen, o
       <button onClick={() => canComplete && handleComplete()}
         className={`h-10 w-full rounded-lg grid place-items-center text-lg font-bold transition-opacity ${
           set.done ? 'bg-good text-white' : canComplete ? 'bg-surface2 text-gray-500' : 'bg-surface2 text-gray-700 opacity-40'}`}>✓</button>
+      </div>
+      {isCardio && (
+        <div className="pl-[2.7rem] pt-1.5 pb-1">
+          <CardioExtras exercise={exercise} set={set} onChange={patch => w.updateSet(ex.key, set.key, patch)} />
+        </div>
+      )}
       </div>
 
       <Modal open={showType} onClose={() => setShowType(false)} title="Set type">

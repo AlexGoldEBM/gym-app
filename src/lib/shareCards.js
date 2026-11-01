@@ -32,7 +32,7 @@ export function loadCardFonts() {
   return Promise.all([500, 700, 800].map(w => document.fonts.load(`${w} 40px "Plus Jakarta Sans"`))).catch(() => {})
 }
 
-// data: { title, dateLabel, durationLabel, volumeLabel, records, userName, appName,
+// data: { title, dateLabel, durationLabel, volumeTitle, volumeLabel, records, userName, appName,
 //         areas, regions, exercises: [{ name, sets, best }] }
 export function drawCard(canvas, id, data) {
   canvas.width = CARD_W
@@ -124,7 +124,7 @@ function drawTitle(ctx, d, y) {
 function drawStats(ctx, d, y) {
   const cols = [
     { label: 'Duration', value: d.durationLabel },
-    { label: 'Volume', value: d.volumeLabel },
+    { label: d.volumeTitle || 'Volume', value: d.volumeLabel },
     { label: 'Records', value: String(d.records), medal: d.records > 0 },
   ]
   const colW = (CARD_W - 160) / 3

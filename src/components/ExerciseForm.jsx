@@ -3,6 +3,7 @@ import { Modal } from './ui'
 import { useData } from '../store/DataContext'
 import { useAuth } from '../store/AuthContext'
 import { MUSCLE_GROUPS, EQUIPMENT, isExerciseOwner } from '../lib/util'
+import { CARDIO_MACHINES } from '../lib/cardio'
 
 // Create or edit a custom exercise.
 export function ExerciseFormModal({ open, onClose, onSaved, initialName = '', editing = null }) {
@@ -24,6 +25,12 @@ export function ExerciseFormModal({ open, onClose, onSaved, initialName = '', ed
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const secondary = form.secondary_muscles || []
   const setPrimary = (g) => setForm(f => ({ ...f, muscle_group: g, secondary_muscles: (f.secondary_muscles || []).filter(s => s !== g) }))
+  // Cardio exercises default to the Cardio group (left out of the muscle split).
+  const setTracking = (t) => setForm(f => ({
+    ...f, tracking_type: t,
+    cardio_machine: t === 'cardio' ? (f.cardio_machine || 'treadmill') : f.cardio_machine,
+    muscle_group: t === 'cardio' ? 'Cardio' : f.muscle_group === 'Cardio' ? 'Chest' : f.muscle_group,
+  }))
   const toggleSecondary = (g) => set('secondary_muscles', secondary.includes(g) ? secondary.filter(s => s !== g) : [...secondary, g])
 
   async function save() {
@@ -38,6 +45,7 @@ export function ExerciseFormModal({ open, onClose, onSaved, initialName = '', ed
           secondary_muscles: form.secondary_muscles || [],
           equipment: form.equipment,
           tracking_type: form.tracking_type,
+          cardio_machine: form.tracking_type === 'cardio' ? (form.cardio_machine || 'treadmill') : null,
         })
         onSaved?.(editing.id)
       } else {
@@ -75,20 +83,28 @@ export function ExerciseFormModal({ open, onClose, onSaved, initialName = '', ed
         <div>
           <span className="text-xs font-medium text-gray-400 mb-1 block">Secondary muscles (optional)</span>
           <div className="flex flex-wrap gap-1.5">
-            {MUSCLE_GROUPS.filter(g => g !== form.muscle_group && g !== 'Full Body').map(g => (
+            {MUSCLE_GROUPS.filter(g => g !== form.muscle_group && g !== 'Full Body' && g !== 'Cardio').map(g => (
               <button key={g} type="button" onClick={() => toggleSecondary(g)}
                 className={`chip py-1 ${secondary.includes(g) ? 'bg-royal border-royal text-white' : ''}`}>{g}</button>
             ))}
           </div>
         </div>
         <Field label="Tracking">
-          <div className="grid grid-cols-2 gap-2">
-            {[['weight_reps', 'Weight × Reps'], ['duration', 'Duration (timed)']].map(([v, l]) => (
-              <button key={v} onClick={() => set('tracking_type', v)}
-                className={`btn ${form.tracking_type === v ? 'btn-primary' : 'btn-ghost'}`}>{l}</button>
+          <div className="grid grid-cols-3 gap-2">
+            {[['weight_reps', 'Weight × Reps'], ['duration', 'Timed'], ['cardio', 'Cardio']].map(([v, l]) => (
+              <button key={v} type="button" onClick={() => setTracking(v)}
+                className={`btn px-2 ${form.tracking_type === v ? 'btn-primary' : 'btn-ghost'}`}>{l}</button>
             ))}
           </div>
         </Field>
+        {form.tracking_type === 'cardio' && (
+          <Field label="Machine (sets which inputs you log)">
+            <select className="input w-full" value={form.cardio_machine || 'treadmill'}
+              onChange={e => set('cardio_machine', e.target.value)}>
+              {Object.entries(CARDIO_MACHINES).map(([k, m]) => <option key={k} value={k}>{m.label}</option>)}
+            </select>
+          </Field>
+        )}
         <button className="btn-primary w-full" disabled={busy || !form.name.trim()} onClick={save}>
           {editing ? 'Save changes' : 'Create exercise'}
         </button>

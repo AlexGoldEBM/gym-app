@@ -3,7 +3,8 @@ import { useData } from '../store/DataContext'
 import { MiniLine } from '../components/Chart'
 import { ExercisePicker } from '../components/ExercisePicker'
 import { exerciseSeries, exercisePRs, setsForExercise } from '../lib/stats'
-import { fmtWeight, fmtDuration, isAssistedExercise } from '../lib/util'
+import { fmtWeight, fmtDuration, isAssistedExercise, trackingOf } from '../lib/util'
+import { cardioPRCells, cardioMetrics } from '../lib/cardio'
 
 const RANGES = [
   { label: '1M', days: 30 }, { label: '3M', days: 90 },
@@ -32,14 +33,17 @@ export default function Progress() {
   const activeId = exId || defaultEx
 
   const ex = activeId ? exerciseMap[activeId] : null
-  const isDuration = ex?.tracking_type === 'duration'
+  const tracking = trackingOf(ex)
+  const isDuration = tracking === 'duration'
+  const isCardio = tracking === 'cardio'
   const series = useMemo(() => {
-    let s = exerciseSeries(sessions, activeId, ex?.tracking_type, isAssistedExercise(ex))
+    let s = exerciseSeries(sessions, activeId, tracking, isAssistedExercise(ex))
     if (range) { const cut = Date.now() - range * 86400000; s = s.filter(p => p.time >= cut) }
     return s
-  }, [sessions, activeId, ex, range])
-  const prs = useMemo(() => activeId ? exercisePRs(sessions, activeId, ex?.tracking_type, isAssistedExercise(ex)) : null, [sessions, activeId, ex])
-  const activeMetric = METRICS.find(m => m.key === metric)
+  }, [sessions, activeId, ex, range, tracking])
+  const prs = useMemo(() => activeId ? exercisePRs(sessions, activeId, tracking, isAssistedExercise(ex)) : null, [sessions, activeId, ex, tracking])
+  const metrics = isCardio ? cardioMetrics(ex) : METRICS
+  const activeMetric = metrics.find(m => m.key === metric) || metrics[0]
 
   return (
     <div className="px-4 pt-4">
@@ -58,7 +62,8 @@ export default function Progress() {
       ) : (
         <>
           <div className="grid grid-cols-3 gap-2 mb-3">
-            {isDuration ? (
+            {isCardio ? cardioPRCells(prs, ex).map(c => <PR key={c.label} label={c.label} value={c.value} />)
+            : isDuration ? (
               <PR label="Best hold" value={prs.bestDuration ? fmtDuration(prs.bestDuration) : '—'} />
             ) : (
               <>
@@ -71,9 +76,9 @@ export default function Progress() {
 
           {!isDuration && (
             <div className="flex gap-1.5 mb-2 overflow-x-auto no-scrollbar">
-              {METRICS.map(m => (
+              {metrics.map(m => (
                 <button key={m.key} onClick={() => setMetric(m.key)}
-                  className={`chip shrink-0 ${metric === m.key ? 'bg-good text-bg border-good' : ''}`}>{m.label}</button>
+                  className={`chip shrink-0 ${activeMetric.key === m.key ? 'bg-good text-bg border-good' : ''}`}>{m.label}</button>
               ))}
             </div>
           )}

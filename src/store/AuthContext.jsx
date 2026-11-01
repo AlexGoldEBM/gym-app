@@ -108,6 +108,7 @@ export function AuthProvider({ children }) {
           name: ex.name,
           base_movement: ex.base_movement,
           muscle_group: ex.muscle_group,
+          secondary_muscles: ex.secondary_muscles,
           equipment: ex.equipment,
           tracking_type: ex.tracking_type,
           is_custom: false,

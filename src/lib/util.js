@@ -74,14 +74,22 @@ export function ms(ts) {
 }
 
 export const MUSCLE_GROUPS = [
-  'Chest', 'Back', 'Legs', 'Shoulders', 'Biceps', 'Triceps',
-  'Core', 'Hamstrings', 'Glutes', 'Lower Back', 'Full Body',
+  'Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Core',
+  'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Lower Back', 'Full Body',
 ]
 
 export const EQUIPMENT = [
   'Barbell', 'Dumbbell', 'Cable', 'Machine', 'Bodyweight',
   'Kettlebell', 'Assisted', 'TRX', 'Weighted',
 ]
+
+// Mirrors firestore.rules: only an exercise's creator may rename or (un)archive it. Seeded exercises are
+// created_by the household id and belong to whoever created the household.
+export function isExerciseOwner(exercise, user, household) {
+  if (!exercise || !user) return false
+  return exercise.created_by === user.uid ||
+    (exercise.created_by === household?.id && household?.createdBy === user.uid)
+}
 
 export function isAssistedExercise(exercise) {
   return exercise?.name?.toLowerCase().includes('(assisted)') || exercise?.equipment === 'Assisted'

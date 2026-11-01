@@ -4,6 +4,10 @@
     "name": "Back Extension (Machine)",
     "base_movement": "Back Extension",
     "muscle_group": "Lower Back",
+    "secondary_muscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -13,6 +17,10 @@
     "name": "Back Extension (Weighted Hyperextension)",
     "base_movement": "Back Extension",
     "muscle_group": "Lower Back",
+    "secondary_muscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
     "equipment": "Weighted",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -22,6 +30,10 @@
     "name": "Bench Press (Barbell)",
     "base_movement": "Bench Press",
     "muscle_group": "Chest",
+    "secondary_muscles": [
+      "Triceps",
+      "Shoulders"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -31,6 +43,10 @@
     "name": "Bench Press (Dumbbell)",
     "base_movement": "Bench Press",
     "muscle_group": "Chest",
+    "secondary_muscles": [
+      "Triceps",
+      "Shoulders"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -40,6 +56,9 @@
     "name": "Bent Over Row (Barbell)",
     "base_movement": "Bent Over Row",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -49,6 +68,7 @@
     "name": "Bicep Curl (Barbell)",
     "base_movement": "Bicep Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -58,6 +78,7 @@
     "name": "Bicep Curl (Cable)",
     "base_movement": "Bicep Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -67,6 +88,7 @@
     "name": "Bicep Curl (Dumbbell)",
     "base_movement": "Bicep Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -76,6 +98,7 @@
     "name": "Bicep Curl (Machine)",
     "base_movement": "Bicep Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -85,6 +108,7 @@
     "name": "Bird Dog",
     "base_movement": "Bird Dog",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -93,7 +117,10 @@
     "id": "box-squat-barbell",
     "name": "Box Squat (Barbell)",
     "base_movement": "Box Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -102,7 +129,10 @@
     "id": "bulgarian-split-squat",
     "name": "Bulgarian Split Squat",
     "base_movement": "Bulgarian Split Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -112,6 +142,7 @@
     "name": "Butterfly (Pec Deck)",
     "base_movement": "Butterfly",
     "muscle_group": "Chest",
+    "secondary_muscles": [],
     "equipment": "Pec Deck",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -121,6 +152,7 @@
     "name": "Cable Crunch",
     "base_movement": "Cable Crunch",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -130,6 +162,7 @@
     "name": "Cable Fly Crossovers",
     "base_movement": "Cable Fly Crossovers",
     "muscle_group": "Chest",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -139,6 +172,9 @@
     "name": "Cable Pull Through",
     "base_movement": "Cable Pull Through",
     "muscle_group": "Glutes",
+    "secondary_muscles": [
+      "Hamstrings"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -148,6 +184,7 @@
     "name": "Cable Twist (Down to up)",
     "base_movement": "Cable Twist",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -157,6 +194,7 @@
     "name": "Cable Twist (Up to down)",
     "base_movement": "Cable Twist",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -166,6 +204,7 @@
     "name": "Chest Fly (Machine)",
     "base_movement": "Chest Fly",
     "muscle_group": "Chest",
+    "secondary_muscles": [],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -175,6 +214,10 @@
     "name": "Chest Press (Machine)",
     "base_movement": "Chest Press",
     "muscle_group": "Chest",
+    "secondary_muscles": [
+      "Triceps",
+      "Shoulders"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -184,6 +227,9 @@
     "name": "Chin Up",
     "base_movement": "Chin Up",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -193,6 +239,9 @@
     "name": "Chin Up (Assisted)",
     "base_movement": "Chin Up",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Assisted",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -202,6 +251,7 @@
     "name": "Clean and Jerk",
     "base_movement": "Clean and Jerk",
     "muscle_group": "Full Body",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -211,6 +261,7 @@
     "name": "Clean and Press",
     "base_movement": "Clean and Press",
     "muscle_group": "Full Body",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -220,6 +271,7 @@
     "name": "Concentration Curl",
     "base_movement": "Concentration Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -229,6 +281,7 @@
     "name": "Crunch",
     "base_movement": "Crunch",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -238,6 +291,7 @@
     "name": "Crunch (Machine)",
     "base_movement": "Crunch",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -247,6 +301,10 @@
     "name": "Deadlift (Barbell)",
     "base_movement": "Deadlift",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -256,6 +314,10 @@
     "name": "Deadlift (Trap Bar)",
     "base_movement": "Deadlift",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Glutes",
+      "Hamstrings"
+    ],
     "equipment": "Trap Bar",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -265,6 +327,7 @@
     "name": "Decline Crunch",
     "base_movement": "Decline Crunch",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -274,6 +337,9 @@
     "name": "Dumbbell Row",
     "base_movement": "Dumbbell Row",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -283,6 +349,9 @@
     "name": "Face Pull",
     "base_movement": "Face Pull",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Back"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -292,6 +361,7 @@
     "name": "Front Raise (Cable)",
     "base_movement": "Front Raise",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -300,7 +370,10 @@
     "id": "front-squat",
     "name": "Front Squat",
     "base_movement": "Front Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -310,6 +383,10 @@
     "name": "Good Morning (Barbell)",
     "base_movement": "Good Morning",
     "muscle_group": "Lower Back",
+    "secondary_muscles": [
+      "Hamstrings",
+      "Glutes"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -318,7 +395,10 @@
     "id": "hack-squat-machine",
     "name": "Hack Squat (Machine)",
     "base_movement": "Hack Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -328,6 +408,7 @@
     "name": "Hammer Curl (Cable)",
     "base_movement": "Hammer Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -337,6 +418,7 @@
     "name": "Hammer Curl (Dumbbell)",
     "base_movement": "Hammer Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -346,6 +428,7 @@
     "name": "Hanging Leg Raise",
     "base_movement": "Hanging Leg Raise",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -355,6 +438,10 @@
     "name": "Incline Bench Press (Barbell)",
     "base_movement": "Incline Bench Press",
     "muscle_group": "Chest",
+    "secondary_muscles": [
+      "Triceps",
+      "Shoulders"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -364,6 +451,10 @@
     "name": "Incline Bench Press (Dumbbell)",
     "base_movement": "Incline Bench Press",
     "muscle_group": "Chest",
+    "secondary_muscles": [
+      "Triceps",
+      "Shoulders"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -373,6 +464,9 @@
     "name": "Iso-Lateral Row (Machine)",
     "base_movement": "Iso-Lateral Row",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -382,6 +476,7 @@
     "name": "Kettlebell Clean",
     "base_movement": "Kettlebell Clean",
     "muscle_group": "Full Body",
+    "secondary_muscles": [],
     "equipment": "Kettlebell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -390,7 +485,10 @@
     "id": "kettlebell-goblet-squat",
     "name": "Kettlebell Goblet Squat",
     "base_movement": "Kettlebell Goblet Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Kettlebell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -400,6 +498,7 @@
     "name": "Kettlebell Snatch",
     "base_movement": "Kettlebell Snatch",
     "muscle_group": "Full Body",
+    "secondary_muscles": [],
     "equipment": "Kettlebell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -409,6 +508,9 @@
     "name": "Lat Pulldown (Cable)",
     "base_movement": "Lat Pulldown",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -418,6 +520,9 @@
     "name": "Lat Pulldown (Machine)",
     "base_movement": "Lat Pulldown",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -427,6 +532,9 @@
     "name": "Lat Pulldown - Close Grip (Cable)",
     "base_movement": "Lat Pulldown - Close Grip",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -436,6 +544,7 @@
     "name": "Lateral Raise (Cable)",
     "base_movement": "Lateral Raise",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -444,7 +553,8 @@
     "id": "leg-extension-machine",
     "name": "Leg Extension (Machine)",
     "base_movement": "Leg Extension",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -453,7 +563,10 @@
     "id": "leg-press-machine",
     "name": "Leg Press (Machine)",
     "base_movement": "Leg Press",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -462,7 +575,10 @@
     "id": "leg-press-horizontal-machine",
     "name": "Leg Press Horizontal (Machine)",
     "base_movement": "Leg Press Horizontal",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -472,6 +588,7 @@
     "name": "Leg Raise Parallel Bars",
     "base_movement": "Leg Raise Parallel Bars",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -480,7 +597,10 @@
     "id": "lunge-barbell",
     "name": "Lunge (Barbell)",
     "base_movement": "Lunge",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -490,6 +610,9 @@
     "name": "Overhead Press (Barbell)",
     "base_movement": "Overhead Press",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Triceps"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -499,6 +622,9 @@
     "name": "Overhead Press (Dumbbell)",
     "base_movement": "Overhead Press",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Triceps"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -507,7 +633,12 @@
     "id": "overhead-squat",
     "name": "Overhead Squat",
     "base_movement": "Overhead Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes",
+      "Shoulders",
+      "Core"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -517,6 +648,7 @@
     "name": "Plank",
     "base_movement": "Plank",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "duration",
     "is_custom": false
@@ -526,6 +658,7 @@
     "name": "Power Snatch",
     "base_movement": "Power Snatch",
     "muscle_group": "Full Body",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -535,6 +668,7 @@
     "name": "Preacher Curl (Machine)",
     "base_movement": "Preacher Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -544,6 +678,9 @@
     "name": "Pull Up",
     "base_movement": "Pull Up",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -553,6 +690,9 @@
     "name": "Pull Up (Assisted)",
     "base_movement": "Pull Up",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Assisted",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -562,6 +702,9 @@
     "name": "Push Press",
     "base_movement": "Push Press",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Triceps"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -571,6 +714,10 @@
     "name": "Push Up (Weighted)",
     "base_movement": "Push Up",
     "muscle_group": "Chest",
+    "secondary_muscles": [
+      "Triceps",
+      "Shoulders"
+    ],
     "equipment": "Weighted",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -580,6 +727,9 @@
     "name": "Rear Delt Reverse Fly (Cable)",
     "base_movement": "Rear Delt Reverse Fly",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Back"
+    ],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -589,6 +739,9 @@
     "name": "Rear Delt Reverse Fly (Machine)",
     "base_movement": "Rear Delt Reverse Fly",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Back"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -598,6 +751,7 @@
     "name": "Reverse Crunch",
     "base_movement": "Reverse Crunch",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -607,6 +761,10 @@
     "name": "Romanian Deadlift (Barbell)",
     "base_movement": "Romanian Deadlift",
     "muscle_group": "Hamstrings",
+    "secondary_muscles": [
+      "Glutes",
+      "Lower Back"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -616,6 +774,10 @@
     "name": "Romanian Deadlift (Dumbbell)",
     "base_movement": "Romanian Deadlift",
     "muscle_group": "Hamstrings",
+    "secondary_muscles": [
+      "Glutes",
+      "Lower Back"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -625,6 +787,7 @@
     "name": "Rope Cable Curl",
     "base_movement": "Rope Cable Curl",
     "muscle_group": "Biceps",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -634,6 +797,9 @@
     "name": "Seated Cable Row - Bar Wide Grip",
     "base_movement": "Seated Cable Row - Bar Wide Grip",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -643,6 +809,9 @@
     "name": "Seated Cable Row - V Grip (Cable)",
     "base_movement": "Seated Cable Row - V Grip",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -652,6 +821,9 @@
     "name": "Seated Row (Machine)",
     "base_movement": "Seated Row",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -661,6 +833,9 @@
     "name": "Shoulder Press (Dumbbell)",
     "base_movement": "Shoulder Press",
     "muscle_group": "Shoulders",
+    "secondary_muscles": [
+      "Triceps"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -670,6 +845,7 @@
     "name": "Side Bend (Cable)",
     "base_movement": "Side Bend",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -679,6 +855,7 @@
     "name": "Side Bend (Dumbbell)",
     "base_movement": "Side Bend",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -688,6 +865,7 @@
     "name": "Side Plank",
     "base_movement": "Side Plank",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "duration",
     "is_custom": false
@@ -697,6 +875,9 @@
     "name": "Single Leg Romanian Deadlift (Dumbbell)",
     "base_movement": "Single Leg Romanian Deadlift",
     "muscle_group": "Hamstrings",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -706,6 +887,7 @@
     "name": "Sit Up",
     "base_movement": "Sit Up",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -714,7 +896,10 @@
     "id": "smith-machine-split-squat",
     "name": "Smith Machine Split Squat",
     "base_movement": "Smith Machine Split Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -723,7 +908,10 @@
     "id": "split-squat-dumbbell",
     "name": "Split Squat (Dumbbell)",
     "base_movement": "Split Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -732,7 +920,10 @@
     "id": "squat-barbell",
     "name": "Squat (Barbell)",
     "base_movement": "Squat",
-    "muscle_group": "Legs",
+    "muscle_group": "Quads",
+    "secondary_muscles": [
+      "Glutes"
+    ],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -742,6 +933,7 @@
     "name": "Straight Arm Lat Pulldown (Cable)",
     "base_movement": "Straight Arm Lat Pulldown",
     "muscle_group": "Back",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -750,7 +942,10 @@
     "id": "sumo-deadlift",
     "name": "Sumo Deadlift",
     "base_movement": "Sumo Deadlift",
-    "muscle_group": "Legs",
+    "muscle_group": "Glutes",
+    "secondary_muscles": [
+      "Hamstrings"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -760,6 +955,9 @@
     "name": "T Bar Row",
     "base_movement": "T Bar Row",
     "muscle_group": "Back",
+    "secondary_muscles": [
+      "Biceps"
+    ],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -769,6 +967,7 @@
     "name": "TRX Rotation",
     "base_movement": "TRX Rotation",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "TRX",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -778,6 +977,7 @@
     "name": "Tricep Pushdown V Grip",
     "base_movement": "Tricep Pushdown V Grip",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -787,6 +987,10 @@
     "name": "Triceps Dip (Assisted)",
     "base_movement": "Triceps Dip",
     "muscle_group": "Triceps",
+    "secondary_muscles": [
+      "Chest",
+      "Shoulders"
+    ],
     "equipment": "Assisted",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -796,6 +1000,7 @@
     "name": "Triceps Extension (Barbell)",
     "base_movement": "Triceps Extension",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Barbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -805,6 +1010,7 @@
     "name": "Triceps Extension (Cable)",
     "base_movement": "Triceps Extension",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Cable",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -814,6 +1020,7 @@
     "name": "Triceps Extension (Dumbbell)",
     "base_movement": "Triceps Extension",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Dumbbell",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -823,6 +1030,7 @@
     "name": "Triceps Extension (Machine)",
     "base_movement": "Triceps Extension",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Machine",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -832,6 +1040,7 @@
     "name": "Triceps Pushdown",
     "base_movement": "Triceps Pushdown",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -841,6 +1050,7 @@
     "name": "Triceps Rope Pushdown",
     "base_movement": "Triceps Rope Pushdown",
     "muscle_group": "Triceps",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false
@@ -850,6 +1060,7 @@
     "name": "Weighted Crunch",
     "base_movement": "Weighted Crunch",
     "muscle_group": "Core",
+    "secondary_muscles": [],
     "equipment": "Bodyweight",
     "tracking_type": "weight_reps",
     "is_custom": false

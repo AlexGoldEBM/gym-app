@@ -219,11 +219,19 @@ export default function SessionDetail() {
   // ---------- read view ----------
   return (
     <div className="px-4 pt-3 pb-20">
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-start gap-2 mb-1">
         <button onClick={() => nav('/history')} className="text-gray-400 px-1 text-xl">‹</button>
-        <h1 className="text-xl font-bold flex-1 truncate">{session.title}</h1>
+        <h1 className="text-xl font-bold flex-1 break-words">{session.title}</h1>
+      </div>
+      <div className="flex items-center gap-2 mb-3">
+        <button className="btn-ghost py-1.5 px-2.5" onClick={() => nav(`/history/${id}/share`)}
+          title="Share workout" aria-label="Share workout">
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" />
+          </svg>
+        </button>
         <button className="btn-ghost py-1.5 px-3 text-sm" onClick={startEdit}>Edit</button>
-        <button className="btn-primary py-1.5 px-3 text-sm whitespace-nowrap" onClick={createRoutineFromSession}>Save as routine</button>
+        <button className="btn-primary py-1.5 px-3 text-sm whitespace-nowrap ml-auto" onClick={createRoutineFromSession}>Save as routine</button>
       </div>
 
       <p className="text-sm text-gray-500 mb-1">{fmtDateTime(ms(session.start_time))}</p>

@@ -1,11 +1,11 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useMemo, useState } from 'react'
 import { useData } from '../store/DataContext'
+import { useAuth } from '../store/AuthContext'
 import { ExerciseFormModal } from '../components/ExerciseForm'
-import { Confirm } from '../components/ui'
 import { MiniLine } from '../components/Chart'
 import { exercisePRs, exerciseSeries, setsForExercise } from '../lib/stats'
-import { fmtWeight, fmtDuration, fmtDate, ms, isAssistedExercise } from '../lib/util'
+import { fmtWeight, fmtDuration, fmtDate, ms, isAssistedExercise, isExerciseOwner } from '../lib/util'
 
 const METRICS = [
   { key: 'est1RM', label: 'Est. 1RM', unit: 'kg', color: '#3b82f6' },
@@ -15,10 +15,10 @@ const METRICS = [
 
 export default function ExerciseDetail() {
   const { id } = useParams()
-  const { exercises, sessions, archiveExercise, deleteExercise } = useData()
+  const { exercises, sessions, archiveExercise } = useData()
+  const { user, household } = useAuth()
   const nav = useNavigate()
   const [edit, setEdit] = useState(false)
-  const [confirmDel, setConfirmDel] = useState(false)
   const [metric, setMetric] = useState('est1RM')
 
   const ex = exercises.find(e => e.id === id)
@@ -48,7 +48,7 @@ export default function ExerciseDetail() {
         <button onClick={() => nav(-1)} className="text-gray-400 px-1 text-xl">‹</button>
         <h1 className="text-xl font-bold flex-1">{ex.name}</h1>
       </div>
-      <p className="text-sm text-gray-500 mb-4 pl-7">{ex.muscle_group} · {ex.equipment}{isDuration && ' · timed'}</p>
+      <p className="text-sm text-gray-500 mb-4 pl-7">{ex.muscle_group}{ex.secondary_muscles?.length > 0 && ` (+ ${ex.secondary_muscles.join(', ')})`} · {ex.equipment}{isDuration && ' · timed'}</p>
 
       {/* PRs */}
       <div className="grid grid-cols-3 gap-2 mb-5">
@@ -106,21 +106,18 @@ export default function ExerciseDetail() {
       {/* manage */}
       <div className="mt-6 flex gap-2">
         <button className="btn-ghost flex-1" onClick={() => setEdit(true)}>Edit</button>
-        <button className="btn-ghost" onClick={() => archiveExercise(id, !ex.archived)}>
-          {ex.archived ? 'Unarchive' : 'Archive'}
-        </button>
-        {ex.is_custom && <button className="btn-danger" onClick={() => setConfirmDel(true)}>Delete</button>}
+        {isExerciseOwner(ex, user, household) && (
+          <button className="btn-ghost" onClick={() => archiveExercise(id, !ex.archived)}>
+            {ex.archived ? 'Unarchive' : 'Archive'}
+          </button>
+        )}
       </div>
-      {!ex.is_custom && (
-        <p className="text-[11px] text-gray-600 mt-2">
-          Seeded exercise — you can rename/recategorise it, but it can't be deleted (only archived) since past
-          workouts reference it.
-        </p>
-      )}
+      <p className="text-[11px] text-gray-600 mt-2">
+        Exercises can't be deleted since past workouts reference them — archive to hide from the picker.
+        Only whoever created an exercise can rename or archive it.
+      </p>
 
       <ExerciseFormModal open={edit} onClose={() => setEdit(false)} editing={ex} />
-      <Confirm open={confirmDel} title="Delete exercise?" body="Removes this custom exercise from the household library."
-        onConfirm={async () => { await deleteExercise(id); nav('/exercises') }} onCancel={() => setConfirmDel(false)} />
     </div>
   )
 }

@@ -54,9 +54,9 @@ export default function ActiveWorkout() {
     setConfirmFinish(true)
   }
   async function doFinish() {
-    await w.finishWorkout()
+    const id = await w.finishWorkout()
     setConfirmFinish(false)
-    nav('/')
+    nav(id ? `/history/${id}/share?done=1` : '/', { replace: true })
   }
 
   return (

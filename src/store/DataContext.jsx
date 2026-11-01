@@ -6,6 +6,10 @@ import {
 import { db } from '../firebase'
 import { useAuth } from './AuthContext'
 import { uid, slugId } from '../lib/util'
+import { legacyLegsGroup } from '../lib/muscleSplit'
+import seedExercises from '../data/exerciseSeed.json'
+
+const SEED_BY_ID = Object.fromEntries(seedExercises.map(e => [e.id, e]))
 
 const DataCtx = createContext(null)
 export const useData = () => useContext(DataCtx)
@@ -50,6 +54,21 @@ export function DataProvider({ children }) {
     }, (e) => { console.error('sessions', e); setReady(true) })
   }, [user])
 
+  // One-time migrations for libraries seeded before these fields changed: recategorise the old
+  // "Legs" group, and give seeded exercises their default secondary_muscles. Idempotent — once
+  // written, the snapshot no longer matches so this does nothing (customs without the field are
+  // left alone; an empty array means "none" and is never overwritten).
+  useEffect(() => {
+    if (!hid) return
+    for (const e of exercises) {
+      const seed = SEED_BY_ID[e.id]
+      const patch = {}
+      if (e.muscle_group === 'Legs') patch.muscle_group = legacyLegsGroup(e, seed?.muscle_group)
+      if (e.secondary_muscles === undefined && seed) patch.secondary_muscles = seed.secondary_muscles
+      if (Object.keys(patch).length) fire(updateDoc(doc(db, 'households', hid, 'exercises', e.id), patch))
+    }
+  }, [hid, exercises])
+
   const exerciseMap = useMemo(() => {
     const m = {}
     for (const e of exercises) m[e.id] = e
@@ -65,6 +84,7 @@ export function DataProvider({ children }) {
       name: data.name.trim(),
       base_movement: (data.base_movement || data.name).trim(),
       muscle_group: data.muscle_group,
+      secondary_muscles: data.secondary_muscles || [],
       equipment: data.equipment,
       tracking_type: data.tracking_type || 'weight_reps',
       is_custom: true,
@@ -78,11 +98,6 @@ export function DataProvider({ children }) {
   const updateExercise = useCallback((id, patch) => {
     if (!hid) return
     fire(updateDoc(doc(db, 'households', hid, 'exercises', id), patch))
-  }, [hid])
-
-  const deleteExercise = useCallback((id) => {
-    if (!hid) return
-    fire(deleteDoc(doc(db, 'households', hid, 'exercises', id)))
   }, [hid])
 
   const archiveExercise = useCallback((id, archived = true) => {
@@ -134,7 +149,7 @@ export function DataProvider({ children }) {
   const value = {
     ready, exercises, routines, sessions, exerciseMap,
     activeExercises: useMemo(() => exercises.filter(e => !e.archived), [exercises]),
-    addExercise, updateExercise, deleteExercise, archiveExercise,
+    addExercise, updateExercise, archiveExercise,
     saveRoutine, deleteRoutine,
     saveSession, deleteSession,
   }

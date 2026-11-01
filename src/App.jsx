@@ -15,6 +15,7 @@ import Routines from './pages/Routines'
 import RoutineEditor from './pages/RoutineEditor'
 import History from './pages/History'
 import SessionDetail from './pages/SessionDetail'
+import ShareWorkout from './pages/ShareWorkout'
 import Progress from './pages/Progress'
 import ExerciseDetail from './pages/ExerciseDetail'
 import Exercises from './pages/Exercises'
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/routines/:id" element={<RoutineEditor />} />
           <Route path="/history" element={<History />} />
           <Route path="/history/:id" element={<SessionDetail />} />
+          <Route path="/history/:id/share" element={<ShareWorkout />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/exercises" element={<Exercises />} />
           <Route path="/exercises/:id" element={<ExerciseDetail />} />

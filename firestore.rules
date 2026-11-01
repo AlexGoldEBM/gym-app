@@ -49,8 +49,26 @@ service cloud.firestore {
       allow delete: if false; // households are not deletable from the client
 
       // ---- Shared exercise library ----
+      // Never deletable from the client (past sessions reference them; archive instead).
+      // Any member can recategorise, but only the creator can rename or (un)archive. Seeded exercises have
+      // created_by == hid and belong to the household's creator.
       match /exercises/{exId} {
-        allow read, write: if isMember(hid);
+        function isExerciseCreator() {
+          let createdBy = resource.data.get('created_by', null);
+          return createdBy == request.auth.uid
+            || (createdBy == hid
+                && get(/databases/$(database)/documents/households/$(hid)).data.createdBy == request.auth.uid);
+        }
+
+        allow read: if isMember(hid);
+        allow create: if isMember(hid)
+          && request.resource.data.get('created_by', null) in [request.auth.uid, hid];
+        allow update: if isMember(hid)
+          && request.resource.data.get('created_by', null) == resource.data.get('created_by', null)
+          && ((request.resource.data.get('name', null) == resource.data.get('name', null)
+               && request.resource.data.get('archived', false) == resource.data.get('archived', false))
+              || isExerciseCreator());
+        allow delete: if false;
       }
 
       // ---- Shared routine templates ----

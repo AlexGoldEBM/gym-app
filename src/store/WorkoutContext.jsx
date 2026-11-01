@@ -269,6 +269,7 @@ export function WorkoutProvider({ children }) {
     setActive(null)
     setRest(null)
     releaseWakeLock()
+    return active.id
   }, [active, saveSession])
 
   const cancelWorkout = useCallback(() => {

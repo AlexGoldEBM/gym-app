@@ -24,7 +24,9 @@ quick set entry, add/remove sets, normal/warmup/failure/drop_set, supersets), re
 workout, per-exercise progress charts (weight / est. 1RM / volume, date-range filter), exercise
 library browse/search + free custom exercises + rename/recategorise seeded ones, history list with
 expandable details and edit mode, offline support (Firestore persistence + active workout mirrored to
-localStorage), household create/join via invite code, one-time Hevy CSV import.
+localStorage), household create/join via invite code, one-time Hevy CSV import, workout share images
+(muscle-split radar / body map / exercise list, drawn on canvas; opens after Finish and from the
+share icon on a session; "Save picture" downloads the PNG, or uses the share sheet on iOS).
 
 Not built (deliberately): per-muscle-group volume charts, distance/cardio UI (schema tolerates it),
 plate calculator, bodyweight tracking, anything beyond the two-person household. No paywall concepts, ever.
@@ -35,8 +37,12 @@ plate calculator, bodyweight tracking, anything beyond the two-person household.
 - `src/store/DataContext.jsx` — exercises/routines/household data; PRs computed in-memory from sessions snapshot
 - `src/store/WorkoutContext.jsx` — active workout state, rest timer, localStorage mirroring of in-progress workout
 - `src/pages/` — one file per route (`ActiveWorkout`, `Routines`, `RoutineEditor`, `Progress`,
-  `History`, `SessionDetail`, `Exercises`, `ExerciseDetail`, `Settings`, `Onboarding`, `Login`, `Home`)
-- `src/lib/` — `stats.js` (PRs/Epley), `ghostSets.js`, `routineRun.js`, `util.js`, `textScale.js`, `confetti.js`
+  `History`, `SessionDetail`, `ShareWorkout`, `Exercises`, `ExerciseDetail`, `Settings`, `Onboarding`, `Login`, `Home`)
+- `src/lib/` — `stats.js` (PRs/Epley), `ghostSets.js`, `routineRun.js`, `util.js`, `textScale.js`, `confetti.js`,
+  `muscleSplit.js` (muscle_group → 6 radar areas / body-map regions; Full Body is spread evenly;
+  the old "Legs" group was split into Quads/Hamstrings/Glutes/Calves; exercises also carry optional
+  `secondary_muscles` [groups] counted at half a set — DataContext auto-migrates older libraries),
+  `shareCards.js` (canvas drawing for the share images)
 - `firestore.rules` — server-side enforcement of the shared/private split
 
 ### Firestore layout
@@ -71,6 +77,9 @@ No test suite or linter is configured — don't invent commands for them.
   only. The API key was redacted out of this doc once already.
 - **Exercise IDs are slugs of the name** so seeding/re-import is idempotent; imported sessions are keyed
   `hevy-<startTimeMs>` so re-running the import never duplicates history.
+- **Exercises can't be deleted from the client** (rules `allow delete: if false`; history references them —
+  archive instead). Any member can recategorise; only the creator can rename or archive (`isExerciseOwner` in
+  `util.js` mirrors the rule). Seeded exercises are `created_by: <householdId>` = owned by the household creator.
 - Reordering uses up/down buttons, not touch drag-and-drop (reliability one-handed beat DnD).
 
 ## Ops notes (manual steps, can't be done from code)

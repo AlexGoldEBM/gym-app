@@ -101,6 +101,7 @@ export default function ShareWorkout() {
       appName: APP_NAME,
       areas: split.areas,
       regions: split.regions,
+      figure: profile?.bodyType || 'male',
       exercises: exerciseRows(session, exerciseMap),
     }
   }, [session, sessions, exercises, exerciseMap, split, profile, user])

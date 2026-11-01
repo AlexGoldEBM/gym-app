@@ -26,7 +26,8 @@ library browse/search + free custom exercises + rename/recategorise seeded ones,
 expandable details and edit mode, offline support (Firestore persistence + active workout mirrored to
 localStorage), household create/join via invite code, one-time Hevy CSV import, workout share images
 (muscle-split radar / body map / exercise list, drawn on canvas; opens after Finish and from the
-share icon on a session; "Save picture" downloads the PNG, or uses the share sheet on iOS), cardio logging
+share icon on a session; the body map draws a male or female figure per the user's Settings → Display choice,
+stored as `bodyType` on `users/{uid}`; "Save picture" downloads the PNG, or uses the share sheet on iOS), cardio logging
 (`tracking_type: 'cardio'` + `cardio_machine` treadmill/bike/rower/cross_trainer; time + distance plus
 per-machine extras — incline, speed, level, calories, avg HR, watts on bike; distance/time/pace charts and PRs).
 
@@ -44,7 +45,8 @@ plate calculator, bodyweight tracking, anything beyond the two-person household.
   `muscleSplit.js` (muscle_group → 6 radar areas / body-map regions; Full Body is spread evenly;
   the old "Legs" group was split into Quads/Hamstrings/Glutes/Calves; exercises also carry optional
   `secondary_muscles` [groups] counted at half a set — DataContext auto-migrates older libraries),
-  `shareCards.js` (canvas drawing for the share images), `cardio.js` (per-machine fields + formatting —
+  `shareCards.js` (canvas drawing for the share images; body-map figures are hand-authored half-paths, mirrored —
+  the female figure is the male one reshaped by `femaleWarp()`), `cardio.js` (per-machine fields + formatting —
   edit `CARDIO_MACHINES` to change a machine's inputs)
 - `src/components/CardioFields.jsx` — cardio inputs (time typed in minutes, rower distance in metres; stored as
   `duration_seconds` / `distance_km`)
@@ -52,7 +54,7 @@ plate calculator, bodyweight tracking, anything beyond the two-person household.
 
 ### Firestore layout
 
-- `users/{uid}` — private profile `{ displayName, email, householdId, restDefaultSec }`
+- `users/{uid}` — private profile `{ displayName, email, householdId, restDefaultSec, bodyType? }`
 - `users/{uid}/sessions/{sessionId}` — private logs, **sets embedded as an array in the session doc**
 - `households/{hid}` — `{ name, members: [uid], inviteCode, createdBy }`
 - `households/{hid}/exercises/{exId}` and `households/{hid}/routines/{routineId}` — shared

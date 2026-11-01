@@ -5,7 +5,7 @@ import { useData } from '../store/DataContext'
 import { SCALES, getScale, setScale } from '../lib/textScale'
 
 export default function Settings() {
-  const { profile, household, user, logout, setRestDefault } = useAuth()
+  const { profile, household, user, logout, setRestDefault, setBodyType } = useAuth()
   const { exercises, sessions } = useData()
   const nav = useNavigate()
   const [copied, setCopied] = useState(false)
@@ -57,6 +57,15 @@ export default function Settings() {
           <p className="text-[11px] text-gray-600 mt-1.5">
             {SCALES.find(s => s.id === scale)?.label} · applies to this device. You can also pinch-to-zoom anywhere.
           </p>
+        </div>
+        <div className="py-1">
+          <span className="text-sm text-gray-400 block mb-2">Figure on share images</span>
+          <div className="grid grid-cols-2 gap-1.5">
+            {[['male', 'Male'], ['female', 'Female']].map(([id, label]) => (
+              <button key={id} onClick={() => setBodyType(id)}
+                className={`btn py-2 ${(profile?.bodyType || 'male') === id ? 'btn-primary' : 'btn-ghost'}`}>{label}</button>
+            ))}
+          </div>
         </div>
       </Section>
 

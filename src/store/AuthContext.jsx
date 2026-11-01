@@ -154,11 +154,17 @@ export function AuthProvider({ children }) {
     await updateDoc(doc(db, 'users', user.uid), { restDefaultSec: sec })
   }, [user])
 
+  // Which figure the share images draw ('male' | 'female'); missing = male.
+  const setBodyType = useCallback(async (bodyType) => {
+    if (!user) return
+    await updateDoc(doc(db, 'users', user.uid), { bodyType })
+  }, [user])
+
   const value = {
     user, profile, household, authError,
     loading: user === undefined || (user && profile === undefined),
     needsOnboarding: !!user && profile && !profile.householdId,
-    login, logout, createHousehold, joinHousehold, setRestDefault,
+    login, logout, createHousehold, joinHousehold, setRestDefault, setBodyType,
   }
   return <AuthCtx.Provider value={value}>{children}</AuthCtx.Provider>
 }

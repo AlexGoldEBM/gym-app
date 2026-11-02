@@ -63,12 +63,30 @@ export function WorkoutProvider({ children }) {
     return () => document.removeEventListener('visibilitychange', onVis)
   }, [active])
 
+  function audioCtx() {
+    const Ctx = window.AudioContext || window.webkitAudioContext
+    if (!Ctx) return null
+    return audioRef.current || (audioRef.current = new Ctx())
+  }
+  // iOS only lets audio start inside a user gesture, so call this from taps (start workout / tick a set)
+  // rather than waiting for the timer to expire, or the first beep is silent.
+  function unlockAudio() {
+    try {
+      const ac = audioCtx()
+      if (!ac) return
+      if (ac.state === 'suspended') ac.resume().catch(() => {})
+      const src = ac.createBufferSource()
+      src.buffer = ac.createBuffer(1, 1, 22050)
+      src.connect(ac.destination)
+      src.start(0)
+    } catch {}
+  }
+
   function beep() {
     try {
-      const Ctx = window.AudioContext || window.webkitAudioContext
-      if (!Ctx) return
-      const ac = audioRef.current || (audioRef.current = new Ctx())
-      if (ac.state === 'suspended') ac.resume()
+      const ac = audioCtx()
+      if (!ac) return
+      if (ac.state === 'suspended') ac.resume().catch(() => {})
       const o = ac.createOscillator(), g = ac.createGain()
       o.connect(g); g.connect(ac.destination)
       o.frequency.value = 880; o.type = 'sine'
@@ -100,6 +118,7 @@ export function WorkoutProvider({ children }) {
     }
     setActive(w)
     requestWakeLock()
+    unlockAudio()
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission().catch(() => {})
     }
@@ -221,6 +240,7 @@ export function WorkoutProvider({ children }) {
 
   // ---------- Rest timer controls ----------
   const startRest = useCallback((seconds) => {
+    unlockAudio()
     firedRef.current = false
     setRest({ endsAt: Date.now() + seconds * 1000, duration: seconds })
     setNow(Date.now())

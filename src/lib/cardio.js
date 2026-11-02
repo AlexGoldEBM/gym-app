@@ -43,7 +43,8 @@ export const minToSec = m => (m == null ? null : Math.round(m * 60))
 
 export function fmtClockTime(sec) {
   if (sec == null) return '—'
-  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = Math.round(sec % 60)
+  const t = Math.round(sec)
+  const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60
   const mm = h ? String(m).padStart(2, '0') : m
   return `${h ? `${h}:` : ''}${mm}:${String(s).padStart(2, '0')}`
 }

@@ -6,7 +6,7 @@ import { ExercisePicker } from '../components/ExercisePicker'
 import { Confirm, Modal, NumberField } from '../components/ui'
 import { lastPerformance, exercisePRs, repMaxTable, recentSessions, livePRSetKeys } from '../lib/stats'
 import { seedGhostSets } from '../lib/ghostSets'
-import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid, isAssistedExercise, trackingOf, SET_VALUE_KEYS } from '../lib/util'
+import { fmtClock, fmtWeight, fmtDuration, fmtDate, SET_TYPES, uid, isAssistedExercise, trackingOf, SET_VALUE_KEYS, hasSetValue } from '../lib/util'
 import { fmtCardioSet, fmtDistance, fmtClockTime, cardioMachine } from '../lib/cardio'
 import { CardioField, CardioExtras, cardioFieldLabel } from '../components/CardioFields'
 import { burst } from '../lib/confetti'
@@ -51,7 +51,7 @@ export default function ActiveWorkout() {
   }
 
   function finish() {
-    const hasData = active.exercises.some(e => e.sets.some(s => s.weight_kg != null || s.reps != null || s.duration_seconds != null || s.done))
+    const hasData = active.exercises.some(e => e.sets.some(s => hasSetValue(s) || s.done))
     if (!hasData) { setConfirmCancel(true); return }
     setConfirmFinish(true)
   }
